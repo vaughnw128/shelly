@@ -2,7 +2,6 @@
 
 from scapy.all import sr,IP,ICMP,Raw,sniff
 import os
-import netifaces
 import socket
 import psutil
 import pwd
@@ -43,7 +42,7 @@ class Host:
         mac = ([j.address for i in nics for j in nics[i] if i==self.iface and j.family==psutil.AF_LINK])[0]
         return mac.replace('-',':')
 
-    def build_shellpack(self, command: str, message: str | None) -> dict:
+    def build_shellpack(self, command: str, message: str | None = None) -> dict:
         shellpack = {
             "command": command,
             "message": message,
@@ -98,7 +97,8 @@ def setup_host() -> Host:
     
     # Send join command
     target = Target("192.168.157.6")
-    target.send(command="join") 
+    shellpack = host.build_shellpack(command="join")
+    target.send(shellpack) 
 
     return host
 
