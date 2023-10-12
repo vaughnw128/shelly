@@ -17,6 +17,7 @@ ICMP_ID = int(12800)
 class Controller(Host):
     
     def __init__(self):
+        super().__init__()
         self.type = "controller"
 
     def sniff_callback(self, packet):

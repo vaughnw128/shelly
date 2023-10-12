@@ -16,6 +16,7 @@ target = None
 class Implant(Host):
     
     def __init__(self):
+        super().__init__()
         self.type = "implant"
 
     def sniff_callback(self, packet):
