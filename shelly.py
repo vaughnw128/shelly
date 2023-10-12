@@ -30,6 +30,7 @@ class Target(Host):
         self.iface = shellpack['iface']
         self.mac = shellpack['mac']
         self.user = shellpack['user']
+        self.status = "STANDBY"
         self.heartbeat = 0
 
 def send(ip, shellpack: str) -> bool:

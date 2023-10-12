@@ -10,6 +10,7 @@ from multiprocessing import Process
 import json
 import ast
 from shelly import Host, Target
+import shelly
 
 TTL = int(64)
 ICMP_ID = int(12800)
@@ -40,10 +41,17 @@ class Controller(Host):
                 print("Default case")
 
     def join(self, shellpack):
-        target = Target(shellpack)
-        self.targets.append(target)
-        print(target)
-        print(self.targets)
+        
+        match shellpack['message']:
+            case "hello":
+                target = Target(shellpack)
+                target.status = ""
+                shelly.send(target.ip, "join", "how are you")
+            case "fine thank you":
+                for target in self.targets:
+                    if target.ip == shellpack['ip']:
+                        target.status = "CONNECTED"
+
         return
 
 def sniffing(controller):
@@ -64,4 +72,6 @@ if __name__ == "__main__":
     
     print("Starting listener")
     while True:
-        input("")
+        cmd = input("shelly > ")
+        if cmd == "ls":
+            print(controller.targets[0])
