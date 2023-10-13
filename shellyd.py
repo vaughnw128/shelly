@@ -28,6 +28,7 @@ class Daemon(Host):
                     "iface": shellpack['iface'],
                     "mac": shellpack['mac'],
                     "user": shellpack['user'],
+                    "location": shellpack['location'],
                     "status": "STANDBY"
                     }
 

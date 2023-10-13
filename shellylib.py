@@ -15,6 +15,7 @@ class Host:
         self.iface = get_iface(self.ip)
         self.mac = get_mac(self.iface)
         self.user = pwd.getpwuid(os.getuid())[0]
+        self.location = os.getcwd()
         self.status = "STANDBY"
 
     def __str__(self) -> str:
@@ -72,6 +73,7 @@ class Host:
                 "mac": self.mac,
                 "iface": self.iface,
                 "user": self.user,
+                "location": self.location,
                 "status": self.status
                 }
 

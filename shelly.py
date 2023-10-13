@@ -31,6 +31,7 @@ class Controller(Host):
             response += f" --> {target['iface']}\n"
             response += f" --> {target['mac']}\n"
             response += f" --> {target['user']}\n"
+            response += f" --> {target['location']}\n"
             response += f" --> {target['status']}\n"
         
         return response
@@ -44,6 +45,8 @@ if __name__ == "__main__":
 
     match sys.argv[1]:
         case "ls":
+            print(controller.list_hosts())
+        case "":
             print(controller.list_hosts())
             
     
