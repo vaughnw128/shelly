@@ -39,9 +39,6 @@ class Daemon(Host):
             case _:
                 print("Invalid join message")
         return
-
-    def instruction(self, shellpack):
-        print(f"Instruction Response:\n{base64.b64decode(shellpack['data'].decode()).decode()}")
         
 if __name__ == "__main__":
 

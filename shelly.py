@@ -52,7 +52,8 @@ class Controller(Host):
             self.send(target['ip'], "instruction", "request", base64.b64encode(cmd))
         # print(f"Instruction Response:\n{base64.b64decode(shellpack['data'].decode()).decode()}")
 
-    
+    def instruction(self, shellpack):
+        print(base64.b64decode(shellpack['data'].decode()).decode())
 
 if __name__ == "__main__":
     controller = Controller()
