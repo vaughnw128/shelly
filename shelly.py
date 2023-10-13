@@ -57,7 +57,7 @@ if __name__ == "__main__":
         case "ls":
             print(controller.list_hosts())
         case "interact":
-            controller.interact(sys.argv[2])
+            controller.interact(int(sys.argv[2]))
 
             
     
