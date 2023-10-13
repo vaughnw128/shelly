@@ -44,4 +44,5 @@ if __name__ == "__main__":
     print(controller)
 
     print("[ Starting sniffer ]")
+    print("[ Shellpack log ]")
     sniff(iface=controller.iface, filter="icmp", prn=controller.sniff_callback, store="0")

