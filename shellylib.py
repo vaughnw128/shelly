@@ -91,13 +91,12 @@ class Host:
         return True
 
 class Target(Host):
-    def __init__(self, shellpack):
-        self.ip = shellpack['ip']
-        self.iface = shellpack['iface']
-        self.mac = shellpack['mac']
-        self.user = shellpack['user']
-        self.status = ""
-        self.update_status("STANDBY")
+    def __init__(self, data_dict):
+        self.ip = data_dict['ip']
+        self.iface = data_dict['iface']
+        self.mac = data_dict['mac']
+        self.user = data_dict['user']
+        self.status = data_dict['status']
 
     def update_status(self, status):
         self.status = status
