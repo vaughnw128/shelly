@@ -95,6 +95,7 @@ def get_iface(ip) -> str:
     
 def get_local_ip() -> str:
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) 
     try:
         s.connect(("192.255.255.255", 1))
         ip = s.getsockname()[0]
