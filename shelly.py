@@ -59,6 +59,8 @@ class Host:
             }
         
         info_dict = self.to_dict()
+        print(shellpack)
+        print(info_dict)
         shellpack = shellpack.update(info_dict)
         shellpack = str(shellpack).encode('utf-8')
         shellpack = base64.b64encode(shellpack)
@@ -96,7 +98,6 @@ class Target(Host):
         self.user = shellpack['user']
         self.status = ""
         self.update_status("STANDBY")
-        self.heartbeat = 0
 
     def update_status(self, status):
         self.status = status
