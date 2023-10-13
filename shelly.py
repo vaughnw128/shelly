@@ -60,7 +60,7 @@ class Host:
         
         info_dict = self.to_dict()
         shellpack.update(info_dict)
-        
+
         shellpack = str(shellpack).encode('utf-8')
         shellpack = base64.b64encode(shellpack)
         return shellpack
@@ -86,6 +86,7 @@ class Host:
         shellpack = self.build_shellpack(command, message, data)
         data = (IP(dst=ip, ttl=TTL)/ICMP(type=0, id=ICMP_ID)/Raw(load=shellpack))
         sr(data, timeout=0, verbose=0)
+        print(f" $ {command} sent to {ip} > {message}")
         
         return True
 

