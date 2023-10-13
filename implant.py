@@ -2,7 +2,7 @@
 
 from scapy.all import sr,IP,ICMP,Raw,sniff
 import base64
-from shelly import Host
+from shellylib import Host
 from subprocess import STDOUT, check_output, TimeoutExpired
 
 ICMP_ID = int(12800)

