@@ -38,7 +38,7 @@ class Controller(Host):
         return response
 
     def sniffing(self, target_ip):
-        sniff(iface=self.interface, prn=self.sniff_callback, filter=f"src host {target_ip} and icmp", store="0")
+        sniff(iface=self.iface, prn=self.sniff_callback, filter=f"src host {target_ip} and icmp", store="0")
 
     def interact(self, target):
         Target = Query()
