@@ -62,6 +62,7 @@ class Host:
         print(shellpack)
         print(info_dict)
         shellpack.update(info_dict)
+        print(shellpack)
         shellpack = str(shellpack).encode('utf-8')
         shellpack = base64.b64encode(shellpack)
         return shellpack
