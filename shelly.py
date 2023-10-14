@@ -50,12 +50,12 @@ class Controller(Host):
 
     def instruction(self, shellpack):
         
-        # if shellpack['option'] == "TRUNCATED":
-        #     print(shellpack['data'].decode(), end="")
+        if shellpack['option'] == "TRUNCATED":
+            print(shellpack['data'].decode(), end="")
         # if shellpack['option'] == "ERROR":
         #     print(f"\n[ERROR] {shellpack['data'].decode()}")
-        # else:
-        print(shellpack['data'].decode(), end="")
+        else:
+            print(shellpack['data'].decode())
         
 
 if __name__ == "__main__":
