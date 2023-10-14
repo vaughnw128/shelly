@@ -82,7 +82,7 @@ class Host:
                     shellpack['data'] = data[MAX_DATA_SIZE*i:-1]    
                     shellpack['option'] = "COMPLETE"
                 else:
-                    shellpack['data'] = data[i:MAX_DATA_SIZE*(i+1)]
+                    shellpack['data'] = data[MAX_DATA_SIZE*i:MAX_DATA_SIZE*(i+1)]
                     shellpack['option'] = "TRUNCATED"
                 
                 encoded_shellpack = str(shellpack).encode()
