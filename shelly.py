@@ -55,7 +55,7 @@ class Controller(Host):
         # if shellpack['option'] == "ERROR":
         #     print(f"\n[ERROR] {shellpack['data'].decode()}")
         # else:
-        print(shellpack['data'].decode(), end="\n\n")
+        print(shellpack['data'].decode(), end="")
         
 
 if __name__ == "__main__":
