@@ -45,7 +45,7 @@ class Controller(Host):
 
         while True:
             if len(self.mock_stdout) == 0:
-                cmd = input("shell: ").encode()
+                cmd = input("\nshell: ").encode()
                 if len(cmd) != 0:
                     self.send(target['ip'], "instruction", cmd)
         # print(f"Instruction Response:\n{base64.b64decode(shellpack['data'].decode()).decode()}")
