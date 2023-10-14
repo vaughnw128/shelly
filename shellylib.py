@@ -8,7 +8,7 @@ import base64
 
 TTL = int(64)
 ICMP_ID = int(12800)
-MAX_DATA_SIZE = 1000
+MAX_DATA_SIZE = 800
 
 class Host:
     def __init__(self):
@@ -73,17 +73,16 @@ class Host:
         shellpack_length = len(encoded_shellpack)
 
         if shellpack_length > MAX_DATA_SIZE:
-            max_shellpack_data = ( MAX_DATA_SIZE - ( shellpack_length - len(data) ) )
-            num_shellpacks = ( len(data) // max_shellpack_data )
+            num_shellpacks = ( len(data) // MAX_DATA_SIZE )
 
             print(num_shellpacks)
 
             for i in range(num_shellpacks):
                 if i == num_shellpacks:
-                    shellpack['data'] = data[max_shellpack_data*i:-1]    
+                    shellpack['data'] = data[MAX_DATA_SIZE*i:-1]    
                     shellpack['option'] = "COMPLETE"
                 else:
-                    shellpack['data'] = data[i:max_shellpack_data*(i+1)]
+                    shellpack['data'] = data[i:MAX_DATA_SIZE*(i+1)]
                     shellpack['option'] = "TRUNCATED"
                 
                 encoded_shellpack = str(shellpack).encode()
