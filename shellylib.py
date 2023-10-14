@@ -73,8 +73,7 @@ class Host:
         shellpack_length = len(encoded_shellpack)
 
         if shellpack_length > MAX_DATA_SIZE:
-            print("farty")
-            num_shellpacks = ( data // ( MAX_DATA_SIZE - ( shellpack_length - len(data) ) ) )
+            num_shellpacks = ( len(data) // ( MAX_DATA_SIZE - ( shellpack_length - len(data) ) ) )
             print(num_shellpacks)
 
             # for i in range(num_shellpacks):
