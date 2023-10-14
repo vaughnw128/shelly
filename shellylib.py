@@ -64,18 +64,13 @@ class Host:
             "option": option,
             "data" : data
             }
-
-        print(shellpack)
-
+        
         encoded_shellpack = str(shellpack).encode()
         encoded_shellpack = base64.b64encode(encoded_shellpack)
 
         if data is not None and len(data) > MAX_DATA_SIZE:
             
             num_shellpacks = ( len(data) // MAX_DATA_SIZE ) + 1
-
-            print(f"Data len: {len(data)}")
-            print(f"Number of shellpacks to use: {num_shellpacks}")
 
             for i in range(num_shellpacks):
                 if i == num_shellpacks-1:
@@ -90,7 +85,6 @@ class Host:
 
                 shellpacks.append(encoded_shellpack)
             
-            print(shellpacks)
         else:
             shellpacks = [encoded_shellpack]
 
