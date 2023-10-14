@@ -64,13 +64,14 @@ class Host:
             "option": option,
             "data" : data
             }
-        
+        print("11111")
         encoded_shellpack = str(shellpack).encode()
         encoded_shellpack = base64.b64encode(shellpack)
 
         shellpack_length = len(encoded_shellpack)
 
         if shellpack_length > MAX_DATA_SIZE:
+            print("asdasdasd")
             num_shellpacks = ( data // ( MAX_DATA_SIZE - ( shellpack_length - len(data) ) ) )
             print(num_shellpacks)
 
