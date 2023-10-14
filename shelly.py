@@ -7,6 +7,7 @@ import base64
 from shellylib import Host
 from tinydb import TinyDB, Query
 import os
+from termcolor import colored
 import sys
 import time
 import argparse
@@ -45,7 +46,7 @@ class Controller(Host):
 
         while True:
             if len(self.mock_stdout) == 0:
-                cmd = input("\nshell: ").encode()
+                cmd = input(colored("shell > ", "red")).encode()
                 if len(cmd) != 0:
                     self.send(target['ip'], "instruction", cmd)
         # print(f"Instruction Response:\n{base64.b64decode(shellpack['data'].decode()).decode()}")
