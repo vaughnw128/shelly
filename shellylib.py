@@ -37,8 +37,7 @@ class Host:
         shellpack = base64.b64decode(encoded_shellpack).decode()
         unpacked = ast.literal_eval(shellpack)
         
-        ip_data = {'ip': packet[IP].src}
-        unpacked = ip_data.update(unpacked)
+        unpacked['ip'] = packet[IP].src
 
         # print(f" $ {unpacked['command']} received from {unpacked['ip']}")
 
