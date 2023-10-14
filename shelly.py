@@ -45,7 +45,7 @@ class Controller(Host):
         sniffer.start()
 
         while True:
-            print(self.mock_stdout)
+            print("asdasd")
             if len(self.mock_stdout) == 0:
                 cmd = input(colored("shell > ", "red")).encode()
                 if len(cmd) != 0:
