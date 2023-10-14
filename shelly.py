@@ -54,11 +54,11 @@ class Controller(Host):
         
         if shellpack['option'] == "TRUNCATED":
             self.mock_stdout += shellpack['data'].decode()
-        if shellpack['option'] == "COMPLETE":
+        elif shellpack['option'] == "COMPLETE":
             self.mock_stdout += shellpack['data'].decode()
             print(self.mock_stdout)
             self.mock_stdout = ""
-        if shellpack['option'] == "ERROR":
+        elif shellpack['option'] == "ERROR":
             print(f"\n[ERROR] {shellpack['data'].decode()}")
         else:
             print(shellpack['data'].decode())
