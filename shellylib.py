@@ -8,7 +8,7 @@ import base64
 
 TTL = int(64)
 ICMP_ID = int(12800)
-MAX_DATA_SIZE = 800
+MAX_DATA_SIZE = 600
 
 class Host:
     def __init__(self):
@@ -72,11 +72,12 @@ class Host:
 
         shellpack_length = len(encoded_shellpack)
 
-        if shellpack_length > MAX_DATA_SIZE:
-            print(f"Data len: {len(data)}")
-            num_shellpacks = ( len(data) // MAX_DATA_SIZE )
+        if len(data) > MAX_DATA_SIZE:
+            
+            num_shellpacks = ( len(data) // MAX_DATA_SIZE ) + 1
 
-            print(num_shellpacks)
+            print(f"Data len: {len(data)}")
+            print(f"Number of shellpacks to use: {num_shellpacks}")
 
             for i in range(num_shellpacks):
                 if i == num_shellpacks:
