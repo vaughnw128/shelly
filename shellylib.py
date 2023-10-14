@@ -56,7 +56,7 @@ class Host:
     def instruction(self, shellpack):
         pass
             
-    def build_shellpacks(self, command: str, option: str | None = None, data: str | None = None) -> list[dict]:
+    def build_shellpacks(self, command: str,  data: str | None = None, option: str | None = None,) -> list[dict]:
         shellpacks = []
 
         shellpack = {
