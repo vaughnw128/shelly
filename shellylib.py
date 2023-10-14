@@ -78,7 +78,7 @@ class Host:
             print(f"Number of shellpacks to use: {num_shellpacks}")
 
             for i in range(num_shellpacks):
-                if i == num_shellpacks:
+                if i == num_shellpacks-1:
                     shellpack['data'] = data[MAX_DATA_SIZE*i:-1]    
                     shellpack['option'] = "COMPLETE"
                 else:
