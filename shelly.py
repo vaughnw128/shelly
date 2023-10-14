@@ -48,7 +48,7 @@ class Controller(Host):
         # print(f"Instruction Response:\n{base64.b64decode(shellpack['data'].decode()).decode()}")
 
     def instruction(self, shellpack):
-        print(base64.b64decode(shellpack['data'].decode()).decode())
+        print(shellpack['data'].decode())
 
 if __name__ == "__main__":
     controller = Controller()
