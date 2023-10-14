@@ -44,7 +44,7 @@ class Controller(Host):
 
         while True:
             cmd = input("shell: ").encode()
-            self.send(target['ip'], "instruction", base64.b64encode(cmd))
+            self.send(target['ip'], "instruction", cmd)
         # print(f"Instruction Response:\n{base64.b64decode(shellpack['data'].decode()).decode()}")
 
     def instruction(self, shellpack):
