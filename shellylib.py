@@ -70,9 +70,7 @@ class Host:
         encoded_shellpack = str(shellpack).encode()
         encoded_shellpack = base64.b64encode(encoded_shellpack)
 
-        shellpack_length = len(encoded_shellpack)
-
-        if len(data) > MAX_DATA_SIZE:
+        if data is not None and len(data) > MAX_DATA_SIZE:
             
             num_shellpacks = ( len(data) // MAX_DATA_SIZE ) + 1
 
