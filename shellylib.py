@@ -73,7 +73,7 @@ class Host:
         shellpack_length = len(encoded_shellpack)
 
         if shellpack_length > MAX_DATA_SIZE:
-            print("Data len: " + len(data))
+            print(f"Data len: {len(data)}")
             num_shellpacks = ( len(data) // MAX_DATA_SIZE )
 
             print(num_shellpacks)
