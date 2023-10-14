@@ -64,7 +64,7 @@ class Host:
             "option": option,
             "data" : data
             }
-        
+        shellpack['option'] = "COMPLETE"
         encoded_shellpack = str(shellpack).encode()
         encoded_shellpack = base64.b64encode(encoded_shellpack)
 
@@ -86,7 +86,6 @@ class Host:
                 shellpacks.append(encoded_shellpack)
             
         else:
-            encoded_shellpack['option'] = "COMPLETE"
             shellpacks = [encoded_shellpack]
 
         return shellpacks
