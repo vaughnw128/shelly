@@ -55,7 +55,7 @@ class Controller(Host):
         if shellpack['option'] == "TRUNCATED":
             print("TRUNCATED")
             self.mock_stdout += shellpack['data'].decode()
-        if shellpack['option'] == "COMPLETED":
+        if shellpack['option'] == "COMPLETE":
             print("COMPLETED")
             self.mock_stdout += shellpack['data'].decode()
             print(self.mock_stdout)
