@@ -21,7 +21,7 @@ class Controller(Host):
     def __init__(self):
         super().__init__()
         self.db = TinyDB('./db.json')
-        self.mock_stdout = "\n"
+        self.mock_stdout = ""
 
     def list_hosts(self):
         response = "[ Targets ]\n"
@@ -58,11 +58,9 @@ class Controller(Host):
         elif shellpack['option'] == "COMPLETE":
             self.mock_stdout += shellpack['data'].decode()
             print(self.mock_stdout)
-            self.mock_stdout = "\n"
+            self.mock_stdout = ""
         elif shellpack['option'] == "ERROR":
             print(f"\n[ERROR] {shellpack['data'].decode()}")
-        else:
-            print(shellpack['data'].decode())
         
 
 if __name__ == "__main__":

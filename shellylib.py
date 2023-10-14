@@ -86,6 +86,7 @@ class Host:
                 shellpacks.append(encoded_shellpack)
             
         else:
+            encoded_shellpack['option'] = "COMPLETE"
             shellpacks = [encoded_shellpack]
 
         return shellpacks
