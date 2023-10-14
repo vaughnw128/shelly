@@ -73,11 +73,25 @@ class Host:
         shellpack_length = len(encoded_shellpack)
 
         if shellpack_length > MAX_DATA_SIZE:
-            num_shellpacks = ( len(data) // ( MAX_DATA_SIZE - ( shellpack_length - len(data) ) ) )
+            max_shellpack_data = ( MAX_DATA_SIZE - ( shellpack_length - len(data) ) )
+            num_shellpacks = ( len(data) // max_shellpack_data )
+
             print(num_shellpacks)
 
-            # for i in range(num_shellpacks):
-            #     shellpack['data'] = data[:len(shellpack//num_shellpacks)]
+            for i in range(num_shellpacks):
+                if i == num_shellpacks:
+                    shellpack['data'] = data[max_shellpack_data*i:-1]    
+                    shellpack['option'] = "COMPLETE"
+                else:
+                    shellpack['data'] = data[i:max_shellpack_data*(i+1)]
+                    shellpack['option'] = "TRUNCATED"
+                
+                encoded_shellpack = str(shellpack).encode()
+                encoded_shellpack = base64.b64encode(encoded_shellpack)
+
+                shellpacks.append(encoded_shellpack)
+            
+            print(shellpacks)
         else:
             shellpacks = [encoded_shellpack]
 
