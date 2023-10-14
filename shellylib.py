@@ -64,9 +64,9 @@ class Host:
             "option": option,
             "data" : data
             }
-        print("11111")
+
         encoded_shellpack = str(shellpack).encode()
-        encoded_shellpack = base64.b64encode(shellpack)
+        encoded_shellpack = base64.b64encode(encoded_shellpack)
 
         shellpack_length = len(encoded_shellpack)
 
