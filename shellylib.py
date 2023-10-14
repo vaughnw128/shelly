@@ -77,7 +77,7 @@ class Host:
             # for i in range(num_shellpacks):
             #     shellpack['data'] = data[:len(shellpack//num_shellpacks)]
         else:
-            shellpacks = [shellpack]
+            shellpacks = [encoded_shellpack]
 
         return shellpacks
 
