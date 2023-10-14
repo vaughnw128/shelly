@@ -8,7 +8,7 @@ import base64
 
 TTL = int(64)
 ICMP_ID = int(12800)
-MAX_DATA_SIZE = 600
+MAX_DATA_SIZE = 400
 
 class Host:
     def __init__(self):
