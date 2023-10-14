@@ -43,7 +43,7 @@ class Controller(Host):
         sniffer.start()
 
         while True:
-            cmd = input("shell: ").encode()
+            cmd = input("\n\nshell: ").encode()
             if len(cmd) != 0:
                 self.send(target['ip'], "instruction", cmd)
         # print(f"Instruction Response:\n{base64.b64decode(shellpack['data'].decode()).decode()}")
