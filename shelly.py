@@ -44,11 +44,13 @@ class Controller(Host):
 
         while True:
             cmd = input("shell: ").encode()
+            if cmd == '':
+                pass
             self.send(target['ip'], "instruction", cmd)
         # print(f"Instruction Response:\n{base64.b64decode(shellpack['data'].decode()).decode()}")
 
     def instruction(self, shellpack):
-        print(shellpack['data'].decode())
+        print(shellpack['data'].decode().lstrip())
 
 if __name__ == "__main__":
     controller = Controller()
