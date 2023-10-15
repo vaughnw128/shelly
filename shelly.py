@@ -95,7 +95,7 @@ class Controller(Host):
             time.sleep(1)
 
             #Remove the output of the "input()" function
-            sys.stdout.write("\033[A" + ans.split("\n")[-1])
+            sys.stdout.write(ans.split("\n")[-1])
 
 if __name__ == "__main__":
     controller = Controller()
