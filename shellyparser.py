@@ -146,11 +146,11 @@ class ArgumentParser(argparse.ArgumentParser):
 
     # Method redefined as format_usage() does not return a trailing newline like
     # the original does
-    def print_usage(self, file=None):
-        if (file == None):
-            file = sys.stdout
-        file.write(self.format_usage() + "\n")
-        file.flush()
+    # def print_usage(self, file=None):
+    #     if (file == None):
+    #         file = sys.stdout
+    #     file.write(self.format_usage() + "\n")
+    #     file.flush()
 
     # Method redefined as format_help() does not return a trailing newline like
     # the original does
