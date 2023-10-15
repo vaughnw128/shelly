@@ -40,7 +40,7 @@ class Controller(Host):
         for target in targets:
             response += f"  {target['id']}   {target['ip']}  {target['status']}  {target['location']}\n"
         
-        response += "\n\n[ Available Modules ]\n\n"
+        response += "\n[ Available Modules ]\n\n"
         response += "  Name\tDescription\n"
         response += "  ----\t-------------------------------\n"
         for module in os.listdir('./modules'):
