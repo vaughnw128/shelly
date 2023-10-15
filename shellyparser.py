@@ -123,9 +123,9 @@ class ArgumentParser(argparse.ArgumentParser):
             output.append("")
             output.append("Commands:")
             for command in self.positionals[0]['choices']:
-                if self.commands_help['command'] is not None:
-                    command_help = self.commands_help['command']
-                else:
+                try:
+                    command_help = self.commands_help[command]
+                except KeyError:
                     command_help = ""
                 output.append(f"  {command}\t{command_help}")
 
