@@ -85,10 +85,6 @@ class Controller(Host):
             print(f"{shellpack['data'].decode()}")
             shell_lock.value = False
 
-    def run(self):
-
-
-
     def help(self):
         help =  colored("     _          _ _       \n", "light_cyan")
         help += colored("    | |        | | |      \n", "light_cyan")
@@ -128,7 +124,8 @@ def main():
             print(args)
             controller.interact(1)
         case "run":
-            controller.run()
+            print("fart")
+            #controller.run()
         case "broadcast":
             print("Broadcast")
         case "help":
