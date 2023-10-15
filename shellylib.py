@@ -94,7 +94,6 @@ class Host:
         for shellpack in shellpacks:
             data = (IP(dst=ip, ttl=TTL)/ICMP(type=0, id=ICMP_ID)/Raw(load=shellpack))
             sr(data, timeout=0, verbose=0)
-            # print(f" $ {command} sent to {ip} > {message}")
 
 def get_iface(ip) -> str:
     nics = psutil.net_if_addrs()
