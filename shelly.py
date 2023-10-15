@@ -106,6 +106,20 @@ class Controller(Host):
         print(help)
 
 class ArgumentParser(argparse.ArgumentParser):
+
+    def __init__(self, *args, **kwargs):
+        super(ArgumentParser, self).__init__(*args, **kwargs)
+        self.program = { key: kwargs[key] for key in kwargs }
+        self.options = []
+
+    def add_argument(self, *args, **kwargs):
+        super(ArgumentParser, self).add_argument(*args, **kwargs)
+        option = {}
+        option["flags"] = [ item for item in args ]
+        for key in kwargs:
+            option[key] = kwargs[key]
+        self.options.append(option)
+
     def print_help(self):
         help =  colored("     _          _ _       \n", "light_cyan")
         help += colored("    | |        | | |      \n", "light_cyan")
@@ -125,6 +139,7 @@ class ArgumentParser(argparse.ArgumentParser):
         help += "  run          Runs an included module against a specified target or all targets\n"
         help += "  broadcast    Broadcasts a message to all users on all targets\n"
         print(help)
+        print(self.options)
 
 def main():
     controller = Controller()
