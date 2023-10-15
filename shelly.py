@@ -55,8 +55,6 @@ class Controller(Host):
                 if len(cmd) != 0:
                     self.send(target['ip'], "instruction", cmd)
                     
-                    
-
     def instruction(self, shellpack):
         if shellpack['option'] == "TRUNCATED":
             print(shellpack['data'].decode(), end="")
