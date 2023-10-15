@@ -125,12 +125,12 @@ class ArgumentParser(argparse.ArgumentParser):
             for command in self.positionals[0]['choices']:
                 output.append(command)
 
-        # # Add option arguments to output
-        # if (len(self.options) > 0):
-        #     output.append("")
-        #     output.append("Options:")
-        #     for option in self.options:
-        #         output.append(option)
+        # Add option arguments to output
+        if (len(self.options) > 0):
+            output.append("")
+            output.append("Options:")
+            for option in self.option:
+                output.append(str(option))
 
         # Add epilog to output if present
         if ("epilog" in self.program and self.program["epilog"] != "" and not str.isspace(self.program["epilog"])):
