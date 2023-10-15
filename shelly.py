@@ -38,7 +38,7 @@ class Controller(Host):
         response += "  ID  IP\t\tStatus\t\tLocation\n"
         response += "  --  --------------    ----------\n"
         for target in targets:
-            response += f"  {target['id']}    {target['ip']}  {target['status']}  {target['location']}\n"
+            response += f"  {target['id']}   {target['ip']}    {target['status']}  {target['location']}\n"
         
         return response
 
