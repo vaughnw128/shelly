@@ -10,7 +10,7 @@ import os
 from termcolor import colored
 import sys
 import time
-import argparse
+from shellyparser import ArgumentParser
 import socket
 import readline
 from multiprocessing import Process, Manager
