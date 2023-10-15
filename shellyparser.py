@@ -123,6 +123,7 @@ class ArgumentParser(argparse.ArgumentParser):
             output.append("")
             output.append("Positionals:")
             for positional in self.positionals:
+                print(positional)
                 output.append(positional)
 
         # Add option arguments to output
