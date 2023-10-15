@@ -98,7 +98,7 @@ def main():
 
     module_names = [module.split(".")[0] for module in os.listdir('./modules')]
 
-    parser.add_argument('-t', '--target', choices=[str(target['id']) for target in controller.db.all()].append("*"), help='The target to interact with/run modules on. Specifying \'*\' will select ALL targets.')  
+    parser.add_argument('-t', '--target', choices=[str(target['id']) for target in controller.db.all()].append("all"), help='The target to interact with/run modules on. Specifying \'all\' will select ALL targets.')  
     parser.add_argument('-m', '--module', choices=module_names, help='The module to use for the run command')  
 
     args = parser.parse_args()
@@ -110,7 +110,7 @@ def main():
         case "ls":
             print(controller.list_hosts())
         case "interact":
-            if args.target == "*":
+            if args.target == "all":
                 parser.error(f"The command {args.command} can only take one target")
             controller.interact(int(args.target))
         case "run":
