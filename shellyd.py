@@ -19,6 +19,10 @@ class Daemon(Host):
         self.db = TinyDB('./db.json')
 
     def join(self, shellpack):
+        targets = self.db.all()
+        ids = [target.id for target in targets]
+        print(ids)
+
         target = {
             "id": round(time.time()),
             "ip": shellpack['ip'],
