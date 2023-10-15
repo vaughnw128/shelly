@@ -40,8 +40,8 @@ class Controller(Host):
         for target in targets:
             response += f"  {target['id']}   {target['ip']}  {target['status']}  {target['location']}\n"
         
-        response = "\n\n[ Available Modules ]\n\n"
-        response += "  Name  Description"
+        response += "\n\n[ Available Modules ]\n\n"
+        response += "  Name  Description\n"
         response += "  ----  -------------------------------\n"
         for module in os.listdir('./modules'):
             with open(f"./modules/{module}","r") as file:
