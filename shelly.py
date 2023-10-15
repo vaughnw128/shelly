@@ -106,7 +106,7 @@ if __name__ == "__main__":
             print(controller.list_hosts())
         case "interact":
             controller.interact(int(sys.argv[2]))
-        case "reverse"
+        case "reverse":
             controller.interact(int(sys.argv[2]))
 
             
