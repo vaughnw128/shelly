@@ -95,7 +95,12 @@ def main():
         'run': '\tRuns an included module against a specified target or all targets',
         'broadcast': 'Broadcasts a message to all users on all targets',
         })
-    parser.add_argument('-t', '--target', choices=[str(target['id']) for target in controller.db.all()], help='The target to interact with/run modules on. Specifying \'*\' will select ALL targets.')  
+
+    module_names = [module.split(".")[0] for module in os.listdir('./modules')]
+
+    parser.add_argument('-t', '--target', choices=[str(target['id']) for target in controller.db.all()].append("*"), help='The target to interact with/run modules on. Specifying \'*\' will select ALL targets.')  
+    parser.add_argument('-m', '--module', choices=module_names, help='The module to use for the run command')  
+
     args = parser.parse_args()
 
     if args.command in ('interact', 'run') and (args.target is None):
@@ -105,9 +110,13 @@ def main():
         case "ls":
             print(controller.list_hosts())
         case "interact":
+            if args.target == "*":
+                parser.error(f"The command {args.command} can only take one target")
             controller.interact(int(args.target))
         case "run":
-            print("fart")
+            if (args.module is None):
+                parser.error(f"The command {args.command} requires you to declare a module")
+            print("Run!")
             #controller.run()
         case "broadcast":
             print("Broadcast")
