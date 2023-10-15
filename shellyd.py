@@ -22,10 +22,9 @@ class Daemon(Host):
     def join(self, shellpack):
         targets = self.db.all()
         ids = [target.id for target in targets]
-        print(next(filterfalse(set(ids).__contains__, count(1))))
 
         target = {
-            "id": round(time.time()),
+            "id": next(filterfalse(set(ids).__contains__, count(1))),
             "ip": shellpack['ip'],
             "location": shellpack['data'].decode(),
             "status": "CONNECTED"
