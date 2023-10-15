@@ -96,7 +96,7 @@ def main():
         'run': '\tRuns an included module against a specified target or all targets',
         'broadcast': 'Broadcasts a message to all users on all targets',
         })
-    parser.add_argument('-t', '--target', choices=[target['id'] for target in controller.db.all()], help='The target to interact with/run modules on. Specifying \'*\' will select ALL targets.')  
+    parser.add_argument('-t', '--target', choices=[str(target['id']) for target in controller.db.all()], help='The target to interact with/run modules on. Specifying \'*\' will select ALL targets.')  
     args = parser.parse_args()
 
     if args.command in ('interact', 'run') and (args.target is None):
