@@ -115,7 +115,7 @@ def main():
             controller.interact(int(args.target))
         case "run":
             if (args.module is None):
-                parser.error(f"The command {args.command} requires you to declare a module\n Avaliable modules:  {'\n  '.join(module_names)}")
+                parser.error(f"The command {args.command} requires you to declare a module\n Avaliable modules:  {'  '.join(module_names)}")
             print("Run!")
             #controller.run()
         case "broadcast":
