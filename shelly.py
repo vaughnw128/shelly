@@ -110,7 +110,7 @@ def main():
     parser = ArgumentParser(
                     prog='shelly.py')
     parser.add_argument('command', choices=["ls", "interact", "run", "broadcast"], help='The command to execute')
-    parser.commands_help({
+    parser.set_commands_help({
         'ls': 'List connected targets',
         'interact': 'Interact with a specified target using the ICMP shell',
         'run': 'Runs an included module against a specified target or all targets',

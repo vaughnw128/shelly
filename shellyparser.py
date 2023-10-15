@@ -21,7 +21,7 @@ class ArgumentParser(argparse.ArgumentParser):
         self.width = width
         super(ArgumentParser, self).__init__(*args, **kwargs)
 
-    def commands_help(self, commands_help):
+    def set_commands_help(self, commands_help):
         self.commands_help = commands_help
         return
 
