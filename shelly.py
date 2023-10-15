@@ -30,16 +30,16 @@ class Controller(Host):
 
 
     def list_hosts(self):
-        response = "[ Targets ]\n"
+        response = "[ Connected Targets ]\n"
 
         targets = self.db.all()
         targets = sorted(targets, key=lambda d: d['id'])
 
         for target in targets:
-            response += f"[*] {target['id']}\n"
-            response += f" --> {target['ip']}\n"
-            response += f" --> {target['location']}\n"
-            response += f" --> {target['status']}\n"
+            response += f"\n  Target ID: {target['id']}\n"
+            response += f"\tIP:{target['ip']}\n"
+            response += f"\tLocation:{target['location']}\n"
+            response += f"\tStatus{target['status']}\n"
         
         return response
 
