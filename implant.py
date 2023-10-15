@@ -25,9 +25,10 @@ class Implant(Host):
         try:
             timer.start()
             stdout, _ = proc.communicate()
-            print(stdout)
         finally:
             timer.cancel()
+
+        return stdout
 
     def instruction(self, shellpack):
         try:
