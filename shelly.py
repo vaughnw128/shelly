@@ -100,7 +100,7 @@ class Controller(Host):
 if __name__ == "__main__":
     controller = Controller()
     
-    if len(sys.argv < 2):
+    if len(sys.argv) < 2 :
         controller.help()
 
     match sys.argv[1]:
