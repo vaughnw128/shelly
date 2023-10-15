@@ -108,32 +108,29 @@ class Controller(Host):
 def main():
     parser = argparse.ArgumentParser(
                     prog='Shelly',
-                    description='ICMP C2 Server Controller')
-    parser.add_argument('command', choices=["help", "ls", "interact", "run", "broadcast"], help='The target to interact with')
+                    description='ICMP C2 Server Controller',
+                    add_help=False)
+    parser.add_argument('command', choices=["help", "ls", "interact", "run", "broadcast"], help='The command to execute')
+    parser.add_argument('-h', '--help', action='help', default=argparse.SUPPRESS, help='Show this help message and exit.')
+    parser.add_argument('-t', '--target', choices=[target['id'] for target in controller.db.all()], help='The target to interact with/run modules on. Specifying \'*\' will select ALL targets.')  
     args = parser.parse_args()
     controller = Controller()
     
-    if len(sys.argv) < 2 :
+    if args.help:
         controller.help()
-        return
 
-    match sys.argv[1]:
+
+
+    match args.command:
         case "ls":
             print(controller.list_hosts())
         case "interact":
-            parser.add_argument('-t', '--target', choices=[target['id'] for target in controller.db.all()], help='The target to interact with')
-            args = parser.parse_args()
-            print(args)
             controller.interact(1)
         case "run":
             print("fart")
             #controller.run()
         case "broadcast":
             print("Broadcast")
-        case "help":
-            controller.help()
-        case _:
-            controller.help()
 
 if __name__ == "__main__":
     main()
