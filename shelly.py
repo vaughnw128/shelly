@@ -51,7 +51,6 @@ class Controller(Host):
                 cmd = input(colored("shell > ", "red")).encode()
                 if len(cmd) != 0:
                     self.send(target['ip'], "instruction", cmd)
-        # print(f"Instruction Response:\n{base64.b64decode(shellpack['data'].decode()).decode()}")
 
     def instruction(self, shellpack):
         
