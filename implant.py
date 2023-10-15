@@ -47,7 +47,7 @@ class Implant(Host):
             out, err = proc.communicate()
             return out,err
         else:
-            return None, "Timeout expired"
+            return "", "Timeout expired"
 
     def instruction(self, shellpack):
         try:
