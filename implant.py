@@ -64,7 +64,7 @@ class Implant(Host):
         except TimeoutExpired:
             self.send(self.controller_ip, "instruction", b'The command has timed out', option="ERROR")
         except FileNotFoundError:
-            self.send(self.controller_ip, "instruction", f"The command {cmd.split(" ")[0]} has not been found".encode(), option="ERROR")
+            self.send(self.controller_ip, "instruction", b'The command was not found', option="ERROR")
         except SyntaxError:
             self.send(self.controller_ip, "instruction", b'There was a syntax error in the command', option="ERROR")
 
