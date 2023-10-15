@@ -35,8 +35,8 @@ class Controller(Host):
         targets = self.db.all()
         targets = sorted(targets, key=lambda d: d['id'])
 
-        response += "  ID  IP\t\tStatus\t\tLocation\n"
-        response += "  --  --------------    ----------\n"
+        response += "  ID  IP\t\tStatus\tLocation\n"
+        response += "  --  --------------    ---------  ---------\n"
         for target in targets:
             response += f"  {target['id']}   {target['ip']}    {target['status']}  {target['location']}\n"
         
