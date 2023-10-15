@@ -48,7 +48,7 @@ class Controller(Host):
                 for line in file.readlines():
                     if line.startswith("# DESCRIPTION:"):
                         desc = (line[13:]).strip()
-            response += f"  {module.split(".")[0]}\t{desc}\n"
+            response += f"  {module.split('.')[0]}\t{desc}\n"
 
         return response
 
