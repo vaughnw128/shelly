@@ -42,7 +42,7 @@ class Controller(Host):
         
         response += "\n[ Available Modules ]\n\n"
         response += "  Name\t\tDescription\n"
-        response += "  ----\t-------------------------------\n"
+        response += "  ----\t\t-------------------------------\n"
         for module in os.listdir('./modules'):
             with open(f"./modules/{module}","r") as file:
                 for line in file.readlines():
