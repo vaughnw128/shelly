@@ -45,8 +45,13 @@ class Implant(Host):
 
         if ended:
             out, err = proc.communicate()
+            print("fard")
+            print(out)
+            print(err)
             return out, err
         else:
+            print(out)
+            print(err)
             return out, err
 
     def instruction(self, shellpack):
