@@ -90,7 +90,7 @@ class Controller(Host):
         help += colored("    | |        | | |      \n", "light_cyan")
         help += colored(" ___| |__   ___| | |_   _ \n", "light_cyan")
         help += colored("/ __| '_ \ / _ \ | | | | |\n", "light_cyan")
-        help += colored("\__ \ | | |  __/ | | |_| |\n", "light_cyan")
+        help += colored("\__ \ | | || __/ | | |_| |\n", "light_cyan")
         help += colored("|___/_| |_|\___|_|_|\__, |\n", "light_cyan")
         help += colored("                     __/ |\n", "light_cyan")
         help += colored("                    |___/ \n", "light_cyan")
