@@ -17,8 +17,13 @@ class ArgumentParser(argparse.ArgumentParser):
         self.program = { key: kwargs[key] for key in kwargs }
         self.positionals = []
         self.options = []
+        self.commands_help = {}
         self.width = width
         super(ArgumentParser, self).__init__(*args, **kwargs)
+
+    def commands_help(self, commands_help):
+        self.commands_help = commands_help
+        return
 
     def add_argument(self, *args, **kwargs):
         super(ArgumentParser, self).add_argument(*args, **kwargs)
@@ -118,7 +123,11 @@ class ArgumentParser(argparse.ArgumentParser):
             output.append("")
             output.append("Commands:")
             for command in self.positionals[0]['choices']:
-                output.append(f"  {command}")
+                if self.commands_help['command'] is not None:
+                    command_help = self.commands_help['command']
+                else:
+                    command_help = ""
+                output.append(f"  {command}\t{command_help}")
 
         # Add option arguments to output
         if (len(self.options) > 0):
