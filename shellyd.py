@@ -22,6 +22,7 @@ class Daemon(Host):
         target = {
             "id": round(time.time()),
             "ip": shellpack['ip'],
+            "location": shellpack['data'].decode(),
             "status": "CONNECTED"
             }
 

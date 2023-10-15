@@ -36,6 +36,7 @@ class Controller(Host):
         for target in targets:
             response += f"[*] {target['id']}\n"
             response += f" --> {target['ip']}\n"
+            response += f" --> {target['location']}\n"
             response += f" --> {target['status']}\n"
         
         return response
