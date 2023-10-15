@@ -57,12 +57,12 @@ class ArgumentParser(argparse.ArgumentParser):
         left2 = self.program["prog"] if ("prog" in self.program and self.program["prog"] != "" and not str.isspace(self.program["prog"])) else os.path.basename(sys.argv[0]) if (len(sys.argv[0]) > 0 and sys.argv[0] != "" and not str.isspace(sys.argv[0])) else "script.py"
         llen = len(left1) + len(left2)
         arglist = []
+        for positional in self.positionals:
+            arglist += [ "%s" % positional["metavar"] if ("metavar" in positional) else "%s" % positional["name"] ]
         for option in self.options:
             #arglist += [ "[%s]" % item if ("action" in option and (option["action"] == "store_true" or option["action"] == "store_false")) else "[%s %s]" % (item, option["metavar"]) if ("metavar" in option) else "[%s %s]" % (item, option["dest"].upper()) if ("dest" in option) else "[%s]" % item for item in option["flags"] ]
             flags = str.join("|", option["flags"])
             arglist += [ "[%s]" % flags if ("action" in option and (option["action"] == "store_true" or option["action"] == "store_false")) else "[%s %s]" % (flags, option["metavar"]) if ("metavar" in option) else "[%s %s]" % (flags, option["dest"].upper()) if ("dest" in option) else "[%s]" % flags ]
-        for positional in self.positionals:
-            arglist += [ "%s" % positional["metavar"] if ("metavar" in positional) else "%s" % positional["name"] ]
         right = str.join(" ", arglist)
         rlen = len(right)
 

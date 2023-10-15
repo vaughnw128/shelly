@@ -105,34 +105,10 @@ class Controller(Host):
         help += "  broadcast    Broadcasts a message to all users on all targets\n"
         print(help)
 
-# class ArgumentParser(argparse.ArgumentParser):
-
-#     def print_help(self):
-#         help =  colored("     _          _ _       \n", "light_cyan")
-#         help += colored("    | |        | | |      \n", "light_cyan")
-#         help += colored(" ___| |__  ", "light_cyan") + colored(" ___", "light_magenta", attrs=["bold"]) + colored("| | |_   _ \n", "light_cyan")
-#         help += colored("/ __| '_ \ ", "light_cyan") + colored("/ _ \ ", "light_magenta", attrs=["bold"]) + colored("| | | | |\n", "light_cyan")
-#         help += colored("\__ \ | | |", "light_cyan") + colored("  __/", "light_magenta", attrs=["bold"]) + colored(" | | |_| |\n", "light_cyan")
-#         help += colored("|___/_| |_|", "light_cyan") + colored("\___", "light_magenta", attrs=["bold"]) + colored("|_|_|\__, |\n", "light_cyan")
-#         help += colored("                     __/ |\n", "light_cyan")
-#         help += colored("                    |___/ \n", "light_cyan")
-#         help += "An ICMP based C2 server and agent\n\n"
-
-#         help += "Usage: shelly [command]\n\n"
-#         help += "Available Commands:\n"
-#         help += "  help         Prints this message\n"
-#         help += "  ls           List connected targets\n"
-#         help += "  interact     Interact with a specified target using the ICMP shell\n"
-#         help += "  run          Runs an included module against a specified target or all targets\n"
-#         help += "  broadcast    Broadcasts a message to all users on all targets\n"
-#         print(help)
-#         super.print_help()
-
 def main():
     controller = Controller()
     parser = ArgumentParser(
-                    prog='shelly.py',
-                    usage='%(prog)s [command]')
+                    prog='shelly.py')
     parser.add_argument('command', choices=["ls", "interact", "run", "broadcast"], help='The command to execute')
     parser.add_argument('-t', '--target', choices=[target['id'] for target in controller.db.all()], help='The target to interact with/run modules on. Specifying \'*\' will select ALL targets.')  
     args = parser.parse_args()
