@@ -118,20 +118,19 @@ class ArgumentParser(argparse.ArgumentParser):
             output.append("")
             output.append(dewrapper.fill(self.program["description"]))
 
-        # Add positional arguments to output
+        # Add commands to the help screen
         if (len(self.positionals) > 0):
             output.append("")
-            output.append("Positionals:")
-            for positional in self.positionals:
-                print(positional)
-                output.append(positional)
+            output.append("Commands:")
+            for command in self.positionals[0]['choices']:
+                output.append(command)
 
-        # Add option arguments to output
-        if (len(self.options) > 0):
-            output.append("")
-            output.append("Options:")
-            for option in self.options:
-                output.append(option)
+        # # Add option arguments to output
+        # if (len(self.options) > 0):
+        #     output.append("")
+        #     output.append("Options:")
+        #     for option in self.options:
+        #         output.append(option)
 
         # Add epilog to output if present
         if ("epilog" in self.program and self.program["epilog"] != "" and not str.isspace(self.program["epilog"])):
