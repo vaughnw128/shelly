@@ -107,7 +107,7 @@ if __name__ == "__main__":
         case "interact":
             controller.interact(int(sys.argv[2]))
         case "reverse":
-            controller.interact(int(sys.argv[2]))
+            controller.reverse(int(sys.argv[2]))
 
             
     
