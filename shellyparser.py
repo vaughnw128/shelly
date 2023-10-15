@@ -129,7 +129,7 @@ class ArgumentParser(argparse.ArgumentParser):
         if (len(self.options) > 0):
             output.append("")
             output.append("Options:")
-            for option in self.option:
+            for option in self.options:
                 output.append(str(option))
 
         # Add epilog to output if present
