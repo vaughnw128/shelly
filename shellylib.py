@@ -23,8 +23,6 @@ class Host:
         return report
 
     def sniff_callback(self, packet):
-        # Parses out things that shouldn't be there
-
         if packet[ICMP].type != 0:
             return
         elif packet[IP].src == self.ip:
@@ -40,8 +38,6 @@ class Host:
         
         unpacked['ip'] = packet[IP].src
 
-        # print(f" $ {unpacked['command']} received from {unpacked['ip']}")
-
         match unpacked['command']:
             case "join":
                 self.join(unpacked)
@@ -53,9 +49,6 @@ class Host:
                 return
         
     def join(self, shellpack):
-        pass
-
-    def reverse(self, shellpack):
         pass
 
     def instruction(self, shellpack):

