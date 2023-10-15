@@ -47,10 +47,15 @@ class Host:
                 self.join(unpacked)
             case "instruction":
                 self.instruction(unpacked)
+            case "reverse":
+                self.reverse(unpacked)
             case _:
                 return
         
     def join(self, shellpack):
+        pass
+
+    def reverse(self, shellpack):
         pass
 
     def instruction(self, shellpack):
