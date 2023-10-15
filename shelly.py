@@ -112,6 +112,7 @@ def main():
         case "interact":
             if args.target == "all":
                 parser.error(f"The command {args.command} can only take one target")
+                return
             controller.interact(int(args.target))
         case "run":
             if (args.module is None):
