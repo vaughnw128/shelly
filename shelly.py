@@ -40,6 +40,8 @@ class Controller(Host):
         sniff(iface=self.iface, prn=self.sniff_callback, filter=f"src host {target_ip} and icmp", store="0")
 
     def interact(self, target):
+        global wait
+
         Target = Query()
         target = self.db.search(Target.id == target)[0]
 
