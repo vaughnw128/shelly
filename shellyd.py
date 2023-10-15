@@ -6,6 +6,7 @@ from shellylib import Host
 from tinydb import TinyDB, Query
 import os
 import time
+from itertools import count, filterfalse
 
 TTL = int(64)
 ICMP_ID = int(12800)
@@ -21,7 +22,7 @@ class Daemon(Host):
     def join(self, shellpack):
         targets = self.db.all()
         ids = [target.id for target in targets]
-        print(ids)
+        print(next(filterfalse(set(A).__contains__, count(1))))
 
         target = {
             "id": round(time.time()),
