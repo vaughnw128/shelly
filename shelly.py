@@ -128,7 +128,7 @@ class ArgumentParser(argparse.ArgumentParser):
 
 def main():
     controller = Controller()
-    parser = argparse.ArgumentParser(
+    parser = ArgumentParser(
                     prog='Shelly',
                     description='ICMP C2 Server Controller')
     parser.add_argument('command', choices=["help", "ls", "interact", "run", "broadcast"], help='The command to execute')
