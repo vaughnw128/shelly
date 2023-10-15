@@ -161,6 +161,6 @@ class ArgumentParser(argparse.ArgumentParser):
         file.flush()
 
     def error(self, message):
-        sys.stderr.write("\n" + self.format_help() + "\n")
-        sys.stderr.write(("Error: %s" % message) + "\n")
+        sys.stderr.write(self.format_help() + "\n")
+        sys.stderr.write("\n" + ("Error: %s" % message) + "\n")
         sys.exit(2)
