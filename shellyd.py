@@ -21,7 +21,7 @@ class Daemon(Host):
 
     def join(self, shellpack):
         targets = self.db.all()
-        ids = [target.id for target in targets]
+        ids = [target['id'] for target in targets]
 
         target = {
             "id": next(filterfalse(set(ids).__contains__, count(1))),
