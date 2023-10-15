@@ -11,6 +11,7 @@ from termcolor import colored
 import sys
 import time
 import argparse
+import readline
 from multiprocessing import Process, Manager
 
 manager = Manager()
