@@ -53,7 +53,6 @@ class Controller(Host):
             if not shell_lock.value:
                 cmd = input(colored("shell > ", "red")).encode()
                 shell_lock.value = True
-                print(cmd)
                 if cmd == b'exit':
                     sniffer.kill()
                     break
