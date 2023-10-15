@@ -88,10 +88,10 @@ class Controller(Host):
     def help(self):
         help =  colored("     _          _ _       \n", "light_cyan")
         help += colored("    | |        | | |      \n", "light_cyan")
-        help += colored(" ___| |__  ", "light_cyan") + colored(" ___", "magenta") + colored("| | |_   _ \n", "light_cyan")
-        help += colored("/ __| '_ \ ", "light_cyan") + colored("/ _ \ ", "magenta") + colored("| | | | |\n", "light_cyan")
-        help += colored("\__ \ | | |", "light_cyan") + colored("  __/", "magenta") + colored(" | | |_| |\n", "light_cyan")
-        help += colored("|___/_| |_|", "light_cyan") + colored("\___", "magenta") + colored("|_|_|\__, |\n", "light_cyan")
+        help += colored(" ___| |__  ", "light_cyan") + colored(" ___", "light_magenta") + colored("| | |_   _ \n", "light_cyan")
+        help += colored("/ __| '_ \ ", "light_cyan") + colored("/ _ \ ", "light_magenta") + colored("| | | | |\n", "light_cyan")
+        help += colored("\__ \ | | |", "light_cyan") + colored("  __/", "light_magenta") + colored(" | | |_| |\n", "light_cyan")
+        help += colored("|___/_| |_|", "light_cyan") + colored("\___", "light_magenta") + colored("|_|_|\__, |\n", "light_cyan")
         help += colored("                     __/ |\n", "light_cyan")
         help += colored("                    |___/ \n", "light_cyan")
         help += "An ICMP based C2 server and agent\n\n"
