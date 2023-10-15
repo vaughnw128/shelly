@@ -1,3 +1,7 @@
+# Modified code from https://gist.github.com/fonic/fe6cade2e1b9eaf3401cc732f48aeebd
+# Credit to fonic for this swag custom argparser
+
+
 __all__ = [ "ArgumentParser" ]
 
 import os
