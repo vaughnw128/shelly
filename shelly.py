@@ -47,8 +47,8 @@ class Controller(Host):
         cmd = cmd.split(" ")[0]
         if cmd in ("vim", "nano", "vi", "visudo", "watch", "emacs"):
             print(f"Command {cmd} is not valid as it requires an interactive shell")
-            return False
-        return True
+            return True
+        return False
 
     def interact(self, target):
         Target = Query()
@@ -66,6 +66,8 @@ class Controller(Host):
                     break
                 elif len(cmd) != 0 and not self.filter_commands(cmd):
                     self.send(target['ip'], "instruction", cmd.encode())
+                else:
+                    shell_lock.value = False
         
     def instruction(self, shellpack):
         if shellpack['option'] == "TRUNCATED":
