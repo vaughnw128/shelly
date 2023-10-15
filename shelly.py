@@ -100,6 +100,8 @@ class Controller(Host):
 if __name__ == "__main__":
     controller = Controller()
     
+    if not sys.argv[1]:
+        controller.help()
 
     match sys.argv[1]:
         case "ls":
