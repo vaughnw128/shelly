@@ -149,7 +149,7 @@ class ArgumentParser(argparse.ArgumentParser):
     def print_usage(self, file=None):
         if (file == None):
             file = sys.stdout
-        file.write(self.format_help() + "\n")
+        file.write(f"{self.format_help()}\n")
         file.flush()
 
     # Method redefined as format_help() does not return a trailing newline like
@@ -157,10 +157,10 @@ class ArgumentParser(argparse.ArgumentParser):
     def print_help(self, file=None):
         if (file == None):
             file = sys.stdout
-        file.write(self.format_help() + "\n")
+        file.write(f"{self.format_help()}\n")
         file.flush()
 
     def error(self, message):
-        sys.stderr.write(self.format_help() + "\n")
-        sys.stderr.write("\n" + ("Error: %s" % message) + "\n")
+        sys.stderr.write(f"{self.format_help()}\n")
+        sys.stderr.write(f"\n{colored('Error:', "on_red")} {message}\n")
         sys.exit(2)
