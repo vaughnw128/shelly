@@ -51,10 +51,12 @@ class Controller(Host):
         while True:
             if not wait.value:
                 cmd = input(colored("shell > ", "red")).encode()
+                wait.value = True
+                print(wait.value)
                 if len(cmd) != 0:
                     self.send(target['ip'], "instruction", cmd)
-                    wait.value = True
-                    print(wait.value)
+                    
+                    
 
     def instruction(self, shellpack):
         if shellpack['option'] == "TRUNCATED":
