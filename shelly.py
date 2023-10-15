@@ -30,7 +30,7 @@ class Controller(Host):
 
 
     def list_hosts(self):
-        response = "[ Connected Targets ]\n"
+        response = "[ Connected Targets ]\n\n"
 
         targets = self.db.all()
         targets = sorted(targets, key=lambda d: d['id'])
