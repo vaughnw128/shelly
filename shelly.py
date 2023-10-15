@@ -86,14 +86,14 @@ class Controller(Host):
             shell_lock.value = False
 
     def help(self):
-        help =  "     _          _ _       \n"
-        help += "    | |        | | |      \n"
-        help += " ___| |__   ___| | |_   _ \n"
-        help += "/ __| '_ \ / _ \ | | | | |\n"
-        help += "\__ \ | | |  __/ | | |_| |\n"
-        help += "|___/_| |_|\___|_|_|\__, |\n"
-        help += "                     __/ |\n"
-        help += "                    |___/ \n"
+        help =  colored("     _          _ _       \n", "cyan")
+        help += colored("    | |        | | |      \n", "cyan")
+        help += colored(" ___| |__   ___| | |_   _ \n", "cyan")
+        help += colored("/ __| '_ \ / _ \ | | | | |\n", "cyan")
+        help += colored("\__ \ | | |  __/ | | |_| |\n", "cyan")
+        help += colored("|___/_| |_|\___|_|_|\__, |\n", "cyan")
+        help += colored("                     __/ |\n", "cyan")
+        help += colored("                    |___/ \n", "cyan")
         help += "An ICMP based C2 server and agent\n\n"
 
         help += "Usage: shelly [command]\n\n"
