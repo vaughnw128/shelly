@@ -13,7 +13,8 @@ import time
 import argparse
 from multiprocessing import Process, Manager
 
-wait = False
+manager = Manager()
+wait = manager.Value(bool, False)
 
 TTL = int(64)
 ICMP_ID = int(12800)
@@ -24,6 +25,7 @@ class Controller(Host):
         super().__init__()
         self.db = TinyDB('./db.json')
         self.mock_stdout = ""
+        print(wait)
 
     def list_hosts(self):
         response = "[ Targets ]\n"
