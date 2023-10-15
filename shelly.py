@@ -86,15 +86,23 @@ class Controller(Host):
             shell_lock.value = False
 
     def help(self):
-        help =  "       _          _ _       \n"
-        help += "      | |        | | |      \n"
-        help += "   ___| |__   ___| | |_   _ \n"
-        help += "  / __| '_ \ / _ \ | | | | |\n"
-        help += "  \__ \ | | |  __/ | | |_| |\n"
-        help += "  |___/_| |_|\___|_|_|\__, |\n"
-        help += "                       __/ |\n"
-        help += "                      |___/ \n"
-        help += "  An ICMP based C2 server and agent"
+        help =  "     _          _ _       \n"
+        help += "    | |        | | |      \n"
+        help += " ___| |__   ___| | |_   _ \n"
+        help += "/ __| '_ \ / _ \ | | | | |\n"
+        help += "\__ \ | | |  __/ | | |_| |\n"
+        help += "|___/_| |_|\___|_|_|\__, |\n"
+        help += "                     __/ |\n"
+        help += "                    |___/ \n"
+        help += "An ICMP based C2 server and agent\n\n"
+
+        help += "Usage: shelly [command]\n\n"
+        help += "Available Commands:\n"
+        help += "  help         Prints this message"
+        help += "  ls           List connected targets"
+        help += "  interact     Interact with a specified target using the ICMP shell"
+        help += "  run          Runs an included module against a specified target or all targets"
+        help += "  broadcast    Broadcasts a message to all users on all targets"
         print(help)
 
 def main():
