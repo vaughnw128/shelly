@@ -123,7 +123,7 @@ class ArgumentParser(argparse.ArgumentParser):
             output.append("")
             output.append("Commands:")
             for command in self.positionals[0]['choices']:
-                output.append(f"  command")
+                output.append(f"  {command}")
 
         # Add option arguments to output
         if (len(self.options) > 0):
