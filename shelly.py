@@ -41,13 +41,13 @@ class Controller(Host):
             response += f"  {target['id']}   {target['ip']}  {target['status']}  {target['location']}\n"
         
         response += "\n\n[ Available Modules ]\n\n"
-        response += "  Name  Description\n"
-        response += "  ----  -------------------------------\n"
+        response += "  Name\tDescription\n"
+        response += "  ----\t-------------------------------\n"
         for module in os.listdir('./modules'):
             with open(f"./modules/{module}","r") as file:
                 for line in file.readlines():
                     if line.startswith("# DESCRIPTION:"):
-                        desc = (line[13:]).strip()
+                        desc = (line[14:]).strip()
             response += f"  {module.split('.')[0]}\t{desc}\n"
 
         return response
