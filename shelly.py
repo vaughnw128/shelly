@@ -55,7 +55,8 @@ class Controller(Host):
                 shell_lock.value = True
                 print(cmd)
                 if cmd == b'exit':
-                    sys.exit()
+                    sniffer.kill()
+                    break
                 elif len(cmd) != 0:
                     self.send(target['ip'], "instruction", cmd)
                     
