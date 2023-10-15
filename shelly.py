@@ -86,15 +86,15 @@ class Controller(Host):
             shell_lock.value = False
 
     def help(self):
-        help =  "\t     _          _ _       \n"
-        help += "\t    | |        | | |      \n"
-        help += "\t ___| |__   ___| | |_   _ \n"
-        help += "\t/ __| '_ \ / _ \ | | | | |\n"
-        help += "\t\__ \ | | |  __/ | | |_| |\n"
-        help += "\t|___/_| |_|\___|_|_|\__, |\n"
-        help += "\t                     __/ |\n"
-        help += "\t                    |___/ \n"
-        help += "\tAn ICMP based C2 server and agent"
+        help =  "       _          _ _       \n"
+        help += "      | |        | | |      \n"
+        help += "   ___| |__   ___| | |_   _ \n"
+        help += "  / __| '_ \ / _ \ | | | | |\n"
+        help += "  \__ \ | | |  __/ | | |_| |\n"
+        help += "  |___/_| |_|\___|_|_|\__, |\n"
+        help += "                       __/ |\n"
+        help += "                      |___/ \n"
+        help += "  An ICMP based C2 server and agent"
         print(help)
 
 def main():
