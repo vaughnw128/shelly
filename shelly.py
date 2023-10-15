@@ -36,12 +36,9 @@ class Controller(Host):
         targets = sorted(targets, key=lambda d: d['id'])
 
         response += "  ID  IP\t\tStatus\t\tLocation\n"
-        response += "  --  --------------  --------------\n"
+        response += "  --  --------------    --------------\n"
         for target in targets:
-            response += f"\n  Target ID: {target['id']}\n"
-            response += f"    IP: {target['ip']}\n"
-            response += f"    Location: {target['location']}\n"
-            response += f"    Status: {target['status']}\n"
+            response += f"  {target['id']}  {target['ip']}  {target['status']}  {target['location']}"
         
         return response
 
