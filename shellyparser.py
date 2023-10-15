@@ -107,16 +107,11 @@ class ArgumentParser(argparse.ArgumentParser):
         art += colored("|___/_| |_|", "light_cyan") + colored("\___", "light_magenta", attrs=["bold"]) + colored("|_|_|\__, |\n", "light_cyan")
         art += colored("                     __/ |\n", "light_cyan")
         art += colored("                    |___/ \n", "light_cyan")
-        art += "An ICMP based C2 server and agent\n\n"
+        art += "An ICMP based C2 server and agent\n"
         output.append(art)
         
         # Add usage message to output
         output.append(self.format_usage())
-
-        # Add description to output if present
-        if ("description" in self.program and self.program["description"] != "" and not str.isspace(self.program["description"])):
-            output.append("")
-            output.append(dewrapper.fill(self.program["description"]))
 
         # Add commands to the help screen
         if (len(self.positionals) > 0):
