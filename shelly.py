@@ -106,6 +106,7 @@ class Controller(Host):
         print(help)
 
 def main():
+    controller = Controller()
     parser = argparse.ArgumentParser(
                     prog='Shelly',
                     description='ICMP C2 Server Controller',
@@ -114,7 +115,6 @@ def main():
     parser.add_argument('-h', '--help', action='help', default=argparse.SUPPRESS, help='Show this help message and exit.')
     parser.add_argument('-t', '--target', choices=[target['id'] for target in controller.db.all()], help='The target to interact with/run modules on. Specifying \'*\' will select ALL targets.')  
     args = parser.parse_args()
-    controller = Controller()
     
     if args.help:
         controller.help()
