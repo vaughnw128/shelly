@@ -162,5 +162,5 @@ class ArgumentParser(argparse.ArgumentParser):
 
     def error(self, message):
         sys.stderr.write(f"{self.format_help()}\n")
-        sys.stderr.write(colored('Error:', 'on_red') + message + "\n")
+        sys.stderr.write(f"\n{colored('Error:', 'white', 'on_red')} {message}\n")
         sys.exit(2)
