@@ -139,7 +139,7 @@ class ArgumentParser(argparse.ArgumentParser):
         help += "  run          Runs an included module against a specified target or all targets\n"
         help += "  broadcast    Broadcasts a message to all users on all targets\n"
         print(help)
-        print(self.options)
+        print(self.actions)
 
 def main():
     controller = Controller()
