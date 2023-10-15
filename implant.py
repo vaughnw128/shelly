@@ -27,8 +27,8 @@ class Implant(Host):
             stdout, _ = proc.communicate()
             return stdout
         finally:
-            return None
             timer.cancel()
+            return None
 
     def instruction(self, shellpack):
         try:
