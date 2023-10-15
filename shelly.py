@@ -99,11 +99,14 @@ def main():
     parser.add_argument('-t', '--target', choices=[target['id'] for target in controller.db.all()], help='The target to interact with/run modules on. Specifying \'*\' will select ALL targets.')  
     args = parser.parse_args()
 
+    if args.command in ('interact', 'run') and (args.target is None):
+        parser.error(f"The command {args.command} requires you to set a target with --target")
+
     match args.command:
         case "ls":
             print(controller.list_hosts())
         case "interact":
-            controller.interact(1)
+            controller.interact(int(args.target))
         case "run":
             print("fart")
             #controller.run()
