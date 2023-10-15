@@ -98,11 +98,11 @@ class Controller(Host):
 
         help += "Usage: shelly [command]\n\n"
         help += "Available Commands:\n"
-        help += "  help         Prints this message"
-        help += "  ls           List connected targets"
-        help += "  interact     Interact with a specified target using the ICMP shell"
-        help += "  run          Runs an included module against a specified target or all targets"
-        help += "  broadcast    Broadcasts a message to all users on all targets"
+        help += "  help         Prints this message\n"
+        help += "  ls           List connected targets\n"
+        help += "  interact     Interact with a specified target using the ICMP shell\n"
+        help += "  run          Runs an included module against a specified target or all targets\n"
+        help += "  broadcast    Broadcasts a message to all users on all targets\n"
         print(help)
 
 def main():
