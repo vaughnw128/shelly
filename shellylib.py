@@ -14,7 +14,7 @@ MAX_DATA_SIZE = 400
 
 class Host:
     def __init__(self):
-        self.id = str(round(time.time()))
+        self.id = str(round((time.time())*10**6))
         self.ip = get_local_ip()
         self.iface = get_iface(self.ip)
 

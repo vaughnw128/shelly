@@ -38,7 +38,7 @@ class Daemon(Host):
         self.db.insert(target)
         
     def heartbeat_response(self, shellpack):
-        self.db.update({'status': 'DISCONNECTED'}, Query().id == shellpack['id'])
+        self.db.update({'status': 'CONNECTED'}, Query().id == shellpack['id'])
         print(f"[HEARTBEAT] Hearbeat received from {shellpack['ip']}")
 
     def heartbeat(self):
