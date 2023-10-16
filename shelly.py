@@ -129,9 +129,9 @@ class Controller(Host):
         sniffer.start()
 
         while True:
+            shell_lock.value = True
             if not shell_lock.value:
-                input("Type Ctrl+C to Exit")
-                shell_lock.value = True
+                return
 
 def main():
     controller = Controller()
