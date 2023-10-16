@@ -31,7 +31,7 @@ class Controller(Host):
 
 
     def list_info(self):
-        response = "Targets\n"
+        response = "\nTargets:\n"
 
         targets = self.db.all()
         targets = sorted(targets, key=lambda d: d['id'])
@@ -40,9 +40,9 @@ class Controller(Host):
         data = []
         for target in targets:
             data.append([target['number'], target['ip'], target['status'], target['location']])
-        response += columnar(data, headers, no_borders=True)
+        response += columnar(data, headers)
         
-        response += "\nModules\n"
+        response += "\nModules:\n"
         headers = ['name', 'description']
         data = []
         for module in os.listdir('./modules'):
@@ -51,7 +51,7 @@ class Controller(Host):
                     if line.startswith("# DESCRIPTION:"):
                         desc = (line[14:]).strip()
             data.append([module.split('.')[0], desc])
-        response += columnar(data, headers, no_borders=True)
+        response += columnar(data, headers)
         
         return response
     
