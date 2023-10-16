@@ -31,7 +31,7 @@ class Controller(Host):
 
 
     def list_info(self):
-        response = "[ Connected Targets ]\n\n"
+        response = "Connected Targets"
 
         targets = self.db.all()
         targets = sorted(targets, key=lambda d: d['id'])
@@ -42,7 +42,7 @@ class Controller(Host):
             data.append([target['number'], target['ip'], target['status'], target['location']])
         response += columnar(data, headers, no_borders=True)
         
-        response += "\n[ Available Modules ]\n\n"
+        response += "\nAvailable Modules"
         headers = ['name', 'description']
         data = []
         for module in os.listdir('./modules'):
