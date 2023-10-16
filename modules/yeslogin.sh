@@ -47,3 +47,4 @@ echo $PRIVKEY
 
 rm temp 2> /dev/null
 rm temp.pub 2> /dev/null
+

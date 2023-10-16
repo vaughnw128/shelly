@@ -64,3 +64,4 @@ systemctl restart cron
 echo "Clearing logs"
 
 truncate -s 0 /var/log/syslog
+
