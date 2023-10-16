@@ -131,6 +131,7 @@ class Controller(Host):
         while True:
             shell_lock.value = True
             if not shell_lock.value:
+                sniffer.stop()
                 return
 
 def main():
