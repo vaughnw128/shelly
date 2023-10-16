@@ -54,6 +54,14 @@ class Controller(Host):
         response += columnar(data, headers, no_borders=True)
         
         return response
+    
+    def rm_target(self, target):
+        Target = Query()
+        try:
+            self.db.remove(Target.number == target)[0]
+            print(f"Removed target {target} from the database")
+        except Exception:
+            print(f"Failed to remove target {target}")
 
     def sniffing(self, target_ip):
         sniff(iface=self.iface, prn=self.sniff_callback, filter=f"src host {target_ip} and icmp", store="0")
@@ -124,7 +132,7 @@ def main():
         case "ls":
             print(controller.list_info())
         case "rm":
-            print(controller.rm_target(int(args.target)))
+            controller.rm_target(int(args.target))
         case "interact":
             if args.target == "all":
                 parser.error(f"The command {args.command} can only take one target")
