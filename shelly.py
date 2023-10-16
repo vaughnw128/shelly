@@ -125,6 +125,14 @@ class Controller(Host):
         except FileNotFoundError:
             print("Module does not exist")
 
+        sniffer = Process(target=self.sniffing, args=(target['ip'],))
+        sniffer.start()
+
+        while True:
+            if not shell_lock.value:
+                input("Type Ctrl+C to Exit")
+                shell_lock.value = True
+
 def main():
     controller = Controller()
     parser = ArgumentParser(
