@@ -27,7 +27,7 @@ class Daemon(Host):
 
         target = {
             "number": next(filterfalse(set(number).__contains__, count(1))),
-            "id": shellpack['id'],
+            "id": str(shellpack['id']),
             "ip": shellpack['ip'],
             "location": shellpack['data'].decode(),
             "status": "CONNECTED"
@@ -39,6 +39,7 @@ class Daemon(Host):
         
     def heartbeat_response(self, shellpack):
         self.db.update({'status': 'DISCONNECTED'}, Query().id == shellpack['id'])
+        print(f"[HEARTBEAT] Hearbeat received from {shellpack['ip']}")
 
     def heartbeat(self):
         
