@@ -121,7 +121,6 @@ class Controller(Host):
         
         try:
             with open(f"./modules/{module}.sh","r") as f:
-                print(f.read().encode())
                 self.send(target['ip'], "module", f.read().encode())
         except FileNotFoundError:
             print("Module does not exist")
