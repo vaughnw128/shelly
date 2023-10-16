@@ -81,7 +81,6 @@ class Host:
         encoded_shellpack = base64.b64encode(encoded_shellpack)
 
         if data is not None and len(data) > MAX_DATA_SIZE:
-            print("farty")
             num_shellpacks = ( len(data) // MAX_DATA_SIZE ) + 1
 
             for i in range(num_shellpacks):
