@@ -120,7 +120,7 @@ class Controller(Host):
             return
         
         try:
-            with open(f"./modules/{module}","r") as f:
+            with open(f"./modules/{module}.sh","r") as f:
                 print(f.read())
         except FileNotFoundError:
             print("Module does not exist")
