@@ -125,7 +125,7 @@ def main():
 
     args = parser.parse_args()
 
-    if args.command in ('interact', 'run') and (args.target is None):
+    if args.command in ('interact', 'run', 'rm') and (args.target is None):
         parser.error(f"The command {args.command} requires you to set a target with --target")
 
     match args.command:
