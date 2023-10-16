@@ -37,9 +37,16 @@ class Daemon(Host):
 
         self.db.insert(target)
         
+    def heartbeat_response(self, shellpack):
+        self.db.update({'status': 'DISCONNECTED'}, Query().id == shellpack['id'])
+
     def heartbeat(self):
-        print('Hello')
-        timer = threading.Timer(2, self.heartbeat)
+        
+        for target in self.db.all():
+            self.db.update({'status': 'DISCONNECTED'},Query().id == target['id'])
+            self.send(target['ip'], "heartbeat", target['id'])
+
+        timer = threading.Timer(60, self.heartbeat)
         timer.start()
 
 if __name__ == "__main__":

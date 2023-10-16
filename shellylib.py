@@ -48,10 +48,15 @@ class Host:
                 self.instruction(unpacked)
             case "reverse":
                 self.reverse(unpacked)
+            case "heartbeat":
+                self.heartbeat_response(unpacked)
             case _:
                 return
         
     def join(self, shellpack):
+        pass
+
+    def heartbeat_response(self, shellpack):
         pass
 
     def instruction(self, shellpack):

