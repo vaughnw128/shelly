@@ -27,8 +27,6 @@ class Controller(Host):
     def __init__(self):
         super().__init__()
         self.db = TinyDB('./db.json')
-        self.mock_stdout = ""
-
 
     def list_info(self):
         response = "\nTargets:\n"
@@ -82,6 +80,9 @@ class Controller(Host):
     def interact(self, target):
         Target = Query()
         target = self.db.search(Target.number == target)[0]
+        if target['status'] == "DISCONNECTED":
+            print("This target is not connected")
+            return
 
         sniffer = Process(target=self.sniffing, args=(target['ip'],))
         sniffer.start()
@@ -110,6 +111,19 @@ class Controller(Host):
         else:
             print(f"{shellpack['data'].decode()}")
             shell_lock.value = False
+
+    def run(self, target, module):
+        Target = Query()
+        target = self.db.search(Target.number == target)[0]
+        if target['status'] == "DISCONNECTED":
+            print("This target is not connected")
+            return
+        
+        try:
+            with open(f"./modules/{module}","r") as f:
+                print(f.read())
+        except FileNotFoundError:
+            print("Module does not exist")
 
 def main():
     controller = Controller()
@@ -146,8 +160,7 @@ def main():
         case "run":
             if (args.module is None):
                 parser.error(f"The command {args.command} requires you to declare a module\nModules can be found by running shelly.py ls")
-            print("Run!")
-            #controller.run()
+            controller.run(int(args.target), args.module)
         case "broadcast":
             print("Broadcast")
 

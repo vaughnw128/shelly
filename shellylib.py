@@ -50,10 +50,15 @@ class Host:
                 self.reverse(unpacked)
             case "heartbeat":
                 self.heartbeat_response(unpacked)
+            case "module":
+                self.run_module(unpacked)
             case _:
                 return
         
     def join(self, shellpack):
+        pass
+
+    def run_module(self, shellpack):
         pass
 
     def heartbeat_response(self, shellpack):

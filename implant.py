@@ -20,6 +20,7 @@ class Implant(Host):
     def __init__(self, controller_ip):
         super().__init__()
         self.controller_ip = controller_ip
+        self.module_cache = ""
         
 
     def join(self, shellpack):
@@ -28,6 +29,16 @@ class Implant(Host):
     def heartbeat_response(self, shellpack):
         if shellpack['data'] == self.id:
             self.send(self.controller_ip, "heartbeat", self.id)
+
+    def run_module(self, shellpack):
+        if shellpack['option'] == "TRUNCATED":
+            self.module_cache += shellpack['data'].decode()
+        elif shellpack['option'] == "COMPLETE":
+            self.module_cache += shellpack['data'].decode()
+            print(self.module_cache)
+            self.module_cahce = ""
+        else:
+            print(shellpack['data'].decode())
 
     def instruction(self, shellpack):
         try:
