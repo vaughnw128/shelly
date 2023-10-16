@@ -131,7 +131,7 @@ class Controller(Host):
         while True:
             shell_lock.value = True
             if not shell_lock.value:
-                print("Type Ctrl+C to exit")
+                return
 
 def main():
     controller = Controller()
