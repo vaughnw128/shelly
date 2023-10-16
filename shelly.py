@@ -37,8 +37,8 @@ class Controller(Host):
 
         response += "  ID  IP\t      Status\t Location\n"
         response += "  --  --------------  ---------  -----------------\n"
-        for target in targets:
-            response += f"  {target['id']}   {target['ip']}  {target['status']}  {target['location']}\n"
+        for i,target in enumerate(targets):
+            response += f"  {i}   {target['ip']}  {target['status']}  {target['location']}\n"
         
         response += "\n[ Available Modules ]\n\n"
         response += "  Name\t\tDescription\n"
@@ -122,7 +122,9 @@ def main():
         case "interact":
             if args.target == "all":
                 parser.error(f"The command {args.command} can only take one target")
-            controller.interact(int(args.target))
+            targets = controller.db.all()
+            targets = sorted(targets, key=lambda d: d['id'])
+            controller.interact(int(targets[args.target]))
         case "run":
             if (args.module is None):
                 parser.error(f"The command {args.command} requires you to declare a module\nModules can be found by running shelly.py ls")

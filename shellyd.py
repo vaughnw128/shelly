@@ -20,11 +20,8 @@ class Daemon(Host):
         self.db = TinyDB('./db.json')
 
     def join(self, shellpack):
-        targets = self.db.all()
-        ids = [target['id'] for target in targets]
-
         target = {
-            "id": next(filterfalse(set(ids).__contains__, count(1))),
+            "id": round(time.time()),
             "ip": shellpack['ip'],
             "location": shellpack['data'].decode(),
             "status": "CONNECTED"
@@ -38,7 +35,7 @@ class Daemon(Host):
         for target in self.db.all():
             Target = Query()
             self.db.update({'status': 'DISCONNECTED'}, Target.id == target['id'])
-            self.send(target['ip'], "join")
+            self.send(target['ip'], "heartbeat", target['id'])
         
 if __name__ == "__main__":
 
