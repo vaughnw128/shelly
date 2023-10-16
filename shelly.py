@@ -124,7 +124,7 @@ def main():
                 parser.error(f"The command {args.command} can only take one target")
             targets = controller.db.all()
             targets = sorted(targets, key=lambda d: d['id'])
-            controller.interact(targets[args.target]['ip'])
+            controller.interact(targets[int(args.target)]['ip'])
         case "run":
             if (args.module is None):
                 parser.error(f"The command {args.command} requires you to declare a module\nModules can be found by running shelly.py ls")
