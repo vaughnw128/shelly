@@ -104,6 +104,7 @@ class Controller(Host):
             print(shellpack['data'].decode(), end="")
         elif shellpack['option'] == "COMPLETE":
             print(shellpack['data'].decode())
+            print("farty farty")
             shell_lock.value = False
         elif shellpack['option'] == "ERROR":
             print(f"[ERROR] {shellpack['data'].decode()}")
