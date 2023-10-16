@@ -43,7 +43,7 @@ class Controller(Host):
         if len(data) != 0:
             response += columnar(data, headers, no_borders=True)
         else:
-            reponse += "No targets connected"
+            response += "No targets connected"
         
         response += "\nModules:\n"
         headers = ['name', 'description']
@@ -57,7 +57,7 @@ class Controller(Host):
         if len(data) != 0:
             response += columnar(data, headers, no_borders=True)
         else:
-            reponse += "No modules loaded"
+            response += "No modules loaded"
         
         return response
     
