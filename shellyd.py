@@ -7,6 +7,7 @@ from tinydb import TinyDB, Query
 import os
 import time
 from itertools import count, filterfalse
+import sched
 
 TTL = int(64)
 ICMP_ID = int(12800)
@@ -35,11 +36,22 @@ class Daemon(Host):
 
         self.db.insert(target)
         
+    def heartbeat(self, scheduler):
+        # schedule the next call first
+        scheduler.enter(60, 1, self.heartbeat, (scheduler,))
+        print("Doing stuff...")
+        # then do your stuff
+
 if __name__ == "__main__":
 
     print("[ Starting Shelly daemon ]")
     shellyd = Daemon()
     print(shellyd)
+
+    print("[ Starting heartbeat ]")
+    heartbeat_schedule = sched.scheduler(time.time, time.sleep)
+    heartbeat_schedule.enter(60, 1, shellyd.heartbeat, (heartbeat_schedule,))
+    heartbeat_schedule.run()
 
     print("[ Starting sniffer ]")
     print("[ Shellpack log ]")
