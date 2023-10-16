@@ -40,7 +40,7 @@ class Controller(Host):
         data = []
         for target in targets:
             data.append([target['number'], target['ip'], target['status'], target['location']])
-        response += columnar(data, headers)
+        response += columnar(data, headers, no_borders=True)
         
         response += "\nModules:\n"
         headers = ['name', 'description']
@@ -51,7 +51,7 @@ class Controller(Host):
                     if line.startswith("# DESCRIPTION:"):
                         desc = (line[14:]).strip()
             data.append([module.split('.')[0], desc])
-        response += columnar(data, headers)
+        response += columnar(data, headers, no_borders=True)
         
         return response
     
