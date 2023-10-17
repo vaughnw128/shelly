@@ -223,8 +223,7 @@ class Controller(Host):
             print(f"Broadcasted to {target['ip']}")
 
     def connect(self) -> None:
-        # base_ip = self.ip.split(".")
-        # base_ip = f"{base_ip[0]}.{base_ip[1]}.{base_ip[2]}."
+        
 
         # existing_ips = [target['ip'] for target in self.db.all() if target['status'] == "CONNECTED"]
         # existing_ips.append(self.ip)
@@ -235,12 +234,12 @@ class Controller(Host):
         #         self.send(ip, "join")
         #         print(f"Connect sent to {ip}")
 
+        broadcast = self.ip.split(".")
+        broadcast = f"{broadcast[0]}.{broadcast[1]}.{broadcast[2]}.255"
+
         shellpacks = self.build_shellpacks("join", data=self.ip)
 
-        for shellpack in shellpacks:
-            print(shellpack)
-            data = (IP(src=self.ip, dst="192.168.157.255")/ICMP(type=0, id=ICMP_ID)/Raw(load=shellpack))
-            sr(data, timeout=0, verbose=0)
+        self.send(shellpacks[0], "join", self.ip)
         
 
     """
