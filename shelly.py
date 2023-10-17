@@ -168,7 +168,7 @@ def main():
 
     parser.add_argument('-t', '--target', choices=[str(target['id']) for target in controller.db.all()].append("all"), help='The target to interact with/run modules on. Specifying \'all\' will select ALL targets.')  
     parser.add_argument('-m', '--module', choices=module_names, help='The module to use for the run command')  
-    parser.add_argument('-m', '--module', choices=module_names, help='The module to use for the run command')  
+    parser.add_argument('-M', '--message', help='The message to be sent with broadcast')  
 
     args = parser.parse_args()
 
