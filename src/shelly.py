@@ -222,8 +222,9 @@ class Controller(Host):
             self.send(target['ip'], 'instruction', message.encode())
             print(f"Broadcasted to {target['ip']}")
 
-    def connect(self):
-        pass
+    def connect(self) -> None:
+        existing_ips = [target['ip'] for target in self.db.all() if target['status'] == "CONNECTED"]
+        print(existing_ips)
 
     """
     Helper methods
@@ -244,9 +245,6 @@ class Controller(Host):
         """
         Gets all the targets or gets a single target
         """
-
-        print(self.db.all())
-        print([module.split(".")[0] for module in os.listdir('./modules')])
 
         # Gets all targets
         if target_num == "all":
