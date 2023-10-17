@@ -44,7 +44,7 @@ class Implant(Host):
 
         Passes the working directory along with the join command
         """
-
+        print("hello")
         self.send(shellpack['ip'], "join", os.getcwd().encode())
 
     def heartbeat_response(self, shellpack: dict) -> None:
