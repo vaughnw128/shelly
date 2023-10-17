@@ -274,6 +274,8 @@ def main():
         'connect': 'Sends a connect command to all targets'
         })
     
+    print([str(target['id']) for target in controller.db.all()].append("all"))
+
     module_names = [module.split(".")[0] for module in os.listdir('./modules')]
     
     parser.add_argument('-t', '--target', choices=[str(target['id']) for target in controller.db.all()].append("all"), help='The target to interact with/run modules on. Specifying \'all\' will select ALL targets.')  
