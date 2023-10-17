@@ -135,12 +135,12 @@ class Host:
             "data" : data
             }
 
-        encoded_shellpack = str(shellpack).encode()
-        encoded_shellpack = base64.b64encode(encoded_shellpack)
-
+        # Checks to see if the data needs to be spread out
         if data is not None and len(data) > MAX_DATA_SIZE:
+            # Finds the correct number of shellpacks to use
             num_shellpacks = ( len(data) // MAX_DATA_SIZE ) + 1
 
+            # Splits the data over multiple shellpacks and assigns truncated and complete tags
             for i in range(num_shellpacks):
                 if i == num_shellpacks-1:
                     shellpack['data'] = data[MAX_DATA_SIZE*i:-1]    
@@ -153,10 +153,11 @@ class Host:
                 encoded_shellpack = base64.b64encode(encoded_shellpack)
 
                 shellpacks.append(encoded_shellpack)
-            
         else:
+            encoded_shellpack = str(shellpack).encode()
+            encoded_shellpack = base64.b64encode(encoded_shellpack)
             shellpacks = [encoded_shellpack]
-
+        
         return shellpacks
 
     def send(self, ip, command: str, data: str | None = None) -> bool:
