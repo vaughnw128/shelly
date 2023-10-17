@@ -199,7 +199,7 @@ class Host:
             s.close()
         return ip
     
-    def get_mac(iface: str) -> str:
+    def get_mac(self, iface: str) -> str:
         """
         Gets the mac address
         """
