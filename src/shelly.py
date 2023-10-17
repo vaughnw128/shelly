@@ -246,6 +246,7 @@ class Controller(Host):
         """
 
         print(self.db.all())
+        print([module.split(".")[0] for module in os.listdir('./modules')])
 
         # Gets all targets
         if target_num == "all":
@@ -277,8 +278,10 @@ def main():
         })
 
     module_names = [module.split(".")[0] for module in os.listdir('./modules')]
+    targets = [str(target['id']) for target in controller.db.all()]
+    targets.append("all")
     
-    parser.add_argument('-t', '--target', choices=[str(target['id']) for target in controller.db.all()].append("all"), help='The target to interact with/run modules on. Specifying \'all\' will select ALL targets.')  
+    parser.add_argument('-t', '--target', choices=targets, help='The target to interact with/run modules on. Specifying \'all\' will select ALL targets.')  
     parser.add_argument('-m', '--module', choices=module_names, help='The module to use for the run command')  
     parser.add_argument('-M', '--message', help='The message to be sent with broadcast. Contain the string with quotation marks')
     parser.add_argument('-v', '--verbose', default=False, action='store_true', help="Verbosity argument")
