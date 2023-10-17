@@ -30,6 +30,7 @@ class Host:
         self.id = str(round((time.time())*10**6))
         self.ip = self.get_local_ip()
         self.iface = self.get_iface(self.ip)
+        self.mac = self.get_mac(self.iface)
 
     def __str__(self) -> str:
         """
@@ -197,3 +198,12 @@ class Host:
         finally:
             s.close()
         return ip
+    
+    def get_mac(iface: str) -> str:
+        """
+        Gets the mac address
+        """
+
+        nics = psutil.net_if_addrs()
+        mac = ([j.address for i in nics for j in nics[i] if i==iface and j.family==psutil.AF_LINK])[0]
+        return mac.replace('-',':')
