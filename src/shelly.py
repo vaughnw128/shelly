@@ -230,7 +230,8 @@ class Controller(Host):
         
         for i in range(1, 256):
             ip = base_ip + str(i)
-            print(ip)
+            if ip not in existing_ips:
+                self.send(ip, "join")
         
 
     """
