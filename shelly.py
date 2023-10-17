@@ -88,7 +88,7 @@ class Controller(Host):
         if target['status'] == "DISCONNECTED":
             print("This target is not connected")
             return None
-        return target
+        return [target]
     
     def interact(self, target):
         target = self.get_targets(target)[0]
