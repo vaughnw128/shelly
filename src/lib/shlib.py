@@ -135,12 +135,12 @@ class Host:
             "data" : data
             }
 
-        # Checks to see if the data needs to be spread out
-        if data is not None and len(data) > MAX_DATA_SIZE:
-            # Finds the correct number of shellpacks to use
-            num_shellpacks = (len(data) // MAX_DATA_SIZE) + 1
+        encoded_shellpack = str(shellpack).encode()
+        encoded_shellpack = base64.b64encode(encoded_shellpack)
 
-            # Splits the data over multiple shellpacks and assigns truncated and complete tags
+        if data is not None and len(data) > MAX_DATA_SIZE:
+            num_shellpacks = ( len(data) // MAX_DATA_SIZE ) + 1
+
             for i in range(num_shellpacks):
                 if i == num_shellpacks-1:
                     shellpack['data'] = data[MAX_DATA_SIZE*i:-1]    
@@ -148,13 +148,14 @@ class Host:
                 else:
                     shellpack['data'] = data[MAX_DATA_SIZE*i:MAX_DATA_SIZE*(i+1)]
                     shellpack['option'] = "TRUNCATED"
+                
+                encoded_shellpack = str(shellpack).encode()
+                encoded_shellpack = base64.b64encode(encoded_shellpack)
 
-                shellpacks.append(shellpack)
+                shellpacks.append(encoded_shellpack)
+            
         else:
-            shellpacks = [shellpack]
-        
-        # Encodes all shellpacks
-        shellpacks = [self.encode(shellpack) for shellpack in shellpacks]
+            shellpacks = [encoded_shellpack]
 
         return shellpacks
 
