@@ -242,7 +242,7 @@ class Controller(Host):
         """
 
         # Gets all targets
-        if target == "all":
+        if target_num == "all":
             return self.db.all()
         
         # Gets single target
