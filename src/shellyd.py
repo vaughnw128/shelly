@@ -44,6 +44,9 @@ class Daemon(Host):
         Join response that joins the implant to the daemon
         """
         
+        if self.db.search(Query().id == shellpack['id']) is not None:
+            return
+
         # Grabs all existing numbers from the database and checks
         targets = self.db.all()
         number = [target['number'] for target in targets]
