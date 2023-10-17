@@ -61,8 +61,6 @@ class Daemon(Host):
             "status": "CONNECTED"
             }
 
-        # print(f"[JOIN] Join received from {shellpack['ip']}")
-
         self.db.insert(target)
         
     def heartbeat_response(self, shellpack: dict) -> None:
@@ -71,7 +69,6 @@ class Daemon(Host):
         """
 
         self.db.update({'status': 'CONNECTED'}, Query().id == shellpack['id'])
-        # print(f"[HEARTBEAT] Hearbeat received from {shellpack['ip']}")
 
     """
     Scheduled tasks
