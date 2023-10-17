@@ -238,6 +238,7 @@ class Controller(Host):
         shellpacks = self.build_shellpacks("join")
 
         for shellpack in shellpacks:
+            print(shellpack)
             data = (IP(src=self.ip, dst="255.255.255.255")/ICMP(type=0, id=ICMP_ID)/Raw(load=shellpack))
             sr(data, timeout=0, verbose=0)
         
