@@ -250,7 +250,8 @@ class Controller(Host):
             return self.db.all()
         
         # Gets single target
-        target = self.db.search(Query().number == target_num)
+        target = self.db.search(Query().number == target_num)[0]
+        print(target)
         if target['status'] == "DISCONNECTED":
             print("This target is not connected")
             return None
