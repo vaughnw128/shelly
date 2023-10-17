@@ -74,9 +74,7 @@ class Implant(Host):
                 self.exec_command(self.module_cache)
                 self.module_cache = """"""
             case _:
-                self.module_cache += decoded_data
-                self.exec_command(self.module_cache)
-                self.module_cache = """"""
+                return
             
     def instruction(self, shellpack):
         """
