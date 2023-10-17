@@ -224,7 +224,7 @@ class Controller(Host):
 
     def connect(self) -> None:
         base_ip = self.ip.split(".")
-        base_ip = f"{ip[0]}.{ip[1]}.{ip[2]}."
+        base_ip = f"{base_ip[0]}.{base_ip[1]}.{base_ip[2]}."
 
         existing_ips = set([target['ip'] for target in self.db.all() if target['status'] == "CONNECTED"])
         
