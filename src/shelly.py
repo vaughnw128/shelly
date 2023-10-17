@@ -71,7 +71,8 @@ class Controller(Host):
                 print(f"[ERROR] {shellpack['data'].decode()}")
                 shell_lock.value = False
             case _:
-                print(f"No option was specified")
+                print(shellpack['data'].decode())
+                shell_lock.value = False
 
     """
     Command functions
