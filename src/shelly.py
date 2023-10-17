@@ -237,9 +237,7 @@ class Controller(Host):
         broadcast = self.ip.split(".")
         broadcast = f"{broadcast[0]}.{broadcast[1]}.{broadcast[2]}.255"
 
-        shellpacks = self.build_shellpacks("join", data=self.ip)
-
-        self.send(shellpacks[0], "join", self.ip)
+        self.send(broadcast, "join", self.ip)
         
 
     """
