@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 
-# self.send(target['ip'], "instruction", "request", base64.b64encode("ls -la".encode()))
-
 from scapy.all import sniff
 import base64
 from shellylib import Host
