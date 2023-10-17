@@ -133,11 +133,13 @@ class Host:
             "option": option,
             "data" : data
             }
-            
+        
+        # Sets default to complete
         shellpack['option'] = "COMPLETE"
         encoded_shellpack = str(shellpack).encode()
         encoded_shellpack = base64.b64encode(encoded_shellpack)
 
+        # Splits the data if it's above the max data size
         if data is not None and len(data) > MAX_DATA_SIZE:
             num_shellpacks = ( len(data) // MAX_DATA_SIZE ) + 1
 
@@ -153,7 +155,6 @@ class Host:
                 encoded_shellpack = base64.b64encode(encoded_shellpack)
 
                 shellpacks.append(encoded_shellpack)
-            
         else:
             shellpacks = [encoded_shellpack]
 
