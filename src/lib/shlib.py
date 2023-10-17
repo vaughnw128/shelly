@@ -116,7 +116,7 @@ class Host:
 
         return encoded_shellpack
 
-    def build_shellpacks(self, command: str,  data: str | None = None) -> list[dict]:
+    def build_shellpacks(self, command: str,  data: str | None = None, option: str | None = None) -> list[dict]:
         """
         Builds shellpacks from the data originally passed to the send command
 
@@ -130,9 +130,10 @@ class Host:
         shellpack = {
             "id": self.id,
             "command": command,
-            "option": None,
+            "option": option,
             "data" : data
             }
+            
         shellpack['option'] = "COMPLETE"
         encoded_shellpack = str(shellpack).encode()
         encoded_shellpack = base64.b64encode(encoded_shellpack)
@@ -158,7 +159,7 @@ class Host:
 
         return shellpacks
 
-    def send(self, ip, command: str, data: str | None = None) -> bool:
+    def send(self, ip, command: str, data: str | None = None, option: str | None = None) -> bool:
         """
         Send function
 
