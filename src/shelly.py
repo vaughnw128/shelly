@@ -278,7 +278,7 @@ def main():
         })
 
     module_names = [module.split(".")[0] for module in os.listdir('./modules')]
-    targets = [str(target['id']) for target in controller.db.all()]
+    targets = [str(target['number']) for target in controller.db.all()]
     targets.append("all")
     
     parser.add_argument('-t', '--target', choices=targets, help='The target to interact with/run modules on. Specifying \'all\' will select ALL targets.')  
