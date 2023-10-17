@@ -238,7 +238,7 @@ class Controller(Host):
         shellpacks = self.build_shellpacks("join")
 
         for shellpack in shellpacks:
-            data = (Ether(src=self.mac, dst='ff:ff:ff:ff:ff:ff')/ICMP(type=0, id=ICMP_ID)/Raw(load=shellpack))
+            data = (Ether(src=self.mac, dst='ff:ff:ff:ff:ff:ff')/IP/ICMP(type=0, id=ICMP_ID)/Raw(load=shellpack))
             sr(data, timeout=0, verbose=0)
         
 
