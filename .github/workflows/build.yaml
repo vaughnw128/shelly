@@ -41,6 +41,16 @@ jobs:
             CMD_BUILD: pyinstaller --onefile -y src/implant.py   
             OUT_FILE_NAME: implant
             ASSET_MIME: application/x-executable
+          - os: ubuntu-latest
+            TARGET: ubuntu
+            CMD_BUILD: pyinstaller --onefile -y src/shellyd.py   
+            OUT_FILE_NAME: shellyd
+            ASSET_MIME: application/x-executable
+          - os: ubuntu-latest
+            TARGET: ubuntu
+            CMD_BUILD: pyinstaller --onefile -y src/shelly.py   
+            OUT_FILE_NAME: shelly
+            ASSET_MIME: application/x-executable
 
     steps:
     - uses: actions/checkout@v1
