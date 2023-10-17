@@ -144,6 +144,7 @@ class Controller(Host):
 
     def broadcast(self, target, message):
         targets = self.get_targets(target)
+        print(targets)
 
         message = f"wall {message}"
 
