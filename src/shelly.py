@@ -226,12 +226,14 @@ class Controller(Host):
         base_ip = self.ip.split(".")
         base_ip = f"{base_ip[0]}.{base_ip[1]}.{base_ip[2]}."
 
-        existing_ips = set([target['ip'] for target in self.db.all() if target['status'] == "CONNECTED"])
-        
+        existing_ips = [target['ip'] for target in self.db.all() if target['status'] == "CONNECTED"]
+        existing_ips.append(self.ip)
+
         for i in range(1, 256):
             ip = base_ip + str(i)
             if ip not in existing_ips:
                 self.send(ip, "join")
+                print(f"Connect sent to {ip}")
         
 
     """
