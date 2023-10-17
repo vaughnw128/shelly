@@ -43,8 +43,9 @@ class Daemon(Host):
         """
         Join response that joins the implant to the daemon
         """
-        print(self.db.search(Query().id == shellpack['id']))
-        if self.db.search(Query().id == shellpack['id']) is not None:
+
+        # Doesn't let the same host join twice
+        if len(self.db.search(Query().id == shellpack['id'])) > 0:
             return
 
         # Grabs all existing numbers from the database and checks
