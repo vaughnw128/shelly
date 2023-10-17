@@ -11,7 +11,7 @@ from columnar import columnar
 from tinydb import TinyDB, Query
 import os
 from termcolor import colored
-from shellyparser import ArgumentParser
+from lib.parser import ArgumentParser
 import readline # Needed for better control when using interact
 from multiprocessing import Process, Manager
 

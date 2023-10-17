@@ -1,0 +1,6 @@
+columnar==1.4.1
+psutil==5.9.5
+scapy==2.5.0
+termcolor==2.3.0
+tinydb==4.8.0
+pyinstaller==6.1.0
