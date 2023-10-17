@@ -16,7 +16,7 @@ TTL = int(64)
 ICMP_ID = int(12800)
 
 # Database directory
-db_dir = "/var/lib/shelly/db.json"
+db_dir = "/var/lib/shelly"
 
 class Daemon(Host):
     """
@@ -31,9 +31,9 @@ class Daemon(Host):
 
         # Sets up the database
         os.makedirs(db_dir, exist_ok=True) 
-        if os.path.exists(db_dir):
-            os.remove(db_dir)
-        self.db = TinyDB(db_dir)
+        if os.path.exists(f"{db_dir}/db.json"):
+            os.remove(f"{db_dir}/db.json")
+        self.db = TinyDB(f"{db_dir}/db.json")
 
     """
     Sniff callback responses
