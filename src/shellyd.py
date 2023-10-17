@@ -43,7 +43,7 @@ class Daemon(Host):
         """
         Join response that joins the implant to the daemon
         """
-        
+        print(self.db.search(Query().id == shellpack['id']))
         if self.db.search(Query().id == shellpack['id']) is not None:
             return
 
