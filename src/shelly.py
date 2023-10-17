@@ -223,8 +223,15 @@ class Controller(Host):
             print(f"Broadcasted to {target['ip']}")
 
     def connect(self) -> None:
-        existing_ips = [target['ip'] for target in self.db.all() if target['status'] == "CONNECTED"]
-        print(existing_ips)
+        base_ip = self.ip.split(".")
+        base_ip = f"{ip[0]}.{ip[1]}.{ip[2]}."
+
+        existing_ips = set([target['ip'] for target in self.db.all() if target['status'] == "CONNECTED"])
+        
+        for i in range(1, 256):
+            ip = base_ip + str(i)
+            print(ip)
+        
 
     """
     Helper methods
