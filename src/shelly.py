@@ -274,7 +274,7 @@ def main():
         'connect': 'Sends a connect command to all targets'
         })
     
-    print([str(target['id']) for target in controller.db.all()].append("all"))
+    print([str(target['number']) for target in controller.db.all()].append("all"))
 
     module_names = [module.split(".")[0] for module in os.listdir('./modules')]
     
