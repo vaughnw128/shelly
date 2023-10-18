@@ -170,7 +170,7 @@ class Controller(Host):
                     break
                 # Runs a command filter on it to make sure it's not a command that wont work
                 elif len(cmd) != 0 and not self.filter_commands(cmd):
-                    self.send(ip=target['ip'], cmd="instruction", data=cmd.encode(), target=target['id'])
+                    self.send(ip=target['ip'], command="instruction", data=cmd.encode(), target=target['id'])
                 else:
                     shell_lock.value = False
 
@@ -194,7 +194,7 @@ class Controller(Host):
         try:
             with open(f"./modules/{module}.sh","r") as f:
                 for target in targets:
-                    self.send(ip=target['ip'], cmd="module", data=f.read().encode(), target=target['id'])
+                    self.send(ip=target['ip'], command="module", data=f.read().encode(), target=target['id'])
                     print(f"Module sent to {target['ip']}")
         except FileNotFoundError:
             print("Module does not exist")
@@ -219,20 +219,10 @@ class Controller(Host):
         message = f"wall {message}"
 
         for target in targets:
-            self.send(ip=target['ip'], cmd='instruction', data=message.encode(), target=target['id'])
+            self.send(ip=target['ip'], command='instruction', data=message.encode(), target=target['id'])
             print(f"Broadcasted to {target['ip']}")
 
     def connect(self) -> None:
-        
-
-        # existing_ips = [target['ip'] for target in self.db.all() if target['status'] == "CONNECTED"]
-        # existing_ips.append(self.ip)
-
-        # for i in range(1, 256):
-        #     ip = base_ip + str(i)
-        #     if ip not in existing_ips:
-        #         self.send(ip, "join")
-        #         print(f"Connect sent to {ip}")
 
         broadcast = self.ip.split(".")
         broadcast = f"{broadcast[0]}.{broadcast[1]}.{broadcast[2]}.255"
