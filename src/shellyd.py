@@ -62,7 +62,7 @@ class Daemon(Host):
             "status": "CONNECTED"
             }
 
-        print(target)
+        print(f"[JOIN] Join received from {target['ip']} with ID {target['id']}")
 
         self.db.insert(target)
         
@@ -85,7 +85,6 @@ class Daemon(Host):
 
         # Sends heartbeats to all the targets
         for target in self.db.all():
-            print(target)
             self.db.update({'status': 'DISCONNECTED'},Query().id == target['id'])
             self.send(target['ip'], "heartbeat", target['id'])
             time.sleep(3)
