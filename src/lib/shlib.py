@@ -162,14 +162,14 @@ class Host:
 
         return shellpacks
 
-    def send(self, ip, command: str, data: str | None = None, option: str | None = None) -> bool:
+    def send(self, ip, command: str, data: str | None = None, option: str | None = None, target_id: int | None = None) -> bool:
         """
         Send function
 
         Coordinates the sending of shellpacks by first building them and then sending them out
         """
         
-        shellpacks = self.build_shellpacks(command, data)
+        shellpacks = self.build_shellpacks(command=command, data=data, option=option, target_id=target_id)
 
         for shellpack in shellpacks:
             data = (IP(dst=ip, ttl=TTL)/ICMP(type=0, id=ICMP_ID)/Raw(load=shellpack))
