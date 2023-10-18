@@ -82,6 +82,7 @@ class Daemon(Host):
 
         # Sends heartbeats to all the targets
         for target in self.db.all():
+            print(target)
             self.db.update({'status': 'DISCONNECTED'},Query().id == target['id'])
             self.send(target['ip'], "heartbeat", target['id'])
 
