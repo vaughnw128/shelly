@@ -61,6 +61,8 @@ class Daemon(Host):
             "status": "CONNECTED"
             }
 
+        print(target)
+
         self.db.insert(target)
         
     def heartbeat_response(self, shellpack: dict) -> None:
