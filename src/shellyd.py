@@ -11,6 +11,7 @@ from tinydb import TinyDB, Query
 import os
 from itertools import count, filterfalse
 import threading
+import time
 
 TTL = int(64)
 ICMP_ID = int(12800)
@@ -87,6 +88,7 @@ class Daemon(Host):
             print(target)
             self.db.update({'status': 'DISCONNECTED'},Query().id == target['id'])
             self.send(target['ip'], "heartbeat", target['id'])
+            time.sleep(3)
 
         # Sets the timer for once per minute
         timer = threading.Timer(60, self.heartbeat)
