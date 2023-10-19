@@ -171,8 +171,6 @@ class Host:
         
         shellpacks = self.build_shellpacks(command=command, data=data, option=option, target_id=target_id)
         
-        icmp_type=2
-
         for shellpack in shellpacks:
             data = (IP(dst=ip, ttl=TTL)/ICMP(type=icmp_type, id=ICMP_ID)/Raw(load=shellpack))
             sr(data, timeout=0, verbose=0)
