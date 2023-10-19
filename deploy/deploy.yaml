@@ -18,7 +18,7 @@
     - name: Clone repo
       git:
         repo: https://github.com/vaughnw128/shelly.git
-        dest: /tmp
+        dest: /tmp/shelly
         clone: yes
         update: yes
 
