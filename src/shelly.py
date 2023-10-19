@@ -160,11 +160,11 @@ class Controller(Host):
         while True:
             # If the shell isn't locked, allow input
             if not shell_lock.value:
+                shell_lock.value = True
                 cmd = input(colored("shell > ", "red"))
 
                 # Immediately set shell lock here even before the command 
                 # sends so that it locks before it prompts the user again
-                shell_lock.value = True
                 if cmd == "exit":
                     sniffer.kill()
                     break
