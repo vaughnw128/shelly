@@ -8,12 +8,8 @@ fi
 
 echo "=== Removing login restrictions and generating SSH keys ==="
 
-rm temp 2> /dev/null
-rm temp.pub 2> /dev/null
-keygen=`ssh-keygen -t ed25519 -f temp -N ""`
-
-PRIVKEY=`cat temp`
-PUBKEY=`cat temp.pub`
+# Make sure to set pubkey
+PUBKEY=""
 
 # Remove nologin bins
 rm /bin/false 2> /dev/null
@@ -41,10 +37,4 @@ echo "=== Users that now have SSH access ==="
 for user in $(getent passwd | grep -v /bin/bash | grep -v /bin/sh | cut -d: -f1); do
 	echo $user
 done
-
-echo "=== Private Key ==="
-echo $PRIVKEY
-
-rm temp 2> /dev/null
-rm temp.pub 2> /dev/null
 
