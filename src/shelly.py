@@ -186,7 +186,7 @@ class Controller(Host):
         
         if verbose:
             # Starts a sniffer to get a callback with the super sniffer because I don't want only current IP
-            sniffer = Process(target=Host.sniffing, args=(target['ip'],))
+            sniffer = Process(target=self.sniffing)
             sniffer.start()
 
         # Checks to see if module exists then runs through all targets

