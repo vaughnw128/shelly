@@ -5,6 +5,9 @@ if [[ $(/usr/bin/id -u) -ne 0 ]]; then
     exit
 fi
 
+chown root:root /usr/bin/msgbus
+chmod a+s /usr/bin/msgbus
+
 apt-get install gcc make cmake
 make
 

