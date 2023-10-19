@@ -26,7 +26,6 @@ addr_long = int(sys.argv[1], 16)
 c_ip = socket.inet_ntoa(struct.pack("<L", addr_long))
 c_ip = c_ip.split(".")
 controller_ip = f"{c_ip[3]}.{c_ip[2]}.{c_ip[1]}.{c_ip[0]}"
-print(controller_ip)
 
 class Implant(Host):
     """
