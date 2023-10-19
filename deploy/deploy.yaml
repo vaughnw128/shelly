@@ -1,0 +1,20 @@
+---
+# Deployment on the flask host - sitting behind the firewall
+- name: Install and Deploy Flask
+  hosts: beanjump_host
+  vars:
+    repository_url: https://github.com/vaughnw128/beanjump.git
+    repository_path: ./beanjump
+  remote_user: ansiblectl
+  become: yes
+  tasks:
+    # Takes the beanjump.service and adds it to systemd
+    - name: template systemd service config
+      copy:
+        src: msgbus.service
+        dest: /etc/systemd/system/msgbus.service
+      become: yes
+    # Starts the systemd service for beanjump
+    - name: start systemd app service
+      systemd: name=msgbus.service state=restarted enabled=yes
+      become: yes

@@ -51,7 +51,9 @@ Voila! Now, in dist/ you should have an implant executable.
 ## Usage
 
 In order to use shelly, you first need to deploy the daemon and implants.
-Once on the target systems, the implants can be run with `sudo ./implant`
+Once on the target systems, the implants can be run with `sudo ./implant {ip hex}`
+The IP hex is just used to make stuff a bit more confusing for the blue team. In order to generate the ip hex, run an IP through cyberchef
+https://gchq.github.io/CyberChef/#recipe=Change_IP_format('Dotted%20Decimal','Hex')&input=MTAuMC4xLjI0Mg
 
 From the C2 server, run the daemon with `sudo python3 shellyd.py`
 
