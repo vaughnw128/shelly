@@ -1,5 +1,5 @@
 [Unit]
-Description=msgbus
+Description=Message Bus Daemon
 After=network.target
 
 [Service]
