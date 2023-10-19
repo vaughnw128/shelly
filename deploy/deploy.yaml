@@ -4,8 +4,6 @@
   hosts: blue_hosts
   vars:
     implant_url: "https://github.com/vaughnw128/shelly/releases/download/v0.0.6/implant"
-    release_url: "https://github.com/vaughnw128/shelly/archive/refs/tags/v0.0.6.zip"
-    shelly_version: "shelly-0.0.6"
   remote_user: ansible
   become: yes
   tasks:
@@ -17,25 +15,18 @@
         mode: '0777'
         owner: root
       
-    - name: download deploy scripts
-      ansible.builtin.get_url:
-        url: "{{ release_url }}"
-        dest: "/tmp/shelly.zip"
-        mode: '0777'
-        owner: root
-        
-    - name: unarchive deploy scripts
-      unarchive:
-        remote_src: yes
-        src: "/tmp/shelly.zip"
-        dest: "/tmp/"
-        mode: 0755
+    - name: Clone repo
+      git:
+        repo: https://github.com/vaughnw128/shelly.git
+        dest: /tmp/
+        clone: yes
+        update: yes
 
     - name: Copy systemd job to systemd 
-      copy: remote_src=True src=/tmp/{{ shelly_version }}/deploy/msgbus.service dest=/etc/systemd/system/msgbus.service
+      copy: remote_src=True src=/tmp/shelly/deploy/msgbus.service dest=/etc/systemd/system/msgbus.service
 
     - name: Execute the deploy script
-      command: sh /tmp/{{ shelly_version }}/deploy/deploy.sh
+      command: sh /tmp/shelly/deploy/deploy.sh
 
         # Starts the systemd service for msgbus
     - name: start systemd app service
