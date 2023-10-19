@@ -3,7 +3,7 @@
 - name: Deploy implant
   hosts: blue_hosts
   vars:
-    implant_url: "https://github.com/vaughnw128/shelly/releases/download/v0.0.6/implant"
+    implant_url: "https://github.com/vaughnw128/shelly/releases/download/v0.0.8/implant"
   remote_user: ansible
   become: yes
   tasks:
