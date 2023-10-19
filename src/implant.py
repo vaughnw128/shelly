@@ -65,6 +65,8 @@ class Implant(Host):
         Checks shellpacks for truncated, completed, or none, and passes those on to the exec helper
         """
 
+        print("lalalalal")
+
         if shellpack['target_id'] != self.id:
             return
 
@@ -84,8 +86,6 @@ class Implant(Host):
         """
         Responds to the instruction command
         """
-        
-        print("lalalalal")
 
         if shellpack['target_id'] != self.id:
             return
