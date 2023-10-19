@@ -70,7 +70,6 @@ class Implant(Host):
 
         decoded_data = shellpack['data'].decode()
         print(decoded_data)
-
         match shellpack['option']:
             case "TRUNCATED":
                 self.module_cache += decoded_data
