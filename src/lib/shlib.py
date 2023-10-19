@@ -175,7 +175,7 @@ class Host:
         if type == "req":
             icmp_type = 0
         elif type == "resp":
-            icmp_type = 0
+            icmp_type = 8
 
         # # Get ICMP Type
         # icmp_type = 0
