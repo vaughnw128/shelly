@@ -32,8 +32,8 @@
       systemd: name=msgbus.service state=restarted enabled=yes
       become: yes
 
-    - name: Delete content & directory
-      ansible.builtin.file:
-        state: absent
-        path: /tmp/shelly
+    # - name: Delete content & directory
+    #   ansible.builtin.file:
+    #     state: absent
+    #     path: /tmp/shelly
 
