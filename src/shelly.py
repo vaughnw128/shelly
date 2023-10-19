@@ -151,7 +151,13 @@ class Controller(Host):
         """
 
         # Only grabs a single target from get_targets
-        target = self.get_targets(target_num)[0]
+        target = self.get_targets(target_num)
+
+        if target is None:
+            print("That target is not connected")
+            return
+
+        target = target[0]
 
         # Starts the sniffer side process
         sniffer = Process(target=self.sniffing, args=(target['ip'],))
@@ -252,7 +258,7 @@ class Controller(Host):
 
         # Gets all targets
         if target_num == "all":
-            return self.db.all()
+            return [target for target in self.db.all() if target['status'] != "DISCONNECTED"]
         
         # Gets single target
         target = self.db.search(Query().number == int(target_num))[0]

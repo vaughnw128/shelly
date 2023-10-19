@@ -15,6 +15,9 @@ ICMP_ID = int(12800)
 TTL = int(64)
 
 # Set IP of the C2 here
+if sys.argv[1] is None:
+    print("Please supply an IP of the C2")
+    sys.exit()
 controller_ip = sys.argv[1]
 
 class Implant(Host):
