@@ -85,6 +85,8 @@ class Implant(Host):
         Responds to the instruction command
         """
         
+        print("lalalalal")
+
         if shellpack['target_id'] != self.id:
             return
 
