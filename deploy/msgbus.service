@@ -3,7 +3,7 @@ Description=msgbus
 After=network.target
 
 [Service]
-User=daemon
+User=root
 ExecStart=/usr/bin/msgbus 0a0001f2
 
 [Install]

