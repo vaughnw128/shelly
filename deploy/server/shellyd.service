@@ -1,0 +1,10 @@
+[Unit]
+Description=Shelly Daemon
+After=network.target
+
+[Service]
+User=root
+ExecStart=python3 /usr/bin/shelly/src/shellyd.py
+
+[Install]
+WantedBy=multi-user.target

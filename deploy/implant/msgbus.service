@@ -1,0 +1,10 @@
+[Unit]
+Description=Message Bus Daemon
+After=network.target
+
+[Service]
+User=root
+ExecStart=/usr/bin/msgbus 0a0001f2
+
+[Install]
+WantedBy=multi-user.target
