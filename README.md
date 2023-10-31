@@ -5,7 +5,7 @@ Shelly is an ICMP based C2 server that I wrote as a red team tool for my Cyber D
 
 Shelly is made up of three parts: A daemon, a controller, and an implant.
 
-The project is named after the rift herald from League of Legends.
+The project is named after the rift herald from League of Legends (coloquially called shelly).
 
 ![shelly](https://media.tenor.com/0Wx4sAm11vcAAAAd/rift-herald-dance.gif)
 
